@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">TPIntegrador_Grupo7</string>
+    <string name="action_settings">Settings</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="basica">Calculadora básica</string>
+    <string name="cientifica">Calculadora científica</string>
+    <string name="config">Configuración</string>
+    <string name="historial">Historial de operaciones</string>
+</resources>

@@ -1,0 +1,26 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica">
+    <item
+        android:id="@+id/action_basica"
+        android:orderInCategory="100"
+        android:title="@string/basica"
+        app:showAsAction="never"
+        android:visible="false"/>
+    <item
+        android:id="@+id/action_cientifica"
+        android:orderInCategory="100"
+        android:title="@string/cientifica"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_historial"
+        android:orderInCategory="100"
+        android:title="@string/historial"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_configuracion"
+        android:orderInCategory="100"
+        android:title="@string/config"
+        app:showAsAction="never" />
+</menu>
