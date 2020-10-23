@@ -8,12 +8,17 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
 public class CalculadoraBasica extends AppCompatActivity {
+
+    TextView operacion, resultado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,14 +27,27 @@ public class CalculadoraBasica extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+        operacion = findViewById(R.id.txtOperacion);
+        resultado = findViewById(R.id.txtResultado);
+    }
+
+    public void ingresarDigito(View view){
+        Button digit = (Button)view;
+        String buttonText = digit.getText().toString();
+
+        resultado.setText(resultado.getText() + buttonText);
+    }
+
+    public void borrarDigito(View view){
+      resultado.setText(resultado.getText().toString().substring(0, resultado.length()-1));
+    }
+
+    public void eliminarOperacion(View view){
+        resultado.setText("");
+    }
+
+    public void calcularOperacion(View view){
+
     }
 
     @Override
