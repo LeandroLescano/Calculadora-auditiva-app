@@ -30,5 +30,17 @@
     <string name="parentAbrir">(</string>
     <string name="parentCerrar">)</string>
     <string name="derecha">←</string>
-    <string name="izquierda">→</string>
+    <string name="taninverso">Tan-1</string>
+    <string name="sininverso">Sin-1</string>
+    <string name="cosinverso">Cos-1</string>
+    <string name="tan">Tan</string>
+    <string name="sin">Sin</string>
+    <string name="cos">Cos</string>
+    <string name="lognatural">Ln</string>
+    <string name="logdecimal">Lg</string>
+    <string name="potencia">X^</string>
+    <string name="raiz">√</string>
+    <string name="pi">π</string>
+
+
 </resources>
