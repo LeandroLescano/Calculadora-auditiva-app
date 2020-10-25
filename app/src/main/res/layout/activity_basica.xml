@@ -37,7 +37,8 @@
                 android:gravity="end">
 
                 <TextView
-                    android:id="@+id/txtResultado"
+
+                    android:id="@+id/txtOperacion"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
@@ -54,7 +55,7 @@
                 android:gravity="end">
 
                 <TextView
-                    android:id="@+id/txtOperacion"
+                    android:id="@+id/txtResultado"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5dp"
