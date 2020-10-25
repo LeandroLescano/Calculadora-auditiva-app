@@ -41,6 +41,66 @@
     <string name="potencia">X^</string>
     <string name="raiz">√</string>
     <string name="pi">π</string>
+    <string name="txtTamano">Tamaño del Texto</string>
+    <string name="txtTipografia">Tipografía del Texto</string>
+    <string name="txtColor">Color del Texto</string>
+    <string name="txtBotones">Color de los Botones</string>
+    <string name="txtVibracion">Estado de Vibración</string>
+    <string name="txtSonido">Estado de Emision de Sonido</string>
+    <string name="Guardar">Guardar</string>
 
+    <string-array name="Tamano">
+        <item>18px</item>
+        <item>20px</item>
+        <item>22px</item>
+        <item>24px</item>
+        <item>26px</item>
+        <item>28px</item>
+        <item>30px</item>
+    </string-array>
+
+    <string-array name="Tipografia">
+        <item>Roboto</item>
+        <item>Arial</item>
+        <item>Times New Roman</item>
+        <item>Comic Sans MS</item>
+        <item>Quicksand</item>
+    </string-array>
+
+    <string-array name="Color">
+        <item>Negro</item>
+        <item>Blanco</item>
+        <item>Rojo</item>
+        <item>Azul</item>
+        <item>Amarillo</item>
+        <item>Verde</item>
+        <item>Naranja</item>
+        <item>Violeta</item>
+    </string-array>
+
+    <string-array name="Botones">
+        <item>Negro</item>
+        <item>Blanco</item>
+        <item>Rojo</item>
+        <item>Azul</item>
+        <item>Amarillo</item>
+        <item>Verde</item>
+        <item>Naranja</item>
+        <item>Violeta</item>
+    </string-array>
+
+    <string-array name="Vibracion">
+        <item>Siempre</item>
+        <item>Solo Resultado</item>
+        <item>Solo Errores</item>
+        <item>Nunca</item>
+    </string-array>
+
+    <string-array name="Sonido">
+        <item>Siempre</item>
+        <item>Solo Resultado</item>
+        <item>Solo Errores</item>
+        <item>Nunca</item>
+    </string-array>
 
 </resources>
