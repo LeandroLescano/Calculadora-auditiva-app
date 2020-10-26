@@ -48,6 +48,7 @@
     <string name="txtVibracion">Estado de Vibración</string>
     <string name="txtSonido">Estado de Emision de Sonido</string>
     <string name="Guardar">Guardar</string>
+    <string name="ver">VER</string>
 
     <string-array name="Tamano">
         <item>18px</item>

@@ -4,23 +4,52 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.GridView;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import utn.frgp.tusi.tpintegrador_grupo7.adapter.OperacionAdapter;
+import utn.frgp.tusi.tpintegrador_grupo7.dominio.Operacion;
 
 public class HistorialOperaciones extends AppCompatActivity {
+
+    private ArrayList<Operacion> operaciones;
+    private OperacionAdapter adapter;
+    private GridView grid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
+        operaciones = new ArrayList<Operacion>();
+        operaciones.add(new Operacion(1, "5+5=10"));
+        adapter = new OperacionAdapter(this, operaciones);
+        grid = (GridView) findViewById(R.id.gv_operaciones);
+        grid.setAdapter(adapter);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_flecha_izq_menu);
+        invalidateOptionsMenu();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                finish();
+            }
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
+        return false;
     }
 
     @Override
@@ -48,6 +77,7 @@ public class HistorialOperaciones extends AppCompatActivity {
             return true;
         }
 
+        finish();
         return super.onOptionsItemSelected(item);
     }
 }

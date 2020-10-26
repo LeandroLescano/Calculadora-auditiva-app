@@ -127,6 +127,14 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu){
+        MenuItem item= menu.findItem(R.id.action_cientifica);
+        item.setVisible(false);
+        super.onPrepareOptionsMenu(menu);
+        return true;
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
