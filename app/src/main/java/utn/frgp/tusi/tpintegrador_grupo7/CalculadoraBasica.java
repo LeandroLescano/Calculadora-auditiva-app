@@ -120,13 +120,19 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_configuracion) {
+            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.Configuracion.class);
+            startActivity(intent);
             return true;
         } else if(id == R.id.action_basica){
+            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica.class);
+            startActivity(intent);
             return true;
         } else if(id == R.id.action_cientifica){
             Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraCientifica.class);
             startActivity(intent);
         } else if(id == R.id.action_historial){
+            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.HistorialOperaciones.class);
+            startActivity(intent);
             return true;
         }
 
