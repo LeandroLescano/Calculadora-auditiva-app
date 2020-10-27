@@ -4,22 +4,64 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 public class Configuracion extends AppCompatActivity {
+
+    private Spinner tamano, tipografia, color, botones, vibracion, sonido;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
+
+        ArrayAdapter adapterTamano = ArrayAdapter.createFromResource(this, R.array.Tamano, R.layout.spinner_item);
+        ArrayAdapter adapterTipo = ArrayAdapter.createFromResource(this, R.array.Tipografia, R.layout.spinner_item);
+        ArrayAdapter adapterColor = ArrayAdapter.createFromResource(this, R.array.Color, R.layout.spinner_item);
+        ArrayAdapter adapterBotones = ArrayAdapter.createFromResource(this, R.array.Botones, R.layout.spinner_item);
+        ArrayAdapter adapterVibracion = ArrayAdapter.createFromResource(this, R.array.Vibracion, R.layout.spinner_item);
+        ArrayAdapter adapterSonido = ArrayAdapter.createFromResource(this, R.array.Sonido, R.layout.spinner_item);
+        tamano = findViewById(R.id.cbTamano);
+        tipografia = findViewById(R.id.cbTipografia);
+        color = findViewById(R.id.cbColor);
+        botones = findViewById(R.id.cbBotones);
+        vibracion = findViewById(R.id.cbVibracion);
+        sonido = findViewById(R.id.cbSonido);
+        adapterTamano.setDropDownViewResource(R.layout.spinner_item);
+        adapterTipo.setDropDownViewResource(R.layout.spinner_item);
+        adapterColor.setDropDownViewResource(R.layout.spinner_item);
+        adapterBotones.setDropDownViewResource(R.layout.spinner_item);
+        adapterVibracion.setDropDownViewResource(R.layout.spinner_item);
+        adapterSonido.setDropDownViewResource(R.layout.spinner_item);
+        tamano.setAdapter(adapterTamano);
+        tipografia.setAdapter(adapterTipo);
+        color.setAdapter(adapterColor);
+        botones.setAdapter(adapterBotones);
+        vibracion.setAdapter(adapterVibracion);
+        sonido.setAdapter(adapterSonido);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        toolbar.setNavigationIcon(R.drawable.ic_flecha_izq_menu);
+        invalidateOptionsMenu();
+        toolbar.setNavigationOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                finish();
+            }
+        });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
+        return false;
     }
 
     @Override
