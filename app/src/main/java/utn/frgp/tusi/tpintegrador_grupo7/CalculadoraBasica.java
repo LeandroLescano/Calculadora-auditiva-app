@@ -19,10 +19,9 @@ import java.util.Arrays;
 public class CalculadoraBasica extends AppCompatActivity {
 
     TextView operacion, resultado;
-    int cuenta = 0;
-    private String Numero= "";
+    float cuenta = 0;
+    private String Numero = "";
     String MuestraVieja = "";
-    String NumeroViejo = "";
     String buttonText = "";
     String signo = "";
 
@@ -44,10 +43,9 @@ public class CalculadoraBasica extends AppCompatActivity {
         buttonText = digit.getText().toString();
 
         MuestraVieja = (String) operacion.getText();
-        NumeroViejo = Numero;
         if(!ObtenerOperador()){
             operacion.setText(MuestraVieja + buttonText);
-            Numero = NumeroViejo + buttonText;
+            Numero = Numero + buttonText;
         }
     }
 
@@ -61,11 +59,15 @@ public class CalculadoraBasica extends AppCompatActivity {
         operacion.setText("");
         resultado.setText("0");
         resultado.setAlpha((float) 0.5);
+        cuenta = 0;
+        Numero = "";
     }
 
     public void calcularOperacion(View view){
+        Calcular(Numero);
         signo = "=";
-        Calcular(MuestraVieja);
+        Calcular(Numero);
+        Numero = "0";
     }
 
     public boolean ObtenerOperador(){
@@ -75,8 +77,8 @@ public class CalculadoraBasica extends AppCompatActivity {
                 operacion.setText(MuestraVieja + buttonText);
                 signo = buttonText;
                 Calcular(Numero);
-                Numero = NumeroViejo + buttonText;
-                MuestraVieja = "";
+                MuestraVieja = Numero + buttonText;
+                Numero = "";
                 return true;
         }
         return false;
@@ -85,22 +87,21 @@ public class CalculadoraBasica extends AppCompatActivity {
     public void Calcular(String Num){
         switch (signo) {
             case "+":
-                cuenta += Integer.parseInt(Num);
+                cuenta += Float.parseFloat(Num);
                 break;
             case "-":
-                cuenta -= Integer.parseInt(Num);
+                cuenta -= Float.parseFloat(Num);
                 break;
             case "*":
-                cuenta = cuenta * Integer.parseInt(Num);
+                cuenta = cuenta * Float.parseFloat(Num);
                 break;
             case "/":
-                if (Integer.parseInt(Num) > 0) {
-                    cuenta = cuenta / Integer.parseInt(Num);
+                if (Float.parseFloat(Num) > 0) {
+                    cuenta = cuenta / Float.parseFloat(Num);
                 }
                 break;
             case "=":
-                String valor = cuenta+Num+"";
-                resultado.setText(valor);
+                resultado.setText(cuenta+"");
                 resultado.setAlpha((float) 1);
                 break;
         }
