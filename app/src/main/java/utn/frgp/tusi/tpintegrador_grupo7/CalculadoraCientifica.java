@@ -173,7 +173,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     public void borrarDigito(View view){
         if(operacion.getText().length() > 0){
-            operacion.setText(operacion.getText().toString().substring(0, operacion.length()-1));
+            operacion.setText(operacion.getText().toString().substring(0, posActual-1).concat(operacion.getText().toString().substring(posActual)));
+            posActual--;
+            operacion.setSelection(posActual);
         }
     }
 
