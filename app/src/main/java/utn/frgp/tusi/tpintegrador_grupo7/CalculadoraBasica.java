@@ -1,6 +1,7 @@
 package utn.frgp.tusi.tpintegrador_grupo7;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,6 +35,8 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         operacion = findViewById(R.id.txtOperacion);
         resultado = findViewById(R.id.txtResultado);
+        resultado.setText("0");
+        resultado.setAlpha((float) 0.5);
     }
 
     public void ingresarDigito(View view){
@@ -56,6 +59,8 @@ public class CalculadoraBasica extends AppCompatActivity {
 
     public void eliminarOperacion(View view){
         operacion.setText("");
+        resultado.setText("0");
+        resultado.setAlpha((float) 0.5);
     }
 
     public void calcularOperacion(View view){
@@ -96,6 +101,7 @@ public class CalculadoraBasica extends AppCompatActivity {
             case "=":
                 String valor = cuenta+Num+"";
                 resultado.setText(valor);
+                resultado.setAlpha((float) 1);
                 break;
         }
     }
