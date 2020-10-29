@@ -1,4 +1,4 @@
-package utn.frgp.tusi.tpintegrador_grupo7.dominio;
+package utn.frgp.tusi.tpintegrador_grupo7.Dominio;
 
 public class Operacion {
 

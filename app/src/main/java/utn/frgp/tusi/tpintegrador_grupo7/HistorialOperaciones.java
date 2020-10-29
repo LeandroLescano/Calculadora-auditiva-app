@@ -6,14 +6,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import utn.frgp.tusi.tpintegrador_grupo7.adapter.OperacionAdapter;
-import utn.frgp.tusi.tpintegrador_grupo7.dominio.Operacion;
+import utn.frgp.tusi.tpintegrador_grupo7.Adapter.OperacionAdapter;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 
 public class HistorialOperaciones extends AppCompatActivity {
 
@@ -60,7 +59,7 @@ public class HistorialOperaciones extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_configuracion) {
-            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.Configuracion.class);
+            Intent intent = new Intent(this, ConfiguracionActivity.class);
             startActivity(intent);
             return true;
         } else if(id == R.id.action_basica){

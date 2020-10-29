@@ -11,7 +11,7 @@ import android.widget.Spinner;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class Configuracion extends AppCompatActivity {
+public class ConfiguracionActivity extends AppCompatActivity {
 
     private Spinner tamano, tipografia, color, botones, vibracion, sonido;
 
@@ -73,7 +73,7 @@ public class Configuracion extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_configuracion) {
-            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.Configuracion.class);
+            Intent intent = new Intent(this, ConfiguracionActivity.class);
             startActivity(intent);
             return true;
         } else if(id == R.id.action_basica){

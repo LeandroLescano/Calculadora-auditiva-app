@@ -1,4 +1,4 @@
-package utn.frgp.tusi.tpintegrador_grupo7.adapter;
+package utn.frgp.tusi.tpintegrador_grupo7.Adapter;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,7 +10,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import utn.frgp.tusi.tpintegrador_grupo7.R;
-import utn.frgp.tusi.tpintegrador_grupo7.dominio.Operacion;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 
 
 public class OperacionAdapter extends BaseAdapter {

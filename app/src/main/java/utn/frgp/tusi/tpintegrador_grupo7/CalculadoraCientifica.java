@@ -152,7 +152,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_configuracion) {
-            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.Configuracion.class);
+            Intent intent = new Intent(this, ConfiguracionActivity.class);
             startActivity(intent);
             return true;
         } else if(id == R.id.action_basica){

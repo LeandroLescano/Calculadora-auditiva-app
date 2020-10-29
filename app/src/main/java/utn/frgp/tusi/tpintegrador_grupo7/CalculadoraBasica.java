@@ -3,13 +3,9 @@ package utn.frgp.tusi.tpintegrador_grupo7;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
@@ -128,7 +124,7 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_configuracion) {
-            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.Configuracion.class);
+            Intent intent = new Intent(this, ConfiguracionActivity.class);
             startActivity(intent);
             return true;
         } else if(id == R.id.action_basica){

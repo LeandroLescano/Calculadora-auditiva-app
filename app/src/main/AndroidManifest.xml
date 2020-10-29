@@ -19,7 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Configuracion" android:label="Configuración"/>
+        <activity android:name=".ConfiguracionActivity" android:label="Configuración"/>
         <activity
             android:name=".CalculadoraCientifica"
             android:label="@string/cientifica"
