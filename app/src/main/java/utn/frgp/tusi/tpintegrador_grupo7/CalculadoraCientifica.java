@@ -42,8 +42,12 @@ public class CalculadoraCientifica extends AppCompatActivity {
         resultado.setAlpha((float) 0.5);
         resultado.setText("0");
 
+        //Consultar configuración para cambiar aspecto.
+        //formatearAspecto();
+
     }
 
+    //Coloca el dígito seleccionado en pantalla.
     public void ingresarDigito(View view){
         Button digit = (Button)view;
         String buttonText = digit.getText().toString();
@@ -154,13 +158,50 @@ public class CalculadoraCientifica extends AppCompatActivity {
                 operacion.setText(MuestraVieja.substring(0,posActual).concat("√".concat(MuestraVieja.substring(posActual))));
                 Numero = NumeroViejo + "√";
                 break;
+            case R.id.btnPotencia:
+                operacion.setText(MuestraVieja.substring(0,posActual).concat("^".concat(MuestraVieja.substring(posActual))));
+                Numero = NumeroViejo + "^";
+                break;
+            case R.id.btnPorcentaje:
+                porcentajeNumero(MuestraVieja);
+                break;
         }
-        if(operacion.getSelectionEnd() < operacion.getText().length()){
+        if(posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje){
             posActual++;
             operacion.setSelection(posActual);
         }
     }
 
+    public void porcentajeNumero(String muestra){
+        String opActual = operacion.getText().toString().substring(0, posActual);
+        Integer ultimaPos=0, numeroInt = 0, posNumero;
+        Float charCode, numeroFloat;
+        for (int x=0; x<opActual.length(); x++){
+            charCode = (float) opActual.charAt(x);
+            if(charCode < 48 || charCode > 57){
+                    ultimaPos=x+1;
+            }
+        }
+        try{
+            numeroFloat = Float.parseFloat(opActual.substring(ultimaPos))/100;
+            posNumero = muestra.lastIndexOf(opActual.substring(ultimaPos));
+            String finalOperacion = muestra.substring(posNumero + opActual.substring(ultimaPos).length());
+            if(numeroFloat%2 == 0){
+                numeroInt = Math.round(numeroFloat);
+                operacion.setText(muestra.substring(0, posNumero).concat(numeroInt.toString()).concat(finalOperacion));
+                posActual = operacion.getText().toString().lastIndexOf(numeroInt.toString())+numeroFloat.toString().length()-2;
+            }else{
+                operacion.setText(muestra.substring(0, posNumero).concat(numeroFloat.toString()).concat(finalOperacion));
+                posActual = operacion.getText().toString().lastIndexOf(numeroFloat.toString())+numeroFloat.toString().length();
+            }
+            operacion.setSelection(posActual);
+        }catch (NumberFormatException e){
+
+        }
+
+    }
+
+    //Mueve el cursor hacia la izquierda o derecha.
     public void moverCursor(View view){
         AppCompatImageButton flecha = (AppCompatImageButton) view;
         posActual = operacion.getSelectionEnd();
@@ -180,6 +221,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         }
     }
 
+    //Borra un dígito a la izquierda de la posición actual del cursor.
     public void borrarDigito(View view){
         String opActual = operacion.getText().toString();
         if(opActual.length() > 0 && posActual > 0){
@@ -199,23 +241,34 @@ public class CalculadoraCientifica extends AppCompatActivity {
         }
     }
 
+    //Chequea si la operacion contiene funciones de tipo trigonométricas y logaritmicas.
     public Integer contieneOperadores(String op){
-        Log.e("op", op);
-        for(int i =0; i < funciones.length; i++){
-            if(op.contains(funciones[i])){
-                return op.indexOf(funciones[i]);
+        for (String funcion : funciones) {
+            if (op.contains(funcion)) {
+                return op.indexOf(funcion);
             }
         }
         return -1;
     }
 
+    //Borra toda la operación en pantalla y resetea la calculadora en 0.
     public void eliminarOperacion(View view){
         operacion.setText("");
         resultado.setText("0");
         resultado.setAlpha((float) 0.5);
     }
 
+    //Realiza el cálculo de la operación.
     public void calcularOperacion(View view){
+        //Analizar que botón es:
+        //IngresarDigito(view);
+        //borrarDigito();
+        //eliminarOperacion();
+        //Realizar calculo
+    }
+
+    //Configura la calculadora visualmente.
+    public void formatearAspecto(){
 
     }
 
@@ -226,7 +279,6 @@ public class CalculadoraCientifica extends AppCompatActivity {
         super.onPrepareOptionsMenu(menu);
         return true;
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

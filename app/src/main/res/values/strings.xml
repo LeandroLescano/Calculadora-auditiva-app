@@ -49,6 +49,7 @@
     <string name="txtSonido">Estado de Emision de Sonido</string>
     <string name="Guardar">Guardar</string>
     <string name="ver">VER</string>
+    <string name="todo">TODO</string>
 
     <string-array name="Tamano">
         <item>18px</item>
