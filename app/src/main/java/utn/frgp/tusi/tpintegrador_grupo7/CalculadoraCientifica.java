@@ -1,5 +1,6 @@
 package utn.frgp.tusi.tpintegrador_grupo7;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -7,9 +8,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import java.lang.reflect.Array;
+import java.util.Arrays;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -21,6 +26,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private String Signo = "";
     private String Numero= "";
     private Integer posActual;
+    private String[] funciones;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +35,13 @@ public class CalculadoraCientifica extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+        funciones= new String[]{"tan(", "sin(", "cos(", "arctan(", "arcsin(", "arccos(", "lg(", "ln("};
+
         operacion = findViewById(R.id.txtOperacion);
         resultado = findViewById(R.id.txtResultado);
         resultado.setAlpha((float) 0.5);
         resultado.setText("0");
+
     }
 
     public void ingresarDigito(View view){
@@ -116,25 +124,25 @@ public class CalculadoraCientifica extends AppCompatActivity {
             case R.id.btntan:
                 operacion.setText(MuestraVieja.substring(0,posActual).concat("tan()".concat(MuestraVieja.substring(posActual))));
                 Numero = NumeroViejo + "tan()";
-                posActual = posActual+2;
+                posActual = posActual+3;
                 break;
             case R.id.btnsin:
                 operacion.setText(MuestraVieja.substring(0,posActual).concat("sin()".concat(MuestraVieja.substring(posActual))));
                 Numero = NumeroViejo + "sin()";
-                posActual = posActual+2;
+                posActual = posActual+3;
                 break;
             case R.id.btncos:
                 operacion.setText(MuestraVieja.substring(0,posActual).concat("cos()".concat(MuestraVieja.substring(posActual))));
                 Numero = NumeroViejo + "cos()";
-                posActual = posActual+2;
+                posActual = posActual+3;
                 break;
             case R.id.btnLogDecimal:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("Lg()".concat(MuestraVieja.substring(posActual))));
+                operacion.setText(MuestraVieja.substring(0,posActual).concat("lg()".concat(MuestraVieja.substring(posActual))));
                 Numero= NumeroViejo + "lg()";
                 posActual = posActual+2;
                 break;
             case R.id.btnLogNatural:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("Ln()".concat(MuestraVieja.substring(posActual))));
+                operacion.setText(MuestraVieja.substring(0,posActual).concat("ln()".concat(MuestraVieja.substring(posActual))));
                 posActual = posActual+2;
                 Numero = NumeroViejo + "ln()";
                 break;
@@ -148,7 +156,8 @@ public class CalculadoraCientifica extends AppCompatActivity {
                 break;
         }
         if(operacion.getSelectionEnd() < operacion.getText().length()){
-            operacion.setSelection(posActual+1);
+            posActual++;
+            operacion.setSelection(posActual);
         }
     }
 
@@ -172,11 +181,32 @@ public class CalculadoraCientifica extends AppCompatActivity {
     }
 
     public void borrarDigito(View view){
-        if(operacion.getText().length() > 0){
-            operacion.setText(operacion.getText().toString().substring(0, posActual-1).concat(operacion.getText().toString().substring(posActual)));
-            posActual--;
+        String opActual = operacion.getText().toString();
+        if(opActual.length() > 0 && posActual > 0){
+            int posFuncion = contieneOperadores(opActual);
+            if(posFuncion >= 0 && (posActual >= posFuncion && posActual <= (opActual.indexOf("(")+1))){
+                if(opActual.charAt(posActual) == ')'){
+                    operacion.setText(opActual.substring(0,posFuncion).concat(opActual.substring(posActual+1)));
+                }else{
+                operacion.setText(opActual.substring(0,posFuncion).concat(opActual.substring(opActual.indexOf("(")+1)));
+                }
+                posActual = posFuncion;
+            }else{
+                operacion.setText(opActual.substring(0, posActual-1).concat(opActual.substring(posActual)));
+                posActual--;
+            }
             operacion.setSelection(posActual);
         }
+    }
+
+    public Integer contieneOperadores(String op){
+        Log.e("op", op);
+        for(int i =0; i < funciones.length; i++){
+            if(op.contains(funciones[i])){
+                return op.indexOf(funciones[i]);
+            }
+        }
+        return -1;
     }
 
     public void eliminarOperacion(View view){
