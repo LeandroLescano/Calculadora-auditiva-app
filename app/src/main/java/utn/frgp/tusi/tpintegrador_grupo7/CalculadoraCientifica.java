@@ -1,11 +1,15 @@
 package utn.frgp.tusi.tpintegrador_grupo7;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -16,6 +20,7 @@ import android.widget.TextView;
 import java.lang.reflect.Array;
 import java.util.Arrays;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
@@ -28,6 +33,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private Integer posActual;
     private String[] funciones;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,17 +41,31 @@ public class CalculadoraCientifica extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        funciones= new String[]{"tan(", "sin(", "cos(", "arctan(", "arcsin(", "arccos(", "lg(", "ln("};
+        //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
+
+        funciones= new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
 
         operacion = findViewById(R.id.txtOperacion);
         resultado = findViewById(R.id.txtResultado);
         resultado.setAlpha((float) 0.5);
         resultado.setText("0");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            operacion.setShowSoftInputOnFocus(false);
+        }
+        operacion.requestFocus();
 
+        operacion.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                posActual = operacion.getSelectionEnd();
+            }
+        });
         //Consultar configuración para cambiar aspecto.
         //formatearAspecto();
 
     }
+
 
     //Coloca el dígito seleccionado en pantalla.
     public void ingresarDigito(View view){
@@ -140,6 +160,21 @@ public class CalculadoraCientifica extends AppCompatActivity {
                 Numero = NumeroViejo + "cos()";
                 posActual = posActual+3;
                 break;
+            case R.id.btnTanInverso:
+                operacion.setText(MuestraVieja.substring(0,posActual).concat("arctan()".concat(MuestraVieja.substring(posActual))));
+                Numero = NumeroViejo + "arctan()";
+                posActual = posActual+6;
+                break;
+            case R.id.btnSinInverso:
+                operacion.setText(MuestraVieja.substring(0,posActual).concat("arcsin()".concat(MuestraVieja.substring(posActual))));
+                Numero = NumeroViejo + "arcsin()";
+                posActual = posActual+6;
+                break;
+            case R.id.btnCosInverso:
+                operacion.setText(MuestraVieja.substring(0,posActual).concat("arccos()".concat(MuestraVieja.substring(posActual))));
+                Numero = NumeroViejo + "arccos()";
+                posActual = posActual+6;
+                break;
             case R.id.btnLogDecimal:
                 operacion.setText(MuestraVieja.substring(0,posActual).concat("lg()".concat(MuestraVieja.substring(posActual))));
                 Numero= NumeroViejo + "lg()";
@@ -172,6 +207,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         }
     }
 
+    //Coloca en pantalla el último número ingresado dividido 100
     public void porcentajeNumero(String muestra){
         String opActual = operacion.getText().toString().substring(0, posActual);
         Integer ultimaPos=0, numeroInt = 0, posNumero;
@@ -208,14 +244,14 @@ public class CalculadoraCientifica extends AppCompatActivity {
         switch(flecha.getId()){
             case R.id.btnDerecha:
                 if(posActual < operacion.getText().length()){
-                    operacion.setSelection(posActual+1);
                     posActual++;
+                    operacion.setSelection(posActual);
                 }
                 break;
             case R.id.btnIzquierda:
-                if(posActual-1 > 0){
-                    operacion.setSelection(posActual-1);
+                if(posActual-1 >= 0){
                     posActual--;
+                    operacion.setSelection(posActual);
                 }
                 break;
         }
