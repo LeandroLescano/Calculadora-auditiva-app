@@ -2,9 +2,11 @@ package utn.frgp.tusi.tpintegrador_grupo7;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 
 import android.view.View;
@@ -12,18 +14,21 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
 
 public class CalculadoraBasica extends AppCompatActivity {
 
-    TextView operacion, resultado;
-    float cuenta = 0;
+    private TextView resultado;
+    private EditText operacion;
+    private Float cuenta = 0f;
     private String Numero = "";
-    String MuestraVieja = "";
-    String buttonText = "";
-    String signo = "";
+    private String MuestraVieja = "";
+    private String buttonText = "";
+    private String signo = "";
+    private Integer posActual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,24 +39,98 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         operacion = findViewById(R.id.txtOperacion);
         resultado = findViewById(R.id.txtResultado);
-        resultado.setText("0");
         resultado.setAlpha((float) 0.5);
+        resultado.setText("0");
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            operacion.setShowSoftInputOnFocus(false);
+        }
+        operacion.requestFocus();
+
+        operacion.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                posActual = operacion.getSelectionEnd();
+            }
+        });
+
+        //Consultar configuración para cambiar aspecto.
+        //formatearAspecto();
     }
 
     public void ingresarDigito(View view){
         Button digit = (Button)view;
         buttonText = digit.getText().toString();
-
-        MuestraVieja = (String) operacion.getText();
+        posActual = operacion.getSelectionEnd();
+        MuestraVieja = operacion.getText().toString();
         if(!ObtenerOperador()){
-            operacion.setText(MuestraVieja + buttonText);
+            //operacion.setText(MuestraVieja + buttonText);
+            operacion.setText(MuestraVieja.substring(0,posActual).concat(buttonText.concat(MuestraVieja.substring(posActual))));
             Numero = Numero + buttonText;
+        }
+        if(posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje){
+            posActual++;
+            operacion.setSelection(posActual);
         }
     }
 
     public void borrarDigito(View view){
-        if(operacion.length()>0) {
-            operacion.setText(operacion.getText().toString().substring(0, operacion.length() - 1));
+        String opActual = operacion.getText().toString();
+        if(opActual.length() > 0 && posActual > 0){
+            operacion.setText(opActual.substring(0, posActual-1).concat(opActual.substring(posActual)));
+            posActual--;
+        }
+        operacion.setSelection(posActual);
+    }
+
+    //Coloca en pantalla el último número ingresado dividido 100
+    public void porcentajeNumero(View view){
+        String muestra = operacion.getText().toString();
+        String opActual = operacion.getText().toString().substring(0, posActual);
+        Integer ultimaPos=0, numeroInt = 0, posNumero;
+        Float charCode, numeroFloat;
+        for (int x=0; x<opActual.length(); x++){
+            charCode = (float) opActual.charAt(x);
+            if(charCode < 48 || charCode > 57){
+                ultimaPos=x+1;
+            }
+        }
+        try{
+            numeroFloat = Float.parseFloat(opActual.substring(ultimaPos))/100;
+            posNumero = muestra.lastIndexOf(opActual.substring(ultimaPos));
+            String finalOperacion = muestra.substring(posNumero + opActual.substring(ultimaPos).length());
+            if(numeroFloat%2 == 0){
+                numeroInt = Math.round(numeroFloat);
+                operacion.setText(muestra.substring(0, posNumero).concat(numeroInt.toString()).concat(finalOperacion));
+                posActual = operacion.getText().toString().lastIndexOf(numeroInt.toString())+numeroFloat.toString().length()-2;
+            }else{
+                operacion.setText(muestra.substring(0, posNumero).concat(numeroFloat.toString()).concat(finalOperacion));
+                posActual = operacion.getText().toString().lastIndexOf(numeroFloat.toString())+numeroFloat.toString().length();
+            }
+            operacion.setSelection(posActual);
+        }catch (NumberFormatException e){
+
+        }
+    }
+
+    //Mueve el cursor hacia la izquierda o derecha.
+    public void moverCursor(View view){
+        AppCompatImageButton flecha = (AppCompatImageButton) view;
+        posActual = operacion.getSelectionEnd();
+        switch(flecha.getId()){
+            case R.id.btnDerecha:
+                if(posActual < operacion.getText().length()){
+                    posActual++;
+                    operacion.setSelection(posActual);
+                }
+                break;
+            case R.id.btnIzquierda:
+                if(posActual-1 >= 0){
+                    posActual--;
+                    operacion.setSelection(posActual);
+                }
+                break;
         }
     }
 
@@ -59,7 +138,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         operacion.setText("");
         resultado.setText("0");
         resultado.setAlpha((float) 0.5);
-        cuenta = 0;
+        cuenta = 0f;
         Numero = "";
     }
 

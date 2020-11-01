@@ -56,17 +56,6 @@
                     android:textColor="#000000"
                     android:textCursorDrawable="@drawable/cursor_style"
                     android:textSize="50sp" />
-
-                <!--<TextView
-                    android:id="@+id/txtOperacion"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
-                    android:gravity="center|end"
-                    android:lines="1"
-                    android:textColor="#000000"
-                    android:textSize="50sp" />-->
             </TableRow>
 
             <TableRow
@@ -141,7 +130,7 @@
                     android:text="@string/cosinverso"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="29dp" />
+                    android:textSize="29sp" />
 
                 <ImageButton
                     android:id="@+id/btnIzquierda"
@@ -182,7 +171,7 @@
                     android:text="@string/tan"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="35dp" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/btnsin"
@@ -195,7 +184,7 @@
                     android:text="@string/sin"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="35dp" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/btncos"
@@ -208,7 +197,7 @@
                     android:text="@string/cos"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="35dp" />
+                    android:textSize="35sp" />
 
                 <Button
                     android:id="@+id/btnAbrirParent"
@@ -221,7 +210,7 @@
                     android:text="@string/parentAbrir"
                     android:textColor="#FFFFFF"
                     android:onClick="ingresarDigito"
-                    android:textSize="40dp" />
+                    android:textSize="40sp" />
 
                 <Button
                     android:id="@+id/btnCerrarParent"
@@ -234,7 +223,7 @@
                     android:text="@string/parentCerrar"
                     android:textColor="#FFFFFF"
                     android:onClick="ingresarDigito"
-                    android:textSize="40dp" />
+                    android:textSize="40sp" />
             </TableRow>
 
             <TableRow
@@ -301,7 +290,7 @@
                     android:text="@string/eliminar"
                     android:textColor="#FFFFFF"
                     android:onClick="eliminarOperacion"
-                    android:textSize="40dp" />
+                    android:textSize="40sp" />
 
 
             </TableRow>

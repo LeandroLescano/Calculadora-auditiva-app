@@ -12,7 +12,8 @@
         <activity
             android:name=".CalculadoraBasica"
             android:label="@string/basica"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
