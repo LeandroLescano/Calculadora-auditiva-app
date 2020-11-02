@@ -65,7 +65,6 @@ public class CalculadoraBasica extends AppCompatActivity {
         posActual = operacion.getSelectionEnd();
         MuestraVieja = operacion.getText().toString();
         if(!ObtenerOperador()){
-            //operacion.setText(MuestraVieja + buttonText);
             operacion.setText(MuestraVieja.substring(0,posActual).concat(buttonText.concat(MuestraVieja.substring(posActual))));
             Numero = Numero + buttonText;
         }
@@ -151,16 +150,35 @@ public class CalculadoraBasica extends AppCompatActivity {
 
     public boolean ObtenerOperador(){
         String[] Operadores = { "+", "-", "x", "/", "="};
-
+        boolean Error = true;
         if (Arrays.asList(Operadores).contains(buttonText)) {
-                operacion.setText(MuestraVieja + buttonText);
-                signo = buttonText;
-                Calcular(Numero);
-                MuestraVieja = Numero + buttonText;
-                Numero = "";
-                return true;
+            if(MuestraVieja.isEmpty()){
+                if(buttonText.equals("-")) {
+                    Error = false;
+                }
+                else{
+                    Error = true;
+                }
+            }
+            else {
+                    String UltimoCaracter= MuestraVieja.substring(MuestraVieja.length()-1);
+                    if(Arrays.asList(Operadores).contains(UltimoCaracter)){
+                        Error = true;
+                    }
+                    else {
+                        operacion.setText(MuestraVieja + buttonText);
+                        signo = buttonText;
+                        Calcular(Numero);
+                        MuestraVieja = Numero + buttonText;
+                        Numero = "";
+                        Error = true;
+                    }
+                }
         }
-        return false;
+        else{
+            Error = false;
+        }
+        return  Error;
     }
 
     public void Calcular(String Num){
