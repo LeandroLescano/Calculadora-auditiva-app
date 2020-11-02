@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
 
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -35,6 +37,7 @@ public class CalculadoraBasica extends AppCompatActivity {
     private Integer posActual;
     private TextToSpeech mTTS;
     private AyudaAuditiva audio;
+    private ComandosVoz voz;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,7 @@ public class CalculadoraBasica extends AppCompatActivity {
             operacion.setShowSoftInputOnFocus(false);
         }
         operacion.requestFocus();
+        posActual = operacion.getSelectionEnd();
 
         operacion.setOnClickListener(new View.OnClickListener(){
 
@@ -84,6 +88,9 @@ public class CalculadoraBasica extends AppCompatActivity {
 
     public void borrarDigito(View view){
         String opActual = operacion.getText().toString();
+        if(posActual != operacion.getSelectionEnd()){
+            posActual = operacion.getSelectionEnd();
+        }
         if(opActual.length() > 0 && posActual > 0){
             operacion.setText(opActual.substring(0, posActual-1).concat(opActual.substring(posActual)));
             posActual--;
@@ -215,6 +222,14 @@ public class CalculadoraBasica extends AppCompatActivity {
                 resultado.setAlpha((float) 1);
                 break;
         }
+    }
+
+    public void comandoDeVoz(View view){
+        ImageView micButton = (ImageView) view;
+        if(voz == null){
+            voz = new ComandosVoz(this, this, operacion);
+        }
+        voz.startStop();
     }
 
     @Override

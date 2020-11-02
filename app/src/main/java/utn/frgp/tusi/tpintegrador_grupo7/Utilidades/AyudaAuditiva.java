@@ -100,6 +100,15 @@ public class AyudaAuditiva {
                         textoAudio = "pi";
                     }
             }
+            if(textoAudio.contains("/")){
+                textoAudio = textoAudio.replace("/", " dividido ");
+            }
+            if(textoAudio.contains("-")){
+                textoAudio = textoAudio.replace("-", " menos ");
+            }
+            if(textoAudio.contains("+")){
+                textoAudio = textoAudio.replace("+", " + ");
+            }
             mTTS.speak(textoAudio, TextToSpeech.QUEUE_FLUSH, null);
         }
     }
