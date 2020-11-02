@@ -24,6 +24,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 
 public class CalculadoraCientifica extends AppCompatActivity {
     private TextView resultado;
@@ -32,6 +33,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private String Numero= "";
     private Integer posActual;
     private String[] funciones;
+    private AyudaAuditiva audio;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -62,6 +64,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         //Consultar configuración para cambiar aspecto.
         //formatearAspecto();
 
+        audio = new AyudaAuditiva(this);
     }
 
 
@@ -69,6 +72,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     public void ingresarDigito(View view){
         Button digit = (Button)view;
         String buttonText = digit.getText().toString();
+        audio.emitirAudio(buttonText);
         posActual = operacion.getSelectionEnd();
         //resultado.setText(resultado.getText() + buttonText);
         String MuestraVieja = operacion.getText().toString();
@@ -207,6 +211,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     //Coloca en pantalla el último número ingresado dividido 100
     public void porcentajeNumero(String muestra){
+        audio.emitirAudio("%");
         String opActual = operacion.getText().toString().substring(0, posActual);
         Integer ultimaPos=0, numeroInt = 0, posNumero;
         Float charCode, numeroFloat;
@@ -245,18 +250,22 @@ public class CalculadoraCientifica extends AppCompatActivity {
                     posActual++;
                     operacion.setSelection(posActual);
                 }
+                audio.emitirAudio("derecha");
                 break;
             case R.id.btnIzquierda:
                 if(posActual-1 >= 0){
                     posActual--;
                     operacion.setSelection(posActual);
                 }
+
+                audio.emitirAudio("izquierda");
                 break;
         }
     }
 
     //Borra un dígito a la izquierda de la posición actual del cursor.
     public void borrarDigito(View view){
+        audio.emitirAudio("borrar");
         String opActual = operacion.getText().toString();
         if(opActual.length() > 0 && posActual > 0){
             int posFuncion = contieneOperadores(opActual);
@@ -287,6 +296,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     //Borra toda la operación en pantalla y resetea la calculadora en 0.
     public void eliminarOperacion(View view){
+        audio.emitirAudio("borrar todo");
         operacion.setText("");
         resultado.setText("0");
         resultado.setAlpha((float) 0.5);

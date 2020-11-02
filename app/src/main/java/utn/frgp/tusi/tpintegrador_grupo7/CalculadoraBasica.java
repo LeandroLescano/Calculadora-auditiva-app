@@ -8,7 +8,10 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 
+import android.speech.tts.TextToSpeech;
+import android.util.Log;
 import android.view.View;
 
 import android.view.Menu;
@@ -18,6 +21,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 public class CalculadoraBasica extends AppCompatActivity {
 
@@ -29,6 +33,8 @@ public class CalculadoraBasica extends AppCompatActivity {
     private String buttonText = "";
     private String signo = "";
     private Integer posActual;
+    private TextToSpeech mTTS;
+    private AyudaAuditiva audio;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +63,7 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         //Consultar configuración para cambiar aspecto.
         //formatearAspecto();
+        audio = new AyudaAuditiva(this);
     }
 
     public void ingresarDigito(View view){
@@ -64,6 +71,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         buttonText = digit.getText().toString();
         posActual = operacion.getSelectionEnd();
         MuestraVieja = operacion.getText().toString();
+        audio.emitirAudio(buttonText);
         if(!ObtenerOperador()){
             operacion.setText(MuestraVieja.substring(0,posActual).concat(buttonText.concat(MuestraVieja.substring(posActual))));
             Numero = Numero + buttonText;
@@ -79,12 +87,14 @@ public class CalculadoraBasica extends AppCompatActivity {
         if(opActual.length() > 0 && posActual > 0){
             operacion.setText(opActual.substring(0, posActual-1).concat(opActual.substring(posActual)));
             posActual--;
+            operacion.setSelection(posActual);
         }
-        operacion.setSelection(posActual);
+        audio.emitirAudio("borrar");
     }
 
     //Coloca en pantalla el último número ingresado dividido 100
     public void porcentajeNumero(View view){
+        audio.emitirAudio("%");
         String muestra = operacion.getText().toString();
         String opActual = operacion.getText().toString().substring(0, posActual);
         Integer ultimaPos=0, numeroInt = 0, posNumero;
@@ -123,12 +133,14 @@ public class CalculadoraBasica extends AppCompatActivity {
                     posActual++;
                     operacion.setSelection(posActual);
                 }
+                audio.emitirAudio("derecha");
                 break;
             case R.id.btnIzquierda:
                 if(posActual-1 >= 0){
                     posActual--;
                     operacion.setSelection(posActual);
                 }
+                audio.emitirAudio("izquierda");
                 break;
         }
     }
@@ -139,6 +151,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         resultado.setAlpha((float) 0.5);
         cuenta = 0f;
         Numero = "";
+        audio.emitirAudio("Borrar todo");
     }
 
     public void calcularOperacion(View view){
@@ -245,5 +258,15 @@ public class CalculadoraBasica extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onDestroy(){
+        if(mTTS != null){
+            mTTS.stop();
+            mTTS.shutdown();
+        }
+
+        super.onDestroy();
     }
 }
