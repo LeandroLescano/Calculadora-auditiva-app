@@ -50,6 +50,8 @@
     <string name="Guardar">Guardar</string>
     <string name="ver">VER</string>
     <string name="todo">TODO</string>
+    <string name="grabando">Grabando...</string>
+    <string name="procesando">Procesando...</string>
 
     <string-array name="Tamano">
         <item>18px</item>

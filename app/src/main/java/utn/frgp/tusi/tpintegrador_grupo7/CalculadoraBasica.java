@@ -8,6 +8,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
 
@@ -38,6 +39,8 @@ public class CalculadoraBasica extends AppCompatActivity {
     private TextToSpeech mTTS;
     private AyudaAuditiva audio;
     private ComandosVoz voz;
+    private Button alertaGrabando, alertaProcesando;
+    private ConstraintLayout fondoProcesando;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +49,9 @@ public class CalculadoraBasica extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        alertaGrabando = findViewById(R.id.alerta_grabando);
+        alertaProcesando = findViewById(R.id.alerta_procesando);
+        fondoProcesando = findViewById(R.id.background_procesando);
         operacion = findViewById(R.id.txtOperacion);
         resultado = findViewById(R.id.txtResultado);
         resultado.setAlpha((float) 0.5);
@@ -227,7 +233,7 @@ public class CalculadoraBasica extends AppCompatActivity {
     public void comandoDeVoz(View view){
         ImageView micButton = (ImageView) view;
         if(voz == null){
-            voz = new ComandosVoz(this, this, operacion);
+            voz = new ComandosVoz(this, this, operacion, alertaGrabando, alertaProcesando, fondoProcesando);
         }
         voz.startStop();
     }
