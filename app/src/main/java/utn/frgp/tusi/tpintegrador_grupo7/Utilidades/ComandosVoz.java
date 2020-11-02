@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import java.util.ArrayList;
 
+import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 
@@ -78,9 +81,12 @@ public class ComandosVoz implements RecognitionListener {
             }
             if (i == SpeechRecognizer.ERROR_NO_MATCH) {
                 Log.i("error match", "error NO MATCH");
+                audio.emitirAudio("Ingreso inentendible");
             }
-            audio.emitirAudio("Ingreso inentendible");
         }
+        grabando.setVisibility(Button.INVISIBLE);
+        fondoProcesando.setVisibility(ConstraintLayout.INVISIBLE);
+        procesando.setVisibility(Button.INVISIBLE);
     }
 
     @Override
@@ -90,7 +96,6 @@ public class ComandosVoz implements RecognitionListener {
         if(isListening){
             isListening = false;
         }
-        Log.i("Msg", "Terminó");
         ArrayList<String> matchesFound = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         boolean encontrado = false, textLetras = true;
         if (matchesFound != null) {
@@ -160,7 +165,6 @@ public class ComandosVoz implements RecognitionListener {
 
     public boolean soloLetras(String text){
         char[] chars = text.trim().toCharArray();
-
         for (char c : chars) {
             if(c >= 48 && c <= 57) {
                 return false;
