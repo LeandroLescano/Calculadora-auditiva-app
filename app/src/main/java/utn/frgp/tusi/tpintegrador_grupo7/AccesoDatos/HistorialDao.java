@@ -1,5 +1,6 @@
 package utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -17,6 +18,8 @@ public class HistorialDao {
 
     Operacion operacion;
     private ArrayList<Operacion> lista;
+    int cantidadOps;
+
 
     public ArrayList<Operacion> listarOperaciones(Context context){
         ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
@@ -37,6 +40,57 @@ public class HistorialDao {
         return lista;
     }
 
+    public int contarOperaciones(Context context){
+        ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
+        SQLiteDatabase BasedeDatos = admin.getWritableDatabase();
+        cantidadOps = 0;
+
+        Cursor ops = BasedeDatos.rawQuery("select count (id) from historial", null);
+        if(ops.moveToFirst()){
+            while(ops.moveToNext()){
+
+                cantidadOps = Integer.parseInt(ops.getString(0));
+
+            }
+        }
+        return cantidadOps;
+    }
+
+    public boolean cargarOperacion(String op, Context context) {
+
+
+        ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
+        SQLiteDatabase BaseDatos = admin.getWritableDatabase();
+        cantidadOps = contarOperaciones(context);
+
+        try {
+            ContentValues registro = new ContentValues();
+
+            if (cantidadOps>9)
+            {
+                borrarUltima(context);
+            }
+
+            registro.put("operacion", op);
+            BaseDatos.insert("historial", null, registro);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            BaseDatos.close();
+        }
+
+        return true;
+    }
+
+    public void borrarUltima(Context context){
+        ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
+        SQLiteDatabase BasedeDatos = admin.getWritableDatabase();
+        //Chequear
+        BasedeDatos.delete("historial", "id = (select MIN (id) from historial)", null);
+
+    }
 
 
 }

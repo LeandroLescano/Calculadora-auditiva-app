@@ -56,12 +56,6 @@ public class ConfiguracionDao {
 
     public boolean cargarConfiguracion(int idColor, int idTipografia, int idTamano, int idEstadoVibracion, int idEstadoSonido, Context context) {
 
-        config = new Configuracion();
-        color = new Color();
-        tipografia = new Tipografia();
-        tamano = new Tamano();
-        vibracion = new Estado();
-        sonido = new Estado();
 
             ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
             SQLiteDatabase BaseDatos = admin.getWritableDatabase();
@@ -73,7 +67,9 @@ public class ConfiguracionDao {
                 registro.put("id_tamano", idTamano);
                 registro.put("estado_vibracion", idEstadoVibracion);
                 registro.put("estado_sonido", idEstadoSonido);
-                BaseDatos.insert("configuracion", null, registro);
+                //Ver si funciona - tiene que haber config inicial ya en la BD
+                BaseDatos.update("configuracion", registro, "id=1", null);
+                //BaseDatos.insert("configuracion", null, registro);
 
             } catch (Exception e) {
                 e.printStackTrace();
