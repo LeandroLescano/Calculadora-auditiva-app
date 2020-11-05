@@ -52,4 +52,16 @@ public class Utilidades {
 
     public static final String CREAR_TABLA_HISTORIAL="CREATE TABLE " + TABLA_HISTORIAL + "(" + CAMPO_ID_OPERACION + " integer primary key autoincrement, " + CAMPO_OPERACION + " text)";
 
+    public static final String INSERTAR_TABLA_COLOR="INSERT INTO " + TABLA_COLOR + "(" + CAMPO_NOMBRE_COLOR + ") VALUES ('Rojo'), ('Azul'), ('Amarillo'), ('Blanco'), ('Negro')";
+
+    public static final String INSERTAR_TABLA_TIPOGRAFIA="INSERT INTO " + TABLA_TIPOGRAFIA + "(" + CAMPO_NOMBRE_TIPOGRAFIA + ") VALUES ('Helvetica'), ('Arial'), ('Verdana'), ('Comic Sans'), ('Roboto')";
+
+    public static final String INSERTAR_TABLA_TAMANO="INSERT INTO " + TABLA_TAMANO + "(" + CAMPO_VALOR_TAMANO + ") VALUES (16), (24), (32), (40), (48)";
+
+    public static final String INSERTAR_TABLA_ESTADO="INSERT INTO " + TABLA_ESTADO + "(" + CAMPO_DESCRIPCION_ESTADO + ") VALUES ('Siempre'), ('Solo resultados'), ('Solo errores'), ('Nunca')";
+
+    public static final String INSERTAR_TABLA_CONFIGURACION="INSERT INTO " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + ", " + CAMPO_TIPOGRAFIA_CONFIG + ", " + CAMPO_TAMANO_CONFIG + ", " + CAMPO_ESTADO_VIBRACION + ", " + CAMPO_ESTADO_SONIDO + ") VALUES (1,1,1,1,1)";
+
+    public static final String INSERTAR_TABLA_HISTORIAL="INSERT INTO " + TABLA_HISTORIAL + "(" + CAMPO_OPERACION + ") VALUES ('2+2=4'), ('5+5=10'), ('1*1=1'), ('4/2=2'), ('7^2=49')";
+
 }
