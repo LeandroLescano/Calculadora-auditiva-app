@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
 
@@ -24,6 +25,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -80,6 +82,9 @@ public class CalculadoraBasica extends AppCompatActivity {
     }
 
     public void ingresarDigito(View view){
+        if(resultado.getAlpha() == 1f){
+            resultado.setAlpha(0.5f);
+        }
         Button digit = (Button)view;
         buttonText = digit.getText().toString();
         posActual = operacion.getSelectionEnd();
@@ -93,8 +98,12 @@ public class CalculadoraBasica extends AppCompatActivity {
             posActual++;
             operacion.setSelection(posActual);
         }
+
+        Calcular();
+
     }
 
+    //Borra un solo dígito a la izquierda del cursor
     public void borrarDigito(View view){
         String opActual = operacion.getText().toString();
         if(posActual != operacion.getSelectionEnd()){
@@ -161,6 +170,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         }
     }
 
+    //Borra toda la operación
     public void eliminarOperacion(View view){
         operacion.setText("");
         resultado.setText("0");
@@ -171,10 +181,13 @@ public class CalculadoraBasica extends AppCompatActivity {
     }
 
     public void calcularOperacion(View view){
-        Calcular(Numero);
-        signo = "=";
-        Calcular(Numero);
-        Numero = "0";
+        //Calcular(Numero);
+        //signo = "=";
+        //Calcular(Numero);
+        //Numero = "0";
+        Calcular();
+        audio.emitirAudio("Resultado: " + resultado.getText() );
+        resultado.setAlpha(1f);
     }
 
     public boolean ObtenerOperador(){
@@ -197,7 +210,7 @@ public class CalculadoraBasica extends AppCompatActivity {
                     else {
                         operacion.setText(MuestraVieja + buttonText);
                         signo = buttonText;
-                        Calcular(Numero);
+                        //Calcular(Numero);
                         MuestraVieja = Numero + buttonText;
                         Numero = "";
                         Error = true;
@@ -210,7 +223,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         return  Error;
     }
 
-    public void Calcular(String Num){
+    /*public void Calcular(String Num){
         switch (signo) {
             case "+":
                 cuenta += Float.parseFloat(Num);
@@ -231,6 +244,46 @@ public class CalculadoraBasica extends AppCompatActivity {
                 resultado.setAlpha((float) 1);
                 break;
         }
+    }*/
+
+    public void Calcular(){
+        String operacionACalcular = operacion.getText().toString();
+        ArrayList<Integer> posParentesis = new ArrayList<>();
+        ArrayList<String> calculoParentesis = new ArrayList<>();
+        Boolean poseeParentesis = false;
+        char ultimoParentesis = 0;
+
+        //Detección de posición de paréntisis
+        if(operacionACalcular.contains("(") && operacionACalcular.contains(")")){
+            poseeParentesis = true;
+            for(int x =0; x<operacionACalcular.length(); x++){
+                char c = operacionACalcular.charAt(x);
+                if(c == 40 || c == 41){
+                    posParentesis.add(x);
+                    ultimoParentesis = c;
+                }
+            }
+        }
+
+        //Separación de los terminos dentro de los paréntesis
+        if(poseeParentesis){
+            int contador = 0;
+            for(int x =0; x < posParentesis.size()/2; x++){
+                calculoParentesis.add(operacionACalcular.substring(posParentesis.get(contador)+1, posParentesis.get(contador+1)));
+                contador += 2;
+            }
+        }
+
+        Log.i("terminos", calculoParentesis.toString());
+
+        //Calculo de operación
+        Float resultadoOperacion = Operacion.calcularOperacionBasica(operacionACalcular);
+        if(resultadoOperacion%1 == 0 && resultadoOperacion != -1){
+            resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
+        }else if (resultadoOperacion != -1){
+            resultado.setText(resultadoOperacion.toString());
+        }
+
     }
 
     public void comandoDeVoz(View view){
