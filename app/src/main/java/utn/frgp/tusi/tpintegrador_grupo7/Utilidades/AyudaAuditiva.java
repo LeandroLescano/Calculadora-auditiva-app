@@ -109,6 +109,9 @@ public class AyudaAuditiva {
             if(textoAudio.contains("+")){
                 textoAudio = textoAudio.replace("+", " + ");
             }
+            if(textoAudio.contains("^")){
+                textoAudio = textoAudio.replace("^", " elevado a la ");
+            }
             mTTS.speak(textoAudio, TextToSpeech.QUEUE_FLUSH, null);
         }
     }

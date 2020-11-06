@@ -7,17 +7,23 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+
 import java.util.ArrayList;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import utn.frgp.tusi.tpintegrador_grupo7.R;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 
@@ -30,12 +36,15 @@ public class ComandosVoz implements RecognitionListener {
     private AyudaAuditiva audio;
     private Button grabando, procesando;
     private ConstraintLayout fondoProcesando;
+    private ArrayList<View> botones;
+    private final Handler handler = new Handler(Looper.getMainLooper());
 
-    public ComandosVoz(Context context, Activity activity, EditText operacion, Button grabando, Button procesando, ConstraintLayout fondoProcesando){
+    public ComandosVoz(Context context, Activity activity, EditText operacion, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout){
         this.operacion = operacion;
         this.grabando = grabando;
         this.procesando = procesando;
-        this. fondoProcesando = fondoProcesando;
+        this.fondoProcesando = fondoProcesando;
+        botones = layout.getTouchables();
         audio = new AyudaAuditiva(context);
         ActivityCompat.requestPermissions(activity, new String[]{RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
         speechIntent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
@@ -55,6 +64,8 @@ public class ComandosVoz implements RecognitionListener {
     public void onBeginningOfSpeech() {
         grabando.setVisibility(Button.VISIBLE);
         Log.i("Msg", "Grabando...");
+        if(!isListening)
+            isListening = true;
     }
 
     @Override
@@ -63,13 +74,11 @@ public class ComandosVoz implements RecognitionListener {
 
     @Override
     public void onBufferReceived(byte[] bytes) {
+        Log.e("buffer", "onBufferReceived()");
     }
 
     @Override
     public void onEndOfSpeech() {
-        grabando.setVisibility(Button.INVISIBLE);
-        fondoProcesando.setVisibility(ConstraintLayout.VISIBLE);
-        procesando.setVisibility(Button.VISIBLE);
         Log.i("Msg", "Procesando...");
     }
 
@@ -83,16 +92,23 @@ public class ComandosVoz implements RecognitionListener {
                 Log.i("error match", "error NO MATCH");
                 audio.emitirAudio("Ingreso inentendible");
             }
+        }else{
+            isListening = false;
         }
         grabando.setVisibility(Button.INVISIBLE);
         fondoProcesando.setVisibility(ConstraintLayout.INVISIBLE);
         procesando.setVisibility(Button.INVISIBLE);
+        cambiarEstadoBotones(true);
     }
 
     @Override
     public void onResults(Bundle bundle) {
+        if(grabando.getVisibility() == Button.VISIBLE){
+            grabando.setVisibility(Button.INVISIBLE);
+        }
         fondoProcesando.setVisibility(ConstraintLayout.INVISIBLE);
         procesando.setVisibility(Button.INVISIBLE);
+        cambiarEstadoBotones(true);
         if(isListening){
             isListening = false;
         }
@@ -108,22 +124,26 @@ public class ComandosVoz implements RecognitionListener {
                     if(opTraducida.contains("menos")){
                         opTraducida = opTraducida.replace("menos","-");
                     }
-                    opTraducida = opTraducida.replace(" ", "").replace("--", "+")
+                    opTraducida = opTraducida.replace("--", "+")
                             .replace("+-", "-")
                             .replace("-+", "-")
                             .replace("++","+");
-                    operacion.setText(opTraducida);
                     encontrado = true;
                 }
                 if(opTraducida.contains("*")){
-                    operacion.setText(opTraducida.replace("*","x").replace(" ", ""));
+                    opTraducida = opTraducida.replace("*","x");
                     encontrado = true;
                 }
                 if(opTraducida.contains("por")){
-                    operacion.setText(opTraducida.replace("por","x").replace(" ", ""));
+                    opTraducida = opTraducida.replace("por","x");
+                    encontrado = true;
+                }
+                if(opTraducida.contains("elevado a la")){
+                    opTraducida = opTraducida.replace("elevado a la","^");
                     encontrado = true;
                 }
                 if(encontrado){
+                    operacion.setText(opTraducida.replace(" ", ""));
                     operacion.setSelection(operacion.length());
                     audio.emitirAudio("El resultado de " + operacion.getText() + " es");
                     break;
@@ -133,7 +153,7 @@ public class ComandosVoz implements RecognitionListener {
                 audio.emitirAudio("Ingreso incorrecto");
             }else if(!encontrado){
                 operacion.setText(matchesFound.get(0).replace(" ", ""));
-                operacion.setSelection(matchesFound.get(0).replace(" ", "").length());
+                operacion.setSelection(operacion.length());
                 audio.emitirAudio("El resultado de " + matchesFound.get(0) + " es");
             }
             Log.e("onResults", matchesFound.get(0));
@@ -148,18 +168,42 @@ public class ComandosVoz implements RecognitionListener {
 
     @Override
     public void onEvent(int i, Bundle bundle) {
+        Log.e("event", bundle.toString());
+    }
 
+    private void cambiarEstadoBotones(boolean estado){
+        for(View v : botones){
+            if(v.getId() != R.id.btnMic && v.getId() != R.id.txtOperacion){
+                v.setClickable(estado);
+            }
+        }
     }
 
     public void startStop() {
         if (isListening) {
-            speechRecognizer.stopListening();
-            Log.i("onClick", "stopListening");
             isListening = false;
+            grabando.setVisibility(Button.INVISIBLE);
+            fondoProcesando.setVisibility(ConstraintLayout.VISIBLE);
+            procesando.setVisibility(Button.VISIBLE);
+            speechRecognizer.stopListening();
+            handler.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if(fondoProcesando.getVisibility() == ConstraintLayout.VISIBLE){
+                        fondoProcesando.setVisibility(ConstraintLayout.INVISIBLE);
+                        procesando.setVisibility(Button.INVISIBLE);
+                        cambiarEstadoBotones(true);
+                        audio.emitirAudio("Ingreso inentendible");
+                    }
+                }
+            }, 10000);
+            Log.i("onClick", "stopListening");
+
         } else {
+            isListening = true;
+            cambiarEstadoBotones(false);
             speechRecognizer.startListening(speechIntent);
             Log.i("onClick", "startListening");
-            isListening = true;
         }
     }
 

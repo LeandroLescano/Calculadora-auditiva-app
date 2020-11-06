@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalculadoraBasica">
+    tools:context=".CalculadoraBasica"
+    android:animateLayoutChanges="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -24,7 +25,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="56dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:id="@+id/layout_basica">
 
         <TableLayout
             android:layout_width="match_parent"

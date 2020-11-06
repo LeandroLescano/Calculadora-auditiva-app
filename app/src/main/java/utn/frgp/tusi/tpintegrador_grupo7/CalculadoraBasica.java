@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.Arrays;
@@ -41,6 +42,7 @@ public class CalculadoraBasica extends AppCompatActivity {
     private ComandosVoz voz;
     private Button alertaGrabando, alertaProcesando;
     private ConstraintLayout fondoProcesando;
+    private LinearLayout layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,7 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         alertaGrabando = findViewById(R.id.alerta_grabando);
         alertaProcesando = findViewById(R.id.alerta_procesando);
+        layout = findViewById(R.id.layout_basica);
         fondoProcesando = findViewById(R.id.background_procesando);
         operacion = findViewById(R.id.txtOperacion);
         resultado = findViewById(R.id.txtResultado);
@@ -233,7 +236,7 @@ public class CalculadoraBasica extends AppCompatActivity {
     public void comandoDeVoz(View view){
         ImageView micButton = (ImageView) view;
         if(voz == null){
-            voz = new ComandosVoz(this, this, operacion, alertaGrabando, alertaProcesando, fondoProcesando);
+            voz = new ComandosVoz(this, this, operacion, alertaGrabando, alertaProcesando, fondoProcesando, layout);
         }
         voz.startStop();
     }
