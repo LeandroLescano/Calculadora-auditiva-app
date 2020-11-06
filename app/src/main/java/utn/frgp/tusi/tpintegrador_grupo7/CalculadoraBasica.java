@@ -289,7 +289,7 @@ public class CalculadoraBasica extends AppCompatActivity {
     public void comandoDeVoz(View view){
         ImageView micButton = (ImageView) view;
         if(voz == null){
-            voz = new ComandosVoz(this, this, operacion, alertaGrabando, alertaProcesando, fondoProcesando, layout);
+            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout);
         }
         voz.startStop();
     }

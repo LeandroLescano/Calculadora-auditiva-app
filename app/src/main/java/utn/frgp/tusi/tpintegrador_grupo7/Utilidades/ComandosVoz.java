@@ -17,12 +17,14 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.R;
 
 import static android.Manifest.permission.RECORD_AUDIO;
@@ -33,14 +35,16 @@ public class ComandosVoz implements RecognitionListener {
     private Intent speechIntent;
     private boolean isListening = false;
     private EditText operacion;
+    private TextView resultado;
     private AyudaAuditiva audio;
     private Button grabando, procesando;
     private ConstraintLayout fondoProcesando;
     private ArrayList<View> botones;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
-    public ComandosVoz(Context context, Activity activity, EditText operacion, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout){
+    public ComandosVoz(Context context, Activity activity, EditText operacion, TextView resultado, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout){
         this.operacion = operacion;
+        this.resultado = resultado;
         this.grabando = grabando;
         this.procesando = procesando;
         this.fondoProcesando = fondoProcesando;
@@ -145,7 +149,6 @@ public class ComandosVoz implements RecognitionListener {
                 if(encontrado){
                     operacion.setText(opTraducida.replace(" ", ""));
                     operacion.setSelection(operacion.length());
-                    audio.emitirAudio("El resultado de " + operacion.getText() + " es");
                     break;
                 }
             }
@@ -154,8 +157,15 @@ public class ComandosVoz implements RecognitionListener {
             }else if(!encontrado){
                 operacion.setText(matchesFound.get(0).replace(" ", ""));
                 operacion.setSelection(operacion.length());
-                audio.emitirAudio("El resultado de " + matchesFound.get(0) + " es");
             }
+
+            Float resultadoOperacion = Operacion.calcularOperacionBasica(operacion.getText().toString());
+            if(resultadoOperacion%1 == 0 && resultadoOperacion != -1){
+                resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
+            }else if (resultadoOperacion != -1){
+                resultado.setText(resultadoOperacion.toString());
+            }
+            audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
             Log.e("onResults", matchesFound.get(0));
         }
         Log.e("onResults", String.valueOf(bundle));
