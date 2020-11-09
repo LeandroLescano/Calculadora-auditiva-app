@@ -38,7 +38,7 @@ public class Utilidades {
     public static final String CAMPO_ESTADO_VIBRACION="estado_vibracion";
     public static final String CAMPO_ESTADO_SONIDO="estado_sonido";
 
-    public static final String CREAR_TABLA_CONFIG="CREATE TABLE " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + " integer, " + CAMPO_TIPOGRAFIA_CONFIG + " integer, "+ CAMPO_TAMANO_CONFIG + " integer, " + CAMPO_ESTADO_VIBRACION + " integer, " + CAMPO_ESTADO_SONIDO + "integer, " +
+    public static final String CREAR_TABLA_CONFIG="CREATE TABLE " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + " integer, " + CAMPO_TIPOGRAFIA_CONFIG + " integer, "+ CAMPO_TAMANO_CONFIG + " integer, " + CAMPO_ESTADO_VIBRACION + " integer, " + CAMPO_ESTADO_SONIDO + " integer, " +
             "FOREIGN KEY ("+CAMPO_COLOR_CONFIG+") REFERENCES "+ TABLA_COLOR +"("+CAMPO_ID_COLOR+"), " +
             "FOREIGN KEY ("+CAMPO_TIPOGRAFIA_CONFIG+") REFERENCES "+ TABLA_TIPOGRAFIA +"("+CAMPO_ID_TIPOGRAFIA+"), " +
             "FOREIGN KEY ("+CAMPO_TAMANO_CONFIG+") REFERENCES "+ TABLA_TAMANO +"("+CAMPO_ID_TAMANO+"), " +

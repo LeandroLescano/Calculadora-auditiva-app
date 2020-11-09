@@ -6,11 +6,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Adapter.OperacionAdapter;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 
@@ -19,13 +22,16 @@ public class HistorialOperaciones extends AppCompatActivity {
     private ArrayList<Operacion> operaciones;
     private OperacionAdapter adapter;
     private GridView grid;
+    private HistorialDao hist;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historial);
         operaciones = new ArrayList<Operacion>();
-        operaciones.add(new Operacion(1, "5+5=10"));
+        hist = new HistorialDao();
+        operaciones = hist.listarOperaciones(this);
+        //operaciones.add(new Operacion(1, "5+5=10"));
         adapter = new OperacionAdapter(this, operaciones);
         grid = (GridView) findViewById(R.id.gv_operaciones);
         grid.setAdapter(adapter);

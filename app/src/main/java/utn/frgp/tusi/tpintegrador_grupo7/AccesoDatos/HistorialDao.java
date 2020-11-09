@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -19,6 +20,7 @@ public class HistorialDao {
     Operacion operacion;
     private ArrayList<Operacion> lista;
     int cantidadOps;
+
 
 
     public ArrayList<Operacion> listarOperaciones(Context context){
