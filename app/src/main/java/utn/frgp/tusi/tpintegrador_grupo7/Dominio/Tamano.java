@@ -28,4 +28,9 @@ public class Tamano {
     public void setTamano(Integer tamano) {
         this.tamano = tamano;
     }
+
+    @Override
+    public String toString() {
+        return getTamano().toString();
+    }
 }

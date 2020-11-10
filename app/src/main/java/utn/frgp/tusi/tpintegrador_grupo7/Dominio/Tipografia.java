@@ -28,4 +28,9 @@ public class Tipografia {
     public void setTipografia(String tipografia) {
         this.tipografia = tipografia;
     }
+
+    @Override
+    public String toString() {
+        return getTipografia();
+    }
 }

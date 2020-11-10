@@ -31,8 +31,15 @@ public class HistorialDao {
 
         Cursor ops = BasedeDatos.rawQuery("select id, operacion from historial", null);
         if(ops.moveToFirst()){
+
+            operacion.setId(Integer.parseInt(ops.getString(0)));
+            operacion.setOperacion(ops.getString(1));
+            lista.add(operacion);
+
+
             while(ops.moveToNext()){
 
+                operacion = new Operacion();
                 operacion.setId(Integer.parseInt(ops.getString(0)));
                 operacion.setOperacion(ops.getString(1));
                 lista.add(operacion);

@@ -7,25 +7,57 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.util.ArrayList;
+
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Color;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Estado;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tamano;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
+
 public class ConfiguracionActivity extends AppCompatActivity {
 
     private Spinner tamano, tipografia, color, botones, vibracion, sonido;
+    private Toast t;
+    private ConfiguracionDao config;
+    private ArrayList<Tamano> listTam;
+    private ArrayList<Tipografia> listTip;
+    private ArrayList<Color> listCol;
+    private ArrayList<Estado> listEst;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_config);
 
-        ArrayAdapter adapterTamano = ArrayAdapter.createFromResource(this, R.array.Tamano, R.layout.spinner_item);
-        ArrayAdapter adapterTipo = ArrayAdapter.createFromResource(this, R.array.Tipografia, R.layout.spinner_item);
-        ArrayAdapter adapterColor = ArrayAdapter.createFromResource(this, R.array.Color, R.layout.spinner_item);
+        config = new ConfiguracionDao();
+        listTam = new ArrayList<Tamano>();
+        listTip = new ArrayList<Tipografia>();
+        listCol = new ArrayList<Color>();
+        listEst = new ArrayList<Estado>();
+
+        listTam = config.listarTamanos(this);
+        listTip = config.listarTipografias(this);
+        listCol = config.listarColores(this);
+        listEst = config.listarEstados(this);
+
+        ArrayAdapter<Tamano> adapterTamano = new ArrayAdapter<Tamano>(this, android.R.layout.simple_spinner_dropdown_item, listTam);
+        ArrayAdapter<Tipografia> adapterTipo = new ArrayAdapter<Tipografia>(this, android.R.layout.simple_spinner_dropdown_item, listTip);
+        ArrayAdapter<Color> adapterColor = new ArrayAdapter<Color>(this, android.R.layout.simple_spinner_dropdown_item, listCol);
+        ArrayAdapter<Estado> adapterVibracion = new ArrayAdapter<Estado>(this, android.R.layout.simple_spinner_dropdown_item, listEst);
+        ArrayAdapter<Estado> adapterSonido = new ArrayAdapter<Estado>(this, android.R.layout.simple_spinner_dropdown_item, listEst);
+
+        //?
         ArrayAdapter adapterBotones = ArrayAdapter.createFromResource(this, R.array.Botones, R.layout.spinner_item);
-        ArrayAdapter adapterVibracion = ArrayAdapter.createFromResource(this, R.array.Vibracion, R.layout.spinner_item);
-        ArrayAdapter adapterSonido = ArrayAdapter.createFromResource(this, R.array.Sonido, R.layout.spinner_item);
+
+
         tamano = findViewById(R.id.cbTamano);
         tipografia = findViewById(R.id.cbTipografia);
         color = findViewById(R.id.cbColor);
@@ -90,5 +122,13 @@ public class ConfiguracionActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public boolean guardarConfig (View view)
+    {
+        config = new ConfiguracionDao();
+        //if (config.cargarConfiguracion(color.getSelectedItem(), tipografia, tamano, vibracion, sonido, this ))
+
+        return true;
     }
 }
