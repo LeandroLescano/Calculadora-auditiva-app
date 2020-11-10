@@ -2,6 +2,7 @@ package utn.frgp.tusi.tpintegrador_grupo7.Dominio;
 
 import android.util.Log;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 public class Operacion {
@@ -44,6 +45,13 @@ public class Operacion {
             Float f = Float.parseFloat(split[split.length-1]);
             //Calculo las multiplicaciones y divisiones
             for(int x=0; x < split.length; x++){
+                try{
+                    if(Float.parseFloat(split[x])%1 == 0){
+                        split[x] = String.valueOf(Math.round(Float.parseFloat(split[x])));
+                    }
+                }catch(Exception e){
+
+                }
                 String parcial;
                 switch (split[x]){
                     case "x":
@@ -60,7 +68,12 @@ public class Operacion {
                                 x+=2;
                                 pos+=2;
                             }
-                            sumaResta = sumaResta.concat(parcial);
+                            if(parcial.contains("E")){
+                                String parcialExponencial = new BigDecimal(parcial).toPlainString();
+                                sumaResta = sumaResta.concat(parcialExponencial);
+                            }else{
+                                sumaResta = sumaResta.concat(parcial);
+                            }
                         }
                         break;
                     case "/":
@@ -77,7 +90,12 @@ public class Operacion {
                                 x+=2;
                                 pos+=2;
                             }
-                            sumaResta = sumaResta.concat(parcial);
+                            if(parcial.contains("E")){
+                                String parcialExponencial = new BigDecimal(parcial).toPlainString();
+                                sumaResta = sumaResta.concat(parcialExponencial);
+                            }else{
+                                sumaResta = sumaResta.concat(parcial);
+                            }
                         }
                         break;
                     default:
@@ -118,6 +136,7 @@ public class Operacion {
                 }
             }
         }catch(Exception e){
+            e.printStackTrace();
             resultadoParcial = -1f; //Operación incompleta
         }
 
@@ -136,7 +155,12 @@ public class Operacion {
                 x++;
             }else if(split[x].contains("^")){
                 double exp = Math.pow(Double.parseDouble(split[x-1]),Double.parseDouble(split[x+1]));
-                opLocal = opLocal.replace(split[x-1] + "^" + split[x+1], Double.toString(exp));
+                if(String.valueOf(exp).contains("E")){
+                    String expExponencial = new BigDecimal(exp).toPlainString();
+                    opLocal = opLocal.replace(split[x-1] + "^" + split[x+1], expExponencial);
+                }else{
+                    opLocal = opLocal.replace(split[x-1] + "^" + split[x+1], Double.toString(exp));
+                }
                 x++;
             }else if(split[x].contains("√")){
                 double raiz = Math.sqrt(Double.parseDouble(split[x+1]));

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.util.Arrays;
 
 import androidx.annotation.RequiresApi;
@@ -308,7 +309,11 @@ public class CalculadoraCientifica extends AppCompatActivity {
     public void calcularOperacion(View view){
         Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
         if(resultadoOp%1 == 0 && resultadoOp != -1){
-            resultado.setText(String.valueOf(Math.round(resultadoOp)));
+            if(resultadoOp.toString().contains("E")){
+                resultado.setText(new BigDecimal(resultadoOp).toPlainString());
+            }else{
+                resultado.setText(String.valueOf(Math.round(resultadoOp)));
+            }
         }else if (resultadoOp != -1){
             resultado.setText(resultadoOp.toString());
         }
