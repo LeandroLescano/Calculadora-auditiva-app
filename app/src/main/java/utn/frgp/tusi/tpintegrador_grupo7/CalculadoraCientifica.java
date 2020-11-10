@@ -24,6 +24,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 
 public class CalculadoraCientifica extends AppCompatActivity {
@@ -303,12 +304,14 @@ public class CalculadoraCientifica extends AppCompatActivity {
     }
 
     //Realiza el cálculo de la operación.
+    @SuppressLint("SetTextI18n")
     public void calcularOperacion(View view){
-        //Analizar que botón es:
-        //IngresarDigito(view);
-        //borrarDigito();
-        //eliminarOperacion();
-        //Realizar calculo
+        Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
+        if(resultadoOp%1 == 0 && resultadoOp != -1){
+            resultado.setText(String.valueOf(Math.round(resultadoOp)));
+        }else if (resultadoOp != -1){
+            resultado.setText(resultadoOp.toString());
+        }
     }
 
     //Configura la calculadora visualmente.
