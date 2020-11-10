@@ -114,6 +114,10 @@ public class CalculadoraBasica extends AppCompatActivity {
             posActual--;
             operacion.setSelection(posActual);
         }
+        if(operacion.getText().length() <= 0){
+            resultado.setText("0");
+        }
+        Calcular();
         audio.emitirAudio("borrar");
     }
 
@@ -146,6 +150,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         }catch (NumberFormatException e){
 
         }
+        Calcular();
     }
 
     //Mueve el cursor hacia la izquierda o derecha.

@@ -76,7 +76,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
         String buttonText = digit.getText().toString();
         audio.emitirAudio(buttonText);
         posActual = operacion.getSelectionEnd();
-        //resultado.setText(resultado.getText() + buttonText);
+        if(resultado.getAlpha() == 1f){
+            resultado.setAlpha(0.5f);
+        }
         String MuestraVieja = operacion.getText().toString();
         String NumeroViejo = Numero;
         switch (view.getId())
@@ -209,6 +211,8 @@ public class CalculadoraCientifica extends AppCompatActivity {
             posActual++;
             operacion.setSelection(posActual);
         }
+
+        calcular();
     }
 
     //Coloca en pantalla el último número ingresado dividido 100
@@ -239,7 +243,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         }catch (NumberFormatException e){
 
         }
-
+        calcular();
     }
 
     //Mueve el cursor hacia la izquierda o derecha.
@@ -284,6 +288,10 @@ public class CalculadoraCientifica extends AppCompatActivity {
             }
             operacion.setSelection(posActual);
         }
+        if(operacion.getText().length() <= 0){
+            resultado.setText("0");
+        }
+        calcular();
     }
 
     //Chequea si la operacion contiene funciones de tipo trigonométricas y logaritmicas.
@@ -307,6 +315,12 @@ public class CalculadoraCientifica extends AppCompatActivity {
     //Realiza el cálculo de la operación.
     @SuppressLint("SetTextI18n")
     public void calcularOperacion(View view){
+        calcular();
+        audio.emitirAudio("Resultado: " + resultado.getText());
+        resultado.setAlpha(1f);
+    }
+
+    public void calcular(){
         Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
         if(resultadoOp%1 == 0 && resultadoOp != -1){
             if(resultadoOp.toString().contains("E")){

@@ -147,58 +147,80 @@ public class Operacion {
     public static String calcularOperacionCientifica(String operacion){
         String opLocal = operacion;
         String[] split = operacion.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
-
-        for(int x=0; x < split.length; x++) {
-            if(split[x].contains("ln(")){
-                double logN = Math.log(Double.parseDouble(split[x+1]));
-                opLocal = opLocal.replace("ln(" + split[x+1] + ")", Double.toString(logN));
-                x++;
-            }else if(split[x].contains("^")){
-                double exp = Math.pow(Double.parseDouble(split[x-1]),Double.parseDouble(split[x+1]));
-                if(String.valueOf(exp).contains("E")){
-                    String expExponencial = new BigDecimal(exp).toPlainString();
-                    opLocal = opLocal.replace(split[x-1] + "^" + split[x+1], expExponencial);
-                }else{
-                    opLocal = opLocal.replace(split[x-1] + "^" + split[x+1], Double.toString(exp));
-                }
-                x++;
-            }else if(split[x].contains("√")){
-                double raiz = Math.sqrt(Double.parseDouble(split[x+1]));
-                opLocal = opLocal.replace("√" + split[x+1], Double.toString(raiz));
-                x++;
-            }else if(split[x].contains("lg(")){
-                double log10 = Math.log10(Double.parseDouble(split[x+1]));
-                opLocal = opLocal.replace("lg(" + split[x+1] + ")", Double.toString(log10));
-                x++;
-            }else if(split[x].contains("arctan(")) {
-                double tanInv = Math.atan(Double.parseDouble(split[x + 1]));
-                opLocal = opLocal.replace("arctan(" + split[x + 1] + ")", Double.toString(tanInv));
-                x++;
-            }else if(split[x].contains("arcsin(")) {
-                double sinInv = Math.asin(Double.parseDouble(split[x + 1]));
-                opLocal = opLocal.replace("arcsin(" + split[x + 1] + ")", Double.toString(sinInv));
-                x++;
-            }else if(split[x].contains("arccos(")) {
-                double cosInv = Math.acos(Double.parseDouble(split[x + 1]));
-                opLocal = opLocal.replace("arccos(" + split[x + 1] + ")", Double.toString(cosInv));
-                x++;
-            }else if(split[x].contains("tan(")){
-                double tan = Math.tan(Double.parseDouble(split[x+1]));
-                opLocal = opLocal.replace("tan(" + split[x+1] + ")", Double.toString(tan));
-                x++;
-            }else if(split[x].contains("sin(")) {
-                double sin = Math.sin(Double.parseDouble(split[x + 1]));
-                opLocal = opLocal.replace("sin(" + split[x + 1] + ")", Double.toString(sin));
-                x++;
-            }else if(split[x].contains("cos(")) {
-                double cos = Math.cos(Double.parseDouble(split[x + 1]));
-                opLocal = opLocal.replace("cos(" + split[x + 1] + ")", Double.toString(cos));
-                x++;
+        String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
+        String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
+        boolean primerOperador = false, contieneOperadores = false;
+        //Si no tiene operadores, llama directamente a calcularOperacionBasica
+        for (String op : operadores) {
+            if (opLocal.contains(op)) {
+                contieneOperadores = true;
             }
         }
-        Log.e("opOriginal", operacion);
-        Log.e("opLocal", opLocal);
+        if(contieneOperadores){
+            try {
+                for (String operador : funciones) {
+                    if (split[0].contains(operador)) {
+                        primerOperador = true;
+                        break;
+                    }
+                }
+                if(!primerOperador){
+                    Float f = Float.parseFloat(split[split.length - 1]);
+                }
+                for (int x = 0; x < split.length; x++) {
+                    if (split[x].contains("ln(")) {
+                        double logN = Math.log(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("ln(" + split[x + 1] + ")", Double.toString(logN));
+                        x++;
+                    } else if (split[x].contains("^")) {
+                        double exp = Math.pow(Double.parseDouble(split[x - 1]), Double.parseDouble(split[x + 1]));
+                        if (String.valueOf(exp).contains("E")) {
+                            String expExponencial = new BigDecimal(exp).toPlainString();
+                            opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], expExponencial);
+                        } else {
+                            opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], Double.toString(exp));
+                        }
+                        x++;
+                    } else if (split[x].contains("√")) {
+                        double raiz = Math.sqrt(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("√" + split[x + 1], Double.toString(raiz));
+                        x++;
+                    } else if (split[x].contains("lg(")) {
+                        double log10 = Math.log10(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("lg(" + split[x + 1] + ")", Double.toString(log10));
+                        x++;
+                    } else if (split[x].contains("arctan(")) {
+                        double tanInv = Math.atan(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("arctan(" + split[x + 1] + ")", Double.toString(tanInv));
+                        x++;
+                    } else if (split[x].contains("arcsin(")) {
+                        double sinInv = Math.asin(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("arcsin(" + split[x + 1] + ")", Double.toString(sinInv));
+                        x++;
+                    } else if (split[x].contains("arccos(")) {
+                        double cosInv = Math.acos(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("arccos(" + split[x + 1] + ")", Double.toString(cosInv));
+                        x++;
+                    } else if (split[x].contains("tan(")) {
+                        double tan = Math.tan(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("tan(" + split[x + 1] + ")", Double.toString(tan));
+                        x++;
+                    } else if (split[x].contains("sin(")) {
+                        double sin = Math.sin(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("sin(" + split[x + 1] + ")", Double.toString(sin));
+                        x++;
+                    } else if (split[x].contains("cos(")) {
+                        double cos = Math.cos(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("cos(" + split[x + 1] + ")", Double.toString(cos));
+                        x++;
+                    }
+                }
+            }catch(Exception e){
+                e.printStackTrace();
+                opLocal = ""; //Operación incompleta
+            }
 
+        }
         return opLocal;
     }
 
