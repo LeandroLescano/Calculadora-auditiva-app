@@ -128,6 +128,10 @@ public class ComandosVoz implements RecognitionListener {
                     if(opTraducida.contains("menos")){
                         opTraducida = opTraducida.replace("menos","-");
                     }
+                    if(opTraducida.contains("más") || opTraducida.contains("mas")){
+                        opTraducida = opTraducida.replace("más","+");
+                        opTraducida = opTraducida.replace("mas","+");
+                    }
                     opTraducida = opTraducida.replace("--", "+")
                             .replace("+-", "-")
                             .replace("-+", "-")
@@ -146,6 +150,46 @@ public class ComandosVoz implements RecognitionListener {
                     opTraducida = opTraducida.replace("elevado a la","^");
                     encontrado = true;
                 }
+
+                while(opTraducida.contains("logaritmo natural")){
+                    String[] split = opTraducida.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])|(?<=[-+*/])(?=[^-+*/])");
+                    String number = "0";
+                    int posLog = -1;
+                    for(int x=0; x< split.length ;x++){
+                     if(split[x].contains("logaritmo natural")){
+                         number = split[x+1];
+                         posLog = x;
+                     }
+                    }
+                    opTraducida = opTraducida.replace(split[posLog] + split[posLog+1], "ln(" + number + ")");
+                    encontrado = true;
+                }
+                while(opTraducida.contains("logaritmo decimal")){
+                    String[] split = opTraducida.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])|(?<=[-+*/])(?=[^-+*/])");
+                    String number = "0";
+                    int posLog = -1;
+                    for(int x=0; x< split.length ;x++){
+                        if(split[x].contains("logaritmo decimal")){
+                            number = split[x+1];
+                            posLog = x;
+                        }
+                    }
+                    opTraducida = opTraducida.replace(split[posLog] + split[posLog+1], "lg(" + number + ")");
+                    encontrado = true;
+                }
+                while(opTraducida.contains("logaritmo")){
+                    String[] split = opTraducida.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])|(?<=[-+*/])(?=[^-+*/])");
+                    String number = "0";
+                    int posLog = -1;
+                    for(int x=0; x< split.length ;x++){
+                        if(split[x].contains("logaritmo")){
+                            number = split[x+1];
+                            posLog = x;
+                        }
+                    }
+                    opTraducida = opTraducida.replace(split[posLog] + split[posLog+1], "lg(" + number + ")");
+                    encontrado = true;
+                }
                 if(encontrado){
                     operacion.setText(opTraducida.replace(" ", ""));
                     operacion.setSelection(operacion.length());
@@ -159,7 +203,7 @@ public class ComandosVoz implements RecognitionListener {
                 operacion.setSelection(operacion.length());
             }
 
-            Float resultadoOperacion = Operacion.calcularOperacionBasica(operacion.getText().toString());
+            Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
             if(resultadoOperacion%1 == 0 && resultadoOperacion != -1){
                 resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
             }else if (resultadoOperacion != -1){
