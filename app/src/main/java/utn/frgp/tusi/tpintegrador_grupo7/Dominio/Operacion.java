@@ -105,7 +105,7 @@ public class Operacion {
                         break;
                 }
             }
-            Log.e("sumaResta", sumaResta);
+            //Log.e("sumaResta", sumaResta);
             String[] sumaRestaSplit = sumaResta.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
 
             //Calculo las sumas y restas
@@ -173,12 +173,25 @@ public class Operacion {
                         opLocal = opLocal.replace("ln(" + split[x + 1] + ")", Double.toString(logN));
                         x++;
                     } else if (split[x].contains("^")) {
-                        double exp = Math.pow(Double.parseDouble(split[x - 1]), Double.parseDouble(split[x + 1]));
+                        double exp;
+                        if(split[x-1].contains("-")){
+                            exp = Math.pow(Double.parseDouble(split[x - 1])*-1, Double.parseDouble(split[x + 1]));
+                        }else{
+                            exp = Math.pow(Double.parseDouble(split[x - 1]), Double.parseDouble(split[x + 1]));
+                        }
                         if (String.valueOf(exp).contains("E")) {
                             String expExponencial = new BigDecimal(exp).toPlainString();
-                            opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], expExponencial);
+                            if(split[x-1].contains("-")){
+                                opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], "-" + expExponencial);
+                            }else{
+                                opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], expExponencial);
+                            }
                         } else {
-                            opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], Double.toString(exp));
+                            if(split[x-1].contains("-")) {
+                                opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], "-" + Double.toString(exp));
+                            }else{
+                                opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], Double.toString(exp));
+                            }
                         }
                         x++;
                     } else if (split[x].contains("√")) {

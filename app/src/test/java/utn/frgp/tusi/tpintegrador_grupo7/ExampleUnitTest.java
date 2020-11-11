@@ -2,6 +2,9 @@ package utn.frgp.tusi.tpintegrador_grupo7;
 
 import org.junit.Test;
 
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
+
 import static org.junit.Assert.*;
 
 /**
@@ -11,7 +14,12 @@ import static org.junit.Assert.*;
  */
 public class ExampleUnitTest {
     @Test
-    public void addition_isCorrect() {
-        assertEquals(4, 2 + 2);
+    public void calculoCientifico() {
+        assertEquals("-258.27866",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("lg(10)/ln(4)-9^2+322-500")).toString());
+    }
+
+    @Test
+    public void comandoDeVoz(){
+        assertEquals("lg(-8)+ln(322)x6/4^-5",ComandosVoz.traducirOperacion("logaritmo de menos 8 más logaritmo natural de 322 por 6 dividido 4 elevado a la -5").replace(" ", ""));
     }
 }

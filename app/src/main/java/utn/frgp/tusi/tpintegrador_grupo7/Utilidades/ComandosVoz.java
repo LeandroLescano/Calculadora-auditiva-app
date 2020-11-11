@@ -124,52 +124,7 @@ public class ComandosVoz implements RecognitionListener {
                     textLetras = false;
                 }
                 String opTraducida = match.toLowerCase();
-
-                if(opTraducida.contains("menos")){
-                    opTraducida = opTraducida.replace("menos","-");
-                }
-                if(opTraducida.contains("más") || opTraducida.contains("mas")){
-                    opTraducida = opTraducida.replace("más","+");
-                    opTraducida = opTraducida.replace("mas","+");
-                }
-                opTraducida = opTraducida.replace("--", "+")
-                        .replace("+-", "-")
-                        .replace("-+", "-")
-                        .replace("++","+")
-                        .replace(",",".")
-                        .replace("- ", "-")
-                        .replace("+ ", "+");
-                if(opTraducida.contains("*")){
-                    opTraducida = opTraducida.replace("*","x");
-                }
-                if(opTraducida.contains("por")){
-                    opTraducida = opTraducida.replace("por","x");
-                }
-                if(opTraducida.contains("elevado a la")){
-                    opTraducida = opTraducida.replace("elevado a la","^");
-                }
-                if(opTraducida.contains("raíz cuadrada de")){
-                    opTraducida = opTraducida.replace("raíz cuadrada de","√");
-                }
-                if(opTraducida.contains("raíz de")){
-                    opTraducida = opTraducida.replace("raíz","√");
-                }
-                if(opTraducida.contains("pi")){
-                    opTraducida = opTraducida.replace("pi",String.valueOf(Math.PI).substring(0,10));
-                }
-                try {
-                    opTraducida = deteccionFuncion("logaritmo natural", "ln", opTraducida);
-                    opTraducida = deteccionFuncion("logaritmo decimal", "lg", opTraducida);
-                    opTraducida = deteccionFuncion("logaritmo", "lg", opTraducida);
-                    opTraducida = deteccionFuncion("coseno inverso", "arccos", opTraducida);
-                    opTraducida = deteccionFuncion("coseno", "cos", opTraducida);
-                    opTraducida = deteccionFuncion("tangente inversa", "arctan", opTraducida);
-                    opTraducida = deteccionFuncion("tangente", "tan", opTraducida);
-                    opTraducida = deteccionFuncion("seno inverso", "arcsin", opTraducida);
-                    opTraducida = deteccionFuncion("seno", "sin", opTraducida);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                opTraducida = traducirOperacion(opTraducida);
                 operacion.setText(opTraducida.replace(" ", ""));
                 operacion.setSelection(operacion.length());
             }
@@ -244,7 +199,59 @@ public class ComandosVoz implements RecognitionListener {
         }
     }
 
-    private String deteccionFuncion(String palabra, String operador, String opTraducida) throws Exception{
+    public static String traducirOperacion(String opTraducida){
+        if(opTraducida.contains("menos")){
+            opTraducida = opTraducida.replace("menos","-");
+        }
+        if(opTraducida.contains("más") || opTraducida.contains("mas")){
+            opTraducida = opTraducida.replace("más","+");
+            opTraducida = opTraducida.replace("mas","+");
+        }
+        opTraducida = opTraducida.replace("--", "+")
+                .replace("+-", "-")
+                .replace("-+", "-")
+                .replace("++","+")
+                .replace(",",".")
+                .replace("- ", "-")
+                .replace("+ ", "+");
+        if(opTraducida.contains("*")){
+            opTraducida = opTraducida.replace("*","x");
+        }
+        if(opTraducida.contains("por")){
+            opTraducida = opTraducida.replace("por","x");
+        }
+        if(opTraducida.contains("dividido")){
+            opTraducida = opTraducida.replace("dividido","/");
+        }
+        if(opTraducida.contains("elevado a la")){
+            opTraducida = opTraducida.replace("elevado a la","^");
+        }
+        if(opTraducida.contains("raíz cuadrada de")){
+            opTraducida = opTraducida.replace("raíz cuadrada de","√");
+        }
+        if(opTraducida.contains("raíz de")){
+            opTraducida = opTraducida.replace("raíz","√");
+        }
+        if(opTraducida.contains("pi")){
+            opTraducida = opTraducida.replace("pi",String.valueOf(Math.PI).substring(0,10));
+        }
+        try {
+            opTraducida = deteccionFuncion("logaritmo natural", "ln", opTraducida);
+            opTraducida = deteccionFuncion("logaritmo decimal", "lg", opTraducida);
+            opTraducida = deteccionFuncion("logaritmo", "lg", opTraducida);
+            opTraducida = deteccionFuncion("coseno inverso", "arccos", opTraducida);
+            opTraducida = deteccionFuncion("coseno", "cos", opTraducida);
+            opTraducida = deteccionFuncion("tangente inversa", "arctan", opTraducida);
+            opTraducida = deteccionFuncion("tangente", "tan", opTraducida);
+            opTraducida = deteccionFuncion("seno inverso", "arcsin", opTraducida);
+            opTraducida = deteccionFuncion("seno", "sin", opTraducida);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return opTraducida;
+    }
+
+    private static String deteccionFuncion(String palabra, String operador, String opTraducida) throws Exception{
         while(opTraducida.contains(palabra)){
         String[] split = opTraducida.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])|(?<=[-+x/])(?=[^-+x/])|(?<=[^-+x/])(?=[-+x/])");
             String number = "0";
