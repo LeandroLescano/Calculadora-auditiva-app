@@ -24,12 +24,18 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
 public class ConfiguracionActivity extends AppCompatActivity {
 
     private Spinner tamano, tipografia, color, botones, vibracion, sonido;
-    private Toast t;
+    private Toast toast;
     private ConfiguracionDao config;
     private ArrayList<Tamano> listTam;
     private ArrayList<Tipografia> listTip;
     private ArrayList<Color> listCol;
     private ArrayList<Estado> listEst;
+    private Color colSelec;
+    private Color colBotSelec;
+    private Tamano tamSelec;
+    private Tipografia tipSelec;
+    private Estado estVibSelec;
+    private Estado estSonSelec;
 
 
     @Override
@@ -48,14 +54,12 @@ public class ConfiguracionActivity extends AppCompatActivity {
         listCol = config.listarColores(this);
         listEst = config.listarEstados(this);
 
-        ArrayAdapter<Tamano> adapterTamano = new ArrayAdapter<Tamano>(this, android.R.layout.simple_spinner_dropdown_item, listTam);
-        ArrayAdapter<Tipografia> adapterTipo = new ArrayAdapter<Tipografia>(this, android.R.layout.simple_spinner_dropdown_item, listTip);
-        ArrayAdapter<Color> adapterColor = new ArrayAdapter<Color>(this, android.R.layout.simple_spinner_dropdown_item, listCol);
-        ArrayAdapter<Estado> adapterVibracion = new ArrayAdapter<Estado>(this, android.R.layout.simple_spinner_dropdown_item, listEst);
-        ArrayAdapter<Estado> adapterSonido = new ArrayAdapter<Estado>(this, android.R.layout.simple_spinner_dropdown_item, listEst);
-
-        //?
-        ArrayAdapter adapterBotones = ArrayAdapter.createFromResource(this, R.array.Botones, R.layout.spinner_item);
+        ArrayAdapter<Tamano> adapterTamano = new ArrayAdapter<Tamano>(this, R.layout.spinner_item, listTam);
+        ArrayAdapter<Tipografia> adapterTipo = new ArrayAdapter<Tipografia>(this, R.layout.spinner_item, listTip);
+        ArrayAdapter<Color> adapterColor = new ArrayAdapter<Color>(this, R.layout.spinner_item, listCol);
+        ArrayAdapter<Color> adapterBotones = new ArrayAdapter<Color>(this, R.layout.spinner_item, listCol);
+        ArrayAdapter<Estado> adapterVibracion = new ArrayAdapter<Estado>(this, R.layout.spinner_item, listEst);
+        ArrayAdapter<Estado> adapterSonido = new ArrayAdapter<Estado>(this, R.layout.spinner_item, listEst);
 
 
         tamano = findViewById(R.id.cbTamano);
@@ -124,11 +128,39 @@ public class ConfiguracionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public boolean guardarConfig (View view)
+    public void guardarConfig (View view)
     {
         config = new ConfiguracionDao();
-        //if (config.cargarConfiguracion(color.getSelectedItem(), tipografia, tamano, vibracion, sonido, this ))
+        tipSelec = new Tipografia();
+        tamSelec = new Tamano();
+        colBotSelec = new Color();
+        colSelec = new Color();
+        estVibSelec = new Estado();
+        estSonSelec = new Estado();
 
-        return true;
+
+        //    private Spinner vibracion, sonido;
+
+        tipSelec = (Tipografia) tipografia.getSelectedItem();
+        tamSelec = (Tamano) tamano.getSelectedItem();
+        colBotSelec = (Color) botones.getSelectedItem();
+        colSelec = (Color) color.getSelectedItem();
+        estVibSelec = (Estado) vibracion.getSelectedItem();
+        estSonSelec = (Estado) sonido.getSelectedItem();
+
+        if (config.cargarConfiguracion(colSelec.getId(), colBotSelec.getId(), tipSelec.getId(), tamSelec.getId(), estVibSelec.getId(), estSonSelec.getId(), this))
+        {
+
+            toast = Toast.makeText(this, "Configuración modificada exitosamente", Toast.LENGTH_SHORT);
+
+        }
+        else
+        {
+
+            toast = Toast.makeText(this, "Error en el cambio de configuración", Toast.LENGTH_SHORT);
+
+        }
+
+         toast.show();
     }
 }

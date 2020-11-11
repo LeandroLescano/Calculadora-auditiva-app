@@ -3,6 +3,7 @@ package utn.frgp.tusi.tpintegrador_grupo7.Dominio;
 public class Configuracion {
 
     private Color color;
+    private Color colorBoton;
     private Tipografia tipografia;
     private Tamano tamano;
     private Estado vibracion;
@@ -11,8 +12,9 @@ public class Configuracion {
     public Configuracion() {
     }
 
-    public Configuracion(Color color, Tipografia tipografia, Tamano tamano, Estado vibracion, Estado sonido) {
+    public Configuracion(Color color, Color colorBoton, Tipografia tipografia, Tamano tamano, Estado vibracion, Estado sonido) {
         this.color = color;
+        this.colorBoton = colorBoton;
         this.tipografia = tipografia;
         this.tamano = tamano;
         this.vibracion = vibracion;
@@ -57,5 +59,13 @@ public class Configuracion {
 
     public void setSonido(Estado sonido) {
         this.sonido = sonido;
+    }
+
+    public Color getColorBoton() {
+        return colorBoton;
+    }
+
+    public void setColorBoton(Color colorBoton) {
+        this.colorBoton = colorBoton;
     }
 }

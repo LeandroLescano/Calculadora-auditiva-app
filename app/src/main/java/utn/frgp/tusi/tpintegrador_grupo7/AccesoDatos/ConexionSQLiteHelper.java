@@ -15,6 +15,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db_calculadora) {
+
         db_calculadora.execSQL(Utilidades.CREAR_TABLA_COLOR);
         db_calculadora.execSQL(Utilidades.CREAR_TABLA_ESTADO);
         db_calculadora.execSQL(Utilidades.CREAR_TABLA_TAMANO);

@@ -17,7 +17,7 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
 public class ConfiguracionDao {
 
     Configuracion config;
-    Color color;
+    Color color, colorBoton;
     Tipografia tipografia;
     Tamano tamano;
     Estado estado, vibracion, sonido;
@@ -34,12 +34,13 @@ public class ConfiguracionDao {
         SQLiteDatabase BasedeDatos = admin.getWritableDatabase();
 
         color = new Color();
+        colorBoton = new Color();
         tipografia = new Tipografia();
         tamano = new Tamano();
         vibracion = new Estado();
         sonido = new Estado();
 
-        Cursor configs = BasedeDatos.rawQuery("select id_color, id_tipografia, id_tamano, estado_vibracion, estado_sonido from configuracion", null);
+        Cursor configs = BasedeDatos.rawQuery("select id_color, id_tipografia, id_tamano, estado_vibracion, estado_sonido, id_colorBoton from configuracion", null);
         if(configs.moveToFirst()){
 
             color = traerColor(Integer.parseInt(configs.getString(0)), context);
@@ -47,9 +48,11 @@ public class ConfiguracionDao {
             tamano = traerTamano(Integer.parseInt(configs.getString(2)), context);
             vibracion = traerEstado(Integer.parseInt(configs.getString(3)), context);
             sonido = traerEstado(Integer.parseInt(configs.getString(4)), context);
+            colorBoton = traerColor(Integer.parseInt(configs.getString(5)), context);
 
             config = new Configuracion();
             config.setColor(color);
+            config.setColorBoton(colorBoton);
             config.setTipografia(tipografia);
             config.setTamano(tamano);
             config.setVibracion(vibracion);
@@ -63,8 +66,10 @@ public class ConfiguracionDao {
                 tamano = traerTamano(Integer.parseInt(configs.getString(2)), context);
                 vibracion = traerEstado(Integer.parseInt(configs.getString(3)), context);
                 sonido = traerEstado(Integer.parseInt(configs.getString(4)), context);
+                colorBoton = traerColor(Integer.parseInt(configs.getString(5)), context);
 
                 config.setColor(color);
+                config.setColorBoton(colorBoton);
                 config.setTipografia(tipografia);
                 config.setTamano(tamano);
                 config.setVibracion(vibracion);
@@ -76,7 +81,7 @@ public class ConfiguracionDao {
     }
 
 
-    public boolean cargarConfiguracion(int idColor, int idTipografia, int idTamano, int idEstadoVibracion, int idEstadoSonido, Context context) {
+    public boolean cargarConfiguracion(int idColor, int idColorBoton, int idTipografia, int idTamano, int idEstadoVibracion, int idEstadoSonido, Context context) {
 
 
             ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
@@ -85,12 +90,13 @@ public class ConfiguracionDao {
                 ContentValues registro = new ContentValues();
 
                 registro.put("id_color", idColor);
+                registro.put("id_colorBoton", idColorBoton);
                 registro.put("id_tipografia", idTipografia);
                 registro.put("id_tamano", idTamano);
                 registro.put("estado_vibracion", idEstadoVibracion);
                 registro.put("estado_sonido", idEstadoSonido);
                 //Ver si funciona - tiene que haber config inicial ya en la BD
-                BaseDatos.update("configuracion", registro, "id=1", null);
+                BaseDatos.update("configuracion", registro, null, null);
                 //BaseDatos.insert("configuracion", null, registro);
 
             } catch (Exception e) {
