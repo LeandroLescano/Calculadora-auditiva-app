@@ -17,17 +17,16 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
 
 public class ConfiguracionDao {
 
-    Configuracion config;
-    Color color, colorBoton;
-    Tipografia tipografia;
-    Tamano tamano;
-    Estado estado, vibracion, sonido;
-
+    private Configuracion config;
+    private Color color, colorBoton;
+    private Tipografia tipografia;
+    private Tamano tamano;
+    private Estado estado, vibracion, sonido;
     private ArrayList<Color> listCol;
     private ArrayList<Tamano> listTam;
     private ArrayList<Tipografia> listTip;
     private ArrayList<Estado> listEst;
-
+    private int Rojo, Azul, Amarillo, Blanco, Negro;
 
 
     public Configuracion traerConfiguracion(Context context){
@@ -320,6 +319,74 @@ public class ConfiguracionDao {
             }
         }
         return listEst;
+    }
+
+    public int setearColorTexto (Context context)
+    {
+        Rojo = 0xFFFF0000;
+        Azul = 0xFF0000FF;
+        Amarillo = 0xFFFFFF00;
+        Blanco = 0xFFFFFFFF;
+        Negro = 0xFF000000;
+
+        config = traerConfiguracion(context);
+
+        if (config.getColor().getColor().equals("Rojo"))
+        {
+            return Rojo;
+        }
+        if (config.getColor().getColor().equals("Azul"))
+        {
+            return Azul;
+        }
+        if (config.getColor().getColor().equals("Amarillo"))
+        {
+            return Amarillo;
+        }
+        if (config.getColor().getColor().equals("Blanco"))
+        {
+            return Blanco;
+        }
+        if (config.getColor().getColor().equals("Negro"))
+        {
+            return Negro;
+        }
+
+        return 0;
+    }
+
+    public int setearColorBoton (Context context)
+    {
+        Rojo = 0xFFFF0000;
+        Azul = 0xFF0000FF;
+        Amarillo = 0xFFFFFF00;
+        Blanco = 0xFFFFFFFF;
+        Negro = 0xFF000000;
+
+        config = traerConfiguracion(context);
+
+        if (config.getColorBoton().getColor().equals("Rojo"))
+        {
+            return Rojo;
+        }
+        if (config.getColorBoton().getColor().equals("Azul"))
+        {
+            return Azul;
+        }
+        if (config.getColorBoton().getColor().equals("Amarillo"))
+        {
+            return Amarillo;
+        }
+        if (config.getColorBoton().getColor().equals("Blanco"))
+        {
+            return Blanco;
+        }
+        if (config.getColorBoton().getColor().equals("Negro"))
+        {
+            return Negro;
+        }
+
+        return 0;
     }
 
 }

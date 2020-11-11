@@ -1,11 +1,13 @@
 package utn.frgp.tusi.tpintegrador_grupo7;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -24,6 +26,7 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
 public class ConfiguracionActivity extends AppCompatActivity {
 
     private Spinner tamano, tipografia, color, botones, vibracion, sonido;
+    private Button botonGuardar;
     private Toast toast;
     private ConfiguracionDao config;
     private ArrayList<Tamano> listTam;
@@ -37,6 +40,8 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private Tipografia tipSelec;
     private Estado estVibSelec;
     private Estado estSonSelec;
+
+
 
 
     @Override
@@ -66,7 +71,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         ArrayAdapter<Estado> adapterVibracion = new ArrayAdapter<Estado>(this, R.layout.spinner_item, listEst);
         ArrayAdapter<Estado> adapterSonido = new ArrayAdapter<Estado>(this, R.layout.spinner_item, listEst);
 
-
+        botonGuardar = findViewById(R.id.btnGuardar);
         tamano = findViewById(R.id.cbTamano);
         tipografia = findViewById(R.id.cbTipografia);
         color = findViewById(R.id.cbColor);
@@ -92,6 +97,13 @@ public class ConfiguracionActivity extends AppCompatActivity {
         botones.setSelection(cfgActual.getColorBoton().getId()-1);
         vibracion.setSelection(cfgActual.getVibracion().getId()-1);
         sonido.setSelection(cfgActual.getSonido().getId()-1);
+
+
+        botonGuardar.setBackgroundColor(config.setearColorBoton(this));
+        botonGuardar.setTextColor(config.setearColorTexto(this));
+
+        //Typeface typeface = getResources().getFont(R.font.myfont);
+        botonGuardar.setTypeface(R.font.Helvetica);
 
         //tamano.setSelection(adapterTamano.getPosition(cfgActual.getTamano()));
         //tipografia.setSelection(adapterTipo.getPosition(cfgActual.getTipografia()));
@@ -170,7 +182,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         if (colSelec.getId() == colBotSelec.getId())
         {
             toast = Toast.makeText(this, "El color del texto y del botón deben ser distintos", Toast.LENGTH_SHORT);
-        }
+         }
 
         else
 
