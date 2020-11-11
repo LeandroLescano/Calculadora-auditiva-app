@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -43,21 +44,27 @@ public class ConfiguracionDao {
         Cursor configs = BasedeDatos.rawQuery("select id_color, id_tipografia, id_tamano, estado_vibracion, estado_sonido, id_colorBoton from configuracion", null);
         if(configs.moveToFirst()){
 
-            color = traerColor(Integer.parseInt(configs.getString(0)), context);
-            tipografia = traerTipografia(Integer.parseInt(configs.getString(1)), context);
-            tamano = traerTamano(Integer.parseInt(configs.getString(2)), context);
-            vibracion = traerEstado(Integer.parseInt(configs.getString(3)), context);
-            sonido = traerEstado(Integer.parseInt(configs.getString(4)), context);
-            colorBoton = traerColor(Integer.parseInt(configs.getString(5)), context);
-
             config = new Configuracion();
+
+            color = traerColor(Integer.parseInt(configs.getString(0)), context);
             config.setColor(color);
-            config.setColorBoton(colorBoton);
+
+            tipografia = traerTipografia(Integer.parseInt(configs.getString(1)), context);
             config.setTipografia(tipografia);
+
+            tamano = traerTamano(Integer.parseInt(configs.getString(2)), context);
             config.setTamano(tamano);
+
+            vibracion = traerEstado(Integer.parseInt(configs.getString(3)), context);
             config.setVibracion(vibracion);
+
+            sonido = traerEstado(Integer.parseInt(configs.getString(4)), context);
             config.setSonido(sonido);
 
+            colorBoton = traerColor(Integer.parseInt(configs.getString(5)), context);
+            config.setColorBoton(colorBoton);
+
+            /*
             while(configs.moveToNext()){
 
                 config = new Configuracion();
@@ -76,7 +83,10 @@ public class ConfiguracionDao {
                 config.setSonido(sonido);
 
             }
+            */
+
         }
+
         return config;
     }
 

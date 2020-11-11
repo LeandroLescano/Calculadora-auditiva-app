@@ -30,6 +30,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private ArrayList<Tipografia> listTip;
     private ArrayList<Color> listCol;
     private ArrayList<Estado> listEst;
+    private Configuracion cfgActual;
     private Color colSelec;
     private Color colBotSelec;
     private Tamano tamSelec;
@@ -44,6 +45,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_config);
 
         config = new ConfiguracionDao();
+        cfgActual = new Configuracion();
         listTam = new ArrayList<Tamano>();
         listTip = new ArrayList<Tipografia>();
         listCol = new ArrayList<Color>();
@@ -53,6 +55,9 @@ public class ConfiguracionActivity extends AppCompatActivity {
         listTip = config.listarTipografias(this);
         listCol = config.listarColores(this);
         listEst = config.listarEstados(this);
+
+        cfgActual = config.traerConfiguracion(this);
+
 
         ArrayAdapter<Tamano> adapterTamano = new ArrayAdapter<Tamano>(this, R.layout.spinner_item, listTam);
         ArrayAdapter<Tipografia> adapterTipo = new ArrayAdapter<Tipografia>(this, R.layout.spinner_item, listTip);
@@ -80,6 +85,20 @@ public class ConfiguracionActivity extends AppCompatActivity {
         botones.setAdapter(adapterBotones);
         vibracion.setAdapter(adapterVibracion);
         sonido.setAdapter(adapterSonido);
+
+        tamano.setSelection(cfgActual.getTamano().getId()-1);
+        tipografia.setSelection(cfgActual.getTipografia().getId()-1);
+        color.setSelection(cfgActual.getColor().getId()-1);
+        botones.setSelection(cfgActual.getColorBoton().getId()-1);
+        vibracion.setSelection(cfgActual.getVibracion().getId()-1);
+        sonido.setSelection(cfgActual.getSonido().getId()-1);
+
+        //tamano.setSelection(adapterTamano.getPosition(cfgActual.getTamano()));
+        //tipografia.setSelection(adapterTipo.getPosition(cfgActual.getTipografia()));
+        //color.setSelection(adapterColor.getPosition(cfgActual.getColor()));
+        //botones.setSelection(adapterBotones.getPosition(cfgActual.getColorBoton()));
+        //vibracion.setSelection(adapterVibracion.getPosition(cfgActual.getVibracion()));
+        //sonido.setSelection(adapterSonido.getPosition(cfgActual.getSonido()));
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -148,18 +167,28 @@ public class ConfiguracionActivity extends AppCompatActivity {
         estVibSelec = (Estado) vibracion.getSelectedItem();
         estSonSelec = (Estado) sonido.getSelectedItem();
 
-        if (config.cargarConfiguracion(colSelec.getId(), colBotSelec.getId(), tipSelec.getId(), tamSelec.getId(), estVibSelec.getId(), estSonSelec.getId(), this))
+        if (colSelec.getId() == colBotSelec.getId())
         {
-
-            toast = Toast.makeText(this, "Configuración modificada exitosamente", Toast.LENGTH_SHORT);
-
+            toast = Toast.makeText(this, "El color del texto y del botón deben ser distintos", Toast.LENGTH_SHORT);
         }
+
         else
+
         {
+            if (config.cargarConfiguracion(colSelec.getId(), colBotSelec.getId(), tipSelec.getId(), tamSelec.getId(), estVibSelec.getId(), estSonSelec.getId(), this))
+            {
 
-            toast = Toast.makeText(this, "Error en el cambio de configuración", Toast.LENGTH_SHORT);
+                toast = Toast.makeText(this, "Configuración modificada exitosamente", Toast.LENGTH_SHORT);
 
+            }
+            else
+            {
+
+                toast = Toast.makeText(this, "Error en el cambio de configuración", Toast.LENGTH_SHORT);
+
+            }
         }
+
 
          toast.show();
     }
