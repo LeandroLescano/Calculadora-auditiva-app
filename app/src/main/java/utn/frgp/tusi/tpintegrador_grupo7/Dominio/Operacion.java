@@ -146,7 +146,7 @@ public class Operacion {
     //Resolución de funciones trigonométricas, raíces y exponentes
     public static String calcularOperacionCientifica(String operacion){
         String opLocal = operacion;
-        String[] split = operacion.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
+        String[] split = operacion.split("(?<=[\\d.-])(?=[^\\d.-])|(?<=[^\\d.-])(?=[\\d.-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
         String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
         String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
         boolean primerOperador = false, contieneOperadores = false;
@@ -202,8 +202,8 @@ public class Operacion {
                         opLocal = opLocal.replace("arccos(" + split[x + 1] + ")", Double.toString(cosInv));
                         x++;
                     } else if (split[x].contains("tan(")) {
-                        double tan = Math.tan(Double.parseDouble(split[x + 1]));
-                        opLocal = opLocal.replace("tan(" + split[x + 1] + ")", Double.toString(tan));
+                        double tan= Math.tan(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("tan(" + split[x + 1]+ ")", Double.toString(tan));
                         x++;
                     } else if (split[x].contains("sin(")) {
                         double sin = Math.sin(Double.parseDouble(split[x + 1]));
