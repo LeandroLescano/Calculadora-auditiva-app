@@ -146,7 +146,7 @@ public class Operacion {
     //Resolución de funciones trigonométricas, raíces y exponentes
     public static String calcularOperacionCientifica(String operacion){
         String opLocal = operacion;
-        String[] split = operacion.split("(?<=[\\d.-])(?=[^\\d.-])|(?<=[^\\d.-])(?=[\\d.-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
+        String[] split = operacion.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.-])(?=[\\d.-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
         String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
         String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
         boolean primerOperador = false, contieneOperadores = false;
@@ -154,6 +154,7 @@ public class Operacion {
         for (String op : operadores) {
             if (opLocal.contains(op)) {
                 contieneOperadores = true;
+                break;
             }
         }
         if(contieneOperadores){
@@ -164,7 +165,7 @@ public class Operacion {
                         break;
                     }
                 }
-                if(!primerOperador){
+                if(!primerOperador && !split[split.length-1].equals(")")){
                     Float f = Float.parseFloat(split[split.length - 1]);
                 }
                 for (int x = 0; x < split.length; x++) {

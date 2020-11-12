@@ -19,6 +19,12 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void calculoCientifico2() {
+        assertEquals("7.0106416",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("8-sin(8)")).toString());
+    }
+
+
+    @Test
     public void comandoDeVoz(){
         assertEquals("lg(-8)+ln(322)x6/4^-5",ComandosVoz.traducirOperacion("logaritmo de menos 8 más logaritmo natural de 322 por 6 dividido 4 elevado a la -5").replace(" ", ""));
     }
