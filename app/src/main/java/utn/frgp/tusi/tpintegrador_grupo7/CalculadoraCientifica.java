@@ -46,6 +46,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private ComandosVoz voz;
     private ConstraintLayout fondoProcesando;
     private LinearLayout layout;
+    private String MuestraVieja = "";
+    private String buttonText = "";
+    private String NumeroViejo = "";
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -94,147 +97,189 @@ public class CalculadoraCientifica extends AppCompatActivity {
     //Coloca el dígito seleccionado en pantalla.
     public void ingresarDigito(View view){
         Button digit = (Button)view;
-        String buttonText = digit.getText().toString();
-        audio.emitirAudio(buttonText);
-        posActual = operacion.getSelectionEnd();
-        if(resultado.getAlpha() == 1f){
-            resultado.setAlpha(0.5f);
-        }
-        String MuestraVieja = operacion.getText().toString();
-        String NumeroViejo = Numero;
-        switch (view.getId())
-        {
-            case R.id.btn0:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("0".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "0";
-                break;
-            case R.id.btn1:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("1".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "1";
-                break;
-            case R.id.btn2:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("2".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "2";
-                break;
-            case R.id.btn3:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("3".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "3";
-                break;
-            case R.id.btn4:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("4".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "4";
-                break;
-            case R.id.btn5:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("5".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "5";
-                break;
-            case R.id.btn6:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("6".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "6";
-                break;
-            case R.id.btn7:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("7".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "7";
-                break;
-            case R.id.btn8:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("8".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "8";
-                break;
-            case R.id.btn9:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("9".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "9";
-                break;
-            case R.id.btnPunto:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat(".".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + ".";
-                break;
-            case R.id.btnSumar:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("+".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "+";
-                break;
-            case R.id.btnResta:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("-".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "-";
-                break;
-            case R.id.btnMultiplicar:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("x".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "x";
-                break;
-            case R.id.btnDividir:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("/".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "/";
-                break;
-            case R.id.btnCerrarParent:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat(")".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + ")";
-                break;
-            case R.id.btnAbrirParent:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("(".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "(";
-                break;
-            case R.id.btntan:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("tan()".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "tan()";
-                posActual = posActual+3;
-                break;
-            case R.id.btnsin:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("sin()".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "sin()";
-                posActual = posActual+3;
-                break;
-            case R.id.btncos:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("cos()".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "cos()";
-                posActual = posActual+3;
-                break;
-            case R.id.btnTanInverso:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("arctan()".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "arctan()";
-                posActual = posActual+6;
-                break;
-            case R.id.btnSinInverso:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("arcsin()".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "arcsin()";
-                posActual = posActual+6;
-                break;
-            case R.id.btnCosInverso:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("arccos()".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "arccos()";
-                posActual = posActual+6;
-                break;
-            case R.id.btnLogDecimal:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("lg()".concat(MuestraVieja.substring(posActual))));
-                Numero= NumeroViejo + "lg()";
-                posActual = posActual+2;
-                break;
-            case R.id.btnLogNatural:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("ln()".concat(MuestraVieja.substring(posActual))));
-                posActual = posActual+2;
-                Numero = NumeroViejo + "ln()";
-                break;
-            case R.id.btnPi:
-                operacion.setText(MuestraVieja.concat(MuestraVieja.substring(0,posActual).concat(String.valueOf(Math.PI).substring(0,10).concat(MuestraVieja.substring(posActual)))));
-                Numero = NumeroViejo + String.valueOf(Math.PI);
-                break;
-            case R.id.btnRaiz:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("√".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "√";
-                break;
-            case R.id.btnPotencia:
-                operacion.setText(MuestraVieja.substring(0,posActual).concat("^".concat(MuestraVieja.substring(posActual))));
-                Numero = NumeroViejo + "^";
-                break;
-            case R.id.btnPorcentaje:
-                porcentajeNumero(MuestraVieja);
-                break;
-        }
-        if(posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje){
-            posActual++;
-            operacion.setSelection(posActual);
-        }
+        buttonText = digit.getText().toString();
 
-        calcular();
+            posActual = operacion.getSelectionEnd();
+            if (resultado.getAlpha() == 1f) {
+                resultado.setAlpha(0.5f);
+            }
+            MuestraVieja = operacion.getText().toString();
+            NumeroViejo = Numero;
+            if(!ObtenerOperador()) {
+            audio.emitirAudio(buttonText);
+            switch (view.getId()) {
+                case R.id.btn0:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("0".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "0";
+                    break;
+                case R.id.btn1:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("1".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "1";
+                    break;
+                case R.id.btn2:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("2".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "2";
+                    break;
+                case R.id.btn3:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("3".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "3";
+                    break;
+                case R.id.btn4:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("4".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "4";
+                    break;
+                case R.id.btn5:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("5".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "5";
+                    break;
+                case R.id.btn6:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("6".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "6";
+                    break;
+                case R.id.btn7:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("7".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "7";
+                    break;
+                case R.id.btn8:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("8".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "8";
+                    break;
+                case R.id.btn9:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("9".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "9";
+                    break;
+                case R.id.btnPunto:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat(".".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + ".";
+                    break;
+                case R.id.btnSumar:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("+".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "+";
+                    break;
+                case R.id.btnResta:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("-".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "-";
+                    break;
+                case R.id.btnMultiplicar:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("x".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "x";
+                    break;
+                case R.id.btnDividir:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("/".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "/";
+                    break;
+                case R.id.btnCerrarParent:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat(")".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + ")";
+                    break;
+                case R.id.btnAbrirParent:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("(".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "(";
+                    break;
+                case R.id.btntan:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("tan()".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "tan()";
+                    posActual = posActual + 3;
+                    break;
+                case R.id.btnsin:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("sin()".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "sin()";
+                    posActual = posActual + 3;
+                    break;
+                case R.id.btncos:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("cos()".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "cos()";
+                    posActual = posActual + 3;
+                    break;
+                case R.id.btnTanInverso:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("arctan()".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "arctan()";
+                    posActual = posActual + 6;
+                    break;
+                case R.id.btnSinInverso:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("arcsin()".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "arcsin()";
+                    posActual = posActual + 6;
+                    break;
+                case R.id.btnCosInverso:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("arccos()".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "arccos()";
+                    posActual = posActual + 6;
+                    break;
+                case R.id.btnLogDecimal:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("lg()".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "lg()";
+                    posActual = posActual + 2;
+                    break;
+                case R.id.btnLogNatural:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("ln()".concat(MuestraVieja.substring(posActual))));
+                    posActual = posActual + 2;
+                    Numero = NumeroViejo + "ln()";
+                    break;
+                case R.id.btnPi:
+                    operacion.setText(MuestraVieja.concat(MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual)))));
+                    Numero = NumeroViejo + String.valueOf(Math.PI);
+                    break;
+                case R.id.btnRaiz:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("√".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "√";
+                    break;
+                case R.id.btnPotencia:
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat("^".concat(MuestraVieja.substring(posActual))));
+                    Numero = NumeroViejo + "^";
+                    break;
+                case R.id.btnPorcentaje:
+                    porcentajeNumero(MuestraVieja);
+                    break;
+            }
+            if (posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje) {
+                posActual++;
+                operacion.setSelection(posActual);
+            }
+
+            calcular();
+        }
+            else{
+                if(posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje){
+                    posActual++;
+                    operacion.setSelection(posActual);
+                }
+            }
     }
+
+    public boolean ObtenerOperador(){
+        String[] Operadores = { "+", "-", "x", "/", "="};
+        boolean Error = true;
+        if (Arrays.asList(Operadores).contains(buttonText)) {
+            if(MuestraVieja.isEmpty()){
+                if(buttonText.equals("-")) {
+                    Error = false;
+                }
+                else{
+                    Error = true;
+                }
+            }
+            else {
+                String UltimoCaracter= MuestraVieja.substring(MuestraVieja.length()-1);
+                if(Arrays.asList(Operadores).contains(UltimoCaracter)){
+                    Error = true;
+                }
+                else {
+                    operacion.setText(MuestraVieja + buttonText);
+                    Signo = buttonText;
+                    //Calcular(Numero);
+                    MuestraVieja = Numero + buttonText;
+                    Numero = "";
+                    Error = true;
+                }
+            }
+        }
+        else{
+            Error = false;
+        }
+        return  Error;
+    }
+
 
     //Coloca en pantalla el último número ingresado dividido 100
     public void porcentajeNumero(String muestra){
