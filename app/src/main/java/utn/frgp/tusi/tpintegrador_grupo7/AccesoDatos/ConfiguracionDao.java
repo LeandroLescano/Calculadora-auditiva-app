@@ -4,7 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
+import android.os.Build;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import java.util.ArrayList;
 
@@ -14,6 +18,7 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Estado;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tamano;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
+import utn.frgp.tusi.tpintegrador_grupo7.R;
 
 public class ConfiguracionDao {
 
@@ -27,7 +32,7 @@ public class ConfiguracionDao {
     private ArrayList<Tipografia> listTip;
     private ArrayList<Estado> listEst;
     private int Rojo, Azul, Amarillo, Blanco, Negro;
-
+    private Typeface Helvetica, Verdana, ComicSans, Arial, Roboto;
 
     public Configuracion traerConfiguracion(Context context){
         ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
@@ -389,4 +394,38 @@ public class ConfiguracionDao {
         return 0;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public Typeface setearTipografia (Context context)
+    {
+        Arial = context.getResources().getFont(R.font.arial);
+        Helvetica = context.getResources().getFont(R.font.helvetica);
+        Verdana = context.getResources().getFont(R.font.verdana);
+        Roboto = context.getResources().getFont(R.font.roboto);
+        ComicSans = context.getResources().getFont(R.font.comicsans);
+
+        config = traerConfiguracion(context);
+
+        if (config.getTipografia().getTipografia().equals("Arial"))
+        {
+            return Arial;
+        }
+        if (config.getTipografia().getTipografia().equals("Helvetica"))
+        {
+            return Helvetica;
+        }
+        if (config.getTipografia().getTipografia().equals("Verdana"))
+        {
+            return Verdana;
+        }
+        if (config.getTipografia().getTipografia().equals("Roboto"))
+        {
+            return Roboto;
+        }
+        if (config.getTipografia().getTipografia().equals("Comic Sans"))
+        {
+            return ComicSans;
+        }
+
+        return Arial;
+    }
 }

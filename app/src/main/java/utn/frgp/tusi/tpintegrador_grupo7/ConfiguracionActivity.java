@@ -2,6 +2,7 @@ package utn.frgp.tusi.tpintegrador_grupo7;
 
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -11,6 +12,7 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
@@ -44,6 +46,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,12 +101,11 @@ public class ConfiguracionActivity extends AppCompatActivity {
         vibracion.setSelection(cfgActual.getVibracion().getId()-1);
         sonido.setSelection(cfgActual.getSonido().getId()-1);
 
+        //Seteos de configuración
 
         botonGuardar.setBackgroundColor(config.setearColorBoton(this));
         botonGuardar.setTextColor(config.setearColorTexto(this));
-
-        //Typeface typeface = getResources().getFont(R.font.myfont);
-        botonGuardar.setTypeface(R.font.Helvetica);
+        botonGuardar.setTypeface(config.setearTipografia(this));
 
         //tamano.setSelection(adapterTamano.getPosition(cfgActual.getTamano()));
         //tipografia.setSelection(adapterTipo.getPosition(cfgActual.getTipografia()));

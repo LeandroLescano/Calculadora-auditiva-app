@@ -1,18 +1,22 @@
 package utn.frgp.tusi.tpintegrador_grupo7;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Adapter.OperacionAdapter;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
@@ -24,6 +28,9 @@ public class HistorialOperaciones extends AppCompatActivity {
     private GridView grid;
     private HistorialDao hist;
 
+
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +42,11 @@ public class HistorialOperaciones extends AppCompatActivity {
         adapter = new OperacionAdapter(this, operaciones);
         grid = (GridView) findViewById(R.id.gv_operaciones);
         grid.setAdapter(adapter);
+
+
+        //Seteos de configuración
+
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
