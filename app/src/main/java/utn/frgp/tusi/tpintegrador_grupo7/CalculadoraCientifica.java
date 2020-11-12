@@ -217,8 +217,10 @@ public class CalculadoraCientifica extends AppCompatActivity {
                     Numero = NumeroViejo + "ln()";
                     break;
                 case R.id.btnPi:
-                    operacion.setText(MuestraVieja.concat(MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual)))));
+                    operacion.setText(MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual))));
                     Numero = NumeroViejo + String.valueOf(Math.PI);
+                    posActual = posActual + 10;
+                    operacion.setSelection(posActual);
                     break;
                 case R.id.btnRaiz:
                     operacion.setText(MuestraVieja.substring(0, posActual).concat("√".concat(MuestraVieja.substring(posActual))));
