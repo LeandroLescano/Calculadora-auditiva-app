@@ -9,6 +9,7 @@ import android.os.Build;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
+import androidx.core.content.res.ResourcesCompat;
 
 import java.util.ArrayList;
 
@@ -397,11 +398,11 @@ public class ConfiguracionDao {
     @RequiresApi(api = Build.VERSION_CODES.O)
     public Typeface setearTipografia (Context context)
     {
-        Arial = context.getResources().getFont(R.font.arial);
-        Helvetica = context.getResources().getFont(R.font.helvetica);
-        Verdana = context.getResources().getFont(R.font.verdana);
-        Roboto = context.getResources().getFont(R.font.roboto);
-        ComicSans = context.getResources().getFont(R.font.comicsans);
+        Arial = ResourcesCompat.getFont(context, R.font.arial);
+        Helvetica = ResourcesCompat.getFont(context, R.font.helvetica);
+        Verdana = ResourcesCompat.getFont(context, R.font.verdana);
+        Roboto = ResourcesCompat.getFont(context, R.font.roboto);
+        ComicSans = ResourcesCompat.getFont(context, R.font.comicsans);
 
         config = traerConfiguracion(context);
 

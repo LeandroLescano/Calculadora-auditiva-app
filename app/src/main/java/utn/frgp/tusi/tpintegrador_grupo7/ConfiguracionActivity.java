@@ -105,7 +105,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
         botonGuardar.setBackgroundColor(config.setearColorBoton(this));
         botonGuardar.setTextColor(config.setearColorTexto(this));
-    //   botonGuardar.setTypeface(config.setearTipografia(this));
+        botonGuardar.setTypeface(config.setearTipografia(this));
 
         //tamano.setSelection(adapterTamano.getPosition(cfgActual.getTamano()));
         //tipografia.setSelection(adapterTipo.getPosition(cfgActual.getTipografia()));
@@ -193,6 +193,10 @@ public class ConfiguracionActivity extends AppCompatActivity {
             {
 
                 toast = Toast.makeText(this, "Configuración modificada exitosamente", Toast.LENGTH_SHORT);
+                finish();
+                overridePendingTransition(0, 0);
+                startActivity(getIntent());
+                overridePendingTransition(0, 0);
 
             }
             else
