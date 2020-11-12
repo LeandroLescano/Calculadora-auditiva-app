@@ -27,24 +27,14 @@ public class HistorialDao {
         ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
         SQLiteDatabase BasedeDatos = admin.getWritableDatabase();
         lista = new ArrayList<>();
-        operacion = new Operacion();
-
         Cursor ops = BasedeDatos.rawQuery("select id, operacion from historial", null);
         if(ops.moveToFirst()){
-
-            operacion.setId(Integer.parseInt(ops.getString(0)));
-            operacion.setOperacion(ops.getString(1));
-            lista.add(operacion);
-
-
-            while(ops.moveToNext()){
-
+            do{
                 operacion = new Operacion();
                 operacion.setId(Integer.parseInt(ops.getString(0)));
                 operacion.setOperacion(ops.getString(1));
                 lista.add(operacion);
-
-            }
+            }while(ops.moveToNext());
         }
         return lista;
     }

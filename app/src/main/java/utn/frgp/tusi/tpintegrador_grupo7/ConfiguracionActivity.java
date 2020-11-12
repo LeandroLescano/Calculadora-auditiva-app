@@ -43,10 +43,6 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private Estado estVibSelec;
     private Estado estSonSelec;
 
-
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -193,10 +189,10 @@ public class ConfiguracionActivity extends AppCompatActivity {
             {
 
                 toast = Toast.makeText(this, "Configuración modificada exitosamente", Toast.LENGTH_SHORT);
-                finish();
                 overridePendingTransition(0, 0);
                 startActivity(getIntent());
                 overridePendingTransition(0, 0);
+                finish();
 
             }
             else

@@ -144,6 +144,7 @@ public class ConfiguracionDao {
             }
 
         }
+        BasedeDatos.close();
         return color;
     }
 
@@ -167,6 +168,8 @@ public class ConfiguracionDao {
             }
 
         }
+
+        BasedeDatos.close();
         return tipografia;
     }
 
@@ -190,6 +193,8 @@ public class ConfiguracionDao {
             }
 
         }
+
+        BasedeDatos.close();
         return tamano;
     }
 
@@ -213,6 +218,8 @@ public class ConfiguracionDao {
             }
 
         }
+
+        BasedeDatos.close();
         return estado;
     }
 
@@ -240,6 +247,8 @@ public class ConfiguracionDao {
 
             }
         }
+
+        BasedeDatos.close();
         return listCol;
     }
 
@@ -268,6 +277,8 @@ public class ConfiguracionDao {
 
             }
         }
+
+        BasedeDatos.close();
         return listTip;
     }
 
@@ -296,6 +307,8 @@ public class ConfiguracionDao {
 
             }
         }
+
+        BasedeDatos.close();
         return listTam;
     }
 
@@ -324,6 +337,8 @@ public class ConfiguracionDao {
 
             }
         }
+
+        BasedeDatos.close();
         return listEst;
     }
 
@@ -395,7 +410,6 @@ public class ConfiguracionDao {
         return 0;
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     public Typeface setearTipografia (Context context)
     {
         Arial = ResourcesCompat.getFont(context, R.font.arial);

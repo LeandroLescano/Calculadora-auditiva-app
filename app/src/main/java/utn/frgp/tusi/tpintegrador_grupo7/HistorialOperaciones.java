@@ -3,6 +3,7 @@ package utn.frgp.tusi.tpintegrador_grupo7;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,9 +29,6 @@ public class HistorialOperaciones extends AppCompatActivity {
     private GridView grid;
     private HistorialDao hist;
 
-
-
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,15 +36,11 @@ public class HistorialOperaciones extends AppCompatActivity {
         operaciones = new ArrayList<Operacion>();
         hist = new HistorialDao();
         operaciones = hist.listarOperaciones(this);
-        //operaciones.add(new Operacion(1, "5+5=10"));
         adapter = new OperacionAdapter(this, operaciones);
         grid = (GridView) findViewById(R.id.gv_operaciones);
         grid.setAdapter(adapter);
 
-
         //Seteos de configuración
-
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -59,8 +53,6 @@ public class HistorialOperaciones extends AppCompatActivity {
             }
         });
     }
-
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

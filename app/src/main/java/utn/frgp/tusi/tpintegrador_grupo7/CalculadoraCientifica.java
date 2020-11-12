@@ -3,6 +3,7 @@ package utn.frgp.tusi.tpintegrador_grupo7;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
@@ -53,7 +54,6 @@ public class CalculadoraCientifica extends AppCompatActivity {
         setContentView(R.layout.activity_cientifica);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         funciones= new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
         alertaGrabando = findViewById(R.id.alerta_grabando);
         alertaProcesando = findViewById(R.id.alerta_procesando);
@@ -75,6 +75,15 @@ public class CalculadoraCientifica extends AppCompatActivity {
                 posActual = operacion.getSelectionEnd();
             }
         });
+
+        String opHistorial = getIntent().getStringExtra("operacion");
+        if(opHistorial != null && !opHistorial.isEmpty()){
+            operacion.setText(opHistorial.substring(0,opHistorial.indexOf("=")));
+            resultado.setText(opHistorial.substring(opHistorial.indexOf("=")+1));
+            operacion.setSelection(operacion.length());
+        }else{
+            
+        }
         //Consultar configuración para cambiar aspecto.
         //formatearAspecto();
 
@@ -388,6 +397,10 @@ public class CalculadoraCientifica extends AppCompatActivity {
             return true;
         } else if(id == R.id.action_basica){
             Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica.class);
+            SharedPreferences preferences = this.getSharedPreferences("calculadora", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("ultima", "basica");
+            editor.apply();
             startActivity(intent);
             return true;
         } else if(id == R.id.action_cientifica){
