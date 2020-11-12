@@ -105,7 +105,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
 
         botonGuardar.setBackgroundColor(config.setearColorBoton(this));
         botonGuardar.setTextColor(config.setearColorTexto(this));
-        botonGuardar.setTypeface(config.setearTipografia(this));
+    //   botonGuardar.setTypeface(config.setearTipografia(this));
 
         //tamano.setSelection(adapterTamano.getPosition(cfgActual.getTamano()));
         //tipografia.setSelection(adapterTipo.getPosition(cfgActual.getTipografia()));

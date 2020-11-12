@@ -15,6 +15,8 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
@@ -25,8 +27,11 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
 
 public class CalculadoraCientifica extends AppCompatActivity {
     private TextView resultado;
@@ -36,6 +41,10 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private Integer posActual;
     private String[] funciones;
     private AyudaAuditiva audio;
+    private Button alertaGrabando, alertaProcesando;
+    private ComandosVoz voz;
+    private ConstraintLayout fondoProcesando;
+    private LinearLayout layout;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -46,7 +55,10 @@ public class CalculadoraCientifica extends AppCompatActivity {
         setSupportActionBar(toolbar);
 
         funciones= new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
-
+        alertaGrabando = findViewById(R.id.alerta_grabando);
+        alertaProcesando = findViewById(R.id.alerta_procesando);
+        layout = findViewById(R.id.layout_Cientifica);
+        fondoProcesando = findViewById(R.id.background_procesando);
         operacion = findViewById(R.id.txtOperacion);
         resultado = findViewById(R.id.txtResultado);
         resultado.setAlpha((float) 0.5);
@@ -331,6 +343,15 @@ public class CalculadoraCientifica extends AppCompatActivity {
         }else if (resultadoOp != -1){
             resultado.setText(resultadoOp.toString());
         }
+    }
+
+
+    public void comandoDeVoz(View view){
+        ImageView micButton = (ImageView) view;
+        if(voz == null){
+            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout);
+        }
+        voz.startStop();
     }
 
     //Configura la calculadora visualmente.
