@@ -23,6 +23,10 @@ public class ExampleUnitTest {
         assertEquals("7.0106416",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("8-sin(8)")).toString());
     }
 
+    @Test
+    public void calculoBasico() {
+        assertEquals("-1.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("-6+5")).toString());
+    }
 
     @Test
     public void comandoDeVoz(){

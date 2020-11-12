@@ -137,7 +137,7 @@ public class Operacion {
             }
         }catch(Exception e){
             e.printStackTrace();
-            resultadoParcial = -1f; //Operación incompleta
+            resultadoParcial = null; //Operación incompleta
         }
 
         return resultadoParcial;

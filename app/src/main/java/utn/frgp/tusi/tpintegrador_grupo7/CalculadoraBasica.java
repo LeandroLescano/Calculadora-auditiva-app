@@ -300,9 +300,9 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         //Calculo de operación
         Float resultadoOperacion = Operacion.calcularOperacionBasica(operacionACalcular);
-        if(resultadoOperacion%1 == 0 && resultadoOperacion != -1){
+        if(resultadoOperacion != null && resultadoOperacion%1 == 0){
             resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
-        }else if (resultadoOperacion != -1){
+        }else if (resultadoOperacion != null){
             resultado.setText(resultadoOperacion.toString());
         }
     }

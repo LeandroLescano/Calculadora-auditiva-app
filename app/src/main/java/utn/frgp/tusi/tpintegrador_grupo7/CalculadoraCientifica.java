@@ -388,13 +388,13 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     public void calcular(){
         Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
-        if(resultadoOp%1 == 0 && resultadoOp != -1){
+        if(resultadoOp != null && resultadoOp%1 == 0){
             if(resultadoOp.toString().contains("E")){
                 resultado.setText(new BigDecimal(resultadoOp).toPlainString());
             }else{
                 resultado.setText(String.valueOf(Math.round(resultadoOp)));
             }
-        }else if (resultadoOp != -1){
+        }else if (resultadoOp != null){
             resultado.setText(resultadoOp.toString());
         }
     }
