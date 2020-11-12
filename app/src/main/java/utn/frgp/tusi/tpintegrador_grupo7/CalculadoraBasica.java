@@ -1,5 +1,6 @@
 package utn.frgp.tusi.tpintegrador_grupo7;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -12,10 +13,13 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.Utilidades;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.Vibracion;
 
 import android.speech.tts.TextToSpeech;
 import android.util.Log;
 import android.view.View;
+import android.os.Vibrator;
 
 import android.view.Menu;
 import android.view.MenuItem;
@@ -45,6 +49,10 @@ public class CalculadoraBasica extends AppCompatActivity {
     private Button alertaGrabando, alertaProcesando;
     private ConstraintLayout fondoProcesando;
     private LinearLayout layout;
+    private Vibrator vibrator;
+    private Vibracion vibra;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +60,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         setContentView(R.layout.activity_basica);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
         alertaGrabando = findViewById(R.id.alerta_grabando);
         alertaProcesando = findViewById(R.id.alerta_procesando);
@@ -191,8 +200,13 @@ public class CalculadoraBasica extends AppCompatActivity {
         //Calcular(Numero);
         //Numero = "0";
         Calcular();
+        if(vibra == null){
+            vibra = vibra.getManager(this);
+        }
+        vibra.VibracionResultado();
         audio.emitirAudio("Resultado: " + resultado.getText() );
         resultado.setAlpha(1f);
+
     }
 
     public boolean ObtenerOperador(){
@@ -288,7 +302,6 @@ public class CalculadoraBasica extends AppCompatActivity {
         }else if (resultadoOperacion != -1){
             resultado.setText(resultadoOperacion.toString());
         }
-
     }
 
     public void comandoDeVoz(View view){
