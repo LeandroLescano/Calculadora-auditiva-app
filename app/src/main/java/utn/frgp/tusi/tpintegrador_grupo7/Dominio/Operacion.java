@@ -243,15 +243,17 @@ public class Operacion {
         String[] caracteres = new String[]{"+","-","/","x","^","√", "cos", "tan", "sin", "arccos", "arctan", "arcsin", "lg", "ln"};
         for (int x = 0; x < split.length; x++) {
             if (split[x].equals("(")) {
-                boolean contiene = false;
-                for(String c : caracteres){
-                    if(split[x-1].contains(c)){
-                        contiene = true;
-                        break;
+                if(x > split.length-1){
+                    boolean contiene = false;
+                        for(String c : caracteres){
+                            if(split[x-1].contains(c)){
+                                contiene = true;
+                                break;
+                            }
+                        }
+                    if(!contiene){
+                        operacion = operacion.replace(split[x], "x" + split[x]);
                     }
-                }
-                if(!contiene){
-                    operacion = operacion.replace(split[x], "x" + split[x]);
                 }
             }
 

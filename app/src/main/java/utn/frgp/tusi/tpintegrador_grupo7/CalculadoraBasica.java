@@ -8,6 +8,7 @@ import android.os.Build;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -270,19 +271,38 @@ public class CalculadoraBasica extends AppCompatActivity {
         ArrayList<String> calculoParentesis = new ArrayList<>();
         Boolean poseeParentesis = false;
         char ultimoParentesis = 0;
+        ArrayList<Integer> posParentesisAbierto = new ArrayList<>();
+        ArrayList<Integer> posParentesisCerrado = new ArrayList<>();
+        Float resultadoParcial = 0f;
+        String substring, prueba = "";
 
         operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
+
         //Detección de posición de paréntisis
-        if(operacionACalcular.contains("(") && operacionACalcular.contains(")")){
+        while(operacionACalcular.contains("(") && operacionACalcular.contains(")")) {
+            int cantidadParentesis = 0;
+            posParentesisAbierto.clear();
+            posParentesisCerrado.clear();
             poseeParentesis = true;
-            for(int x =0; x<operacionACalcular.length(); x++){
+            for (int x = 0; x < operacionACalcular.length(); x++) {
                 char c = operacionACalcular.charAt(x);
-                if(c == 40 || c == 41){
-                    posParentesis.add(x);
-                    ultimoParentesis = c;
+                if (c == 40) {
+                    posParentesisAbierto.add(x);
+                }
+                if (c == 41) {
+                    cantidadParentesis++;
+                    posParentesisCerrado.add(x);
+                }
+            }
+            if(cantidadParentesis == posParentesisCerrado.size()){
+                substring = operacionACalcular.substring(posParentesisAbierto.get(posParentesisAbierto.size()-1)+1, posParentesisCerrado.get(0));
+                resultadoParcial = Operacion.calcularOperacionBasica(substring);
+                if(resultadoParcial != null){
+                    operacionACalcular = operacionACalcular.replace("(" + substring + ")", resultadoParcial.toString());
                 }
             }
         }
+
         //Separación de los terminos dentro de los paréntesis
         if(poseeParentesis){
             int contador = 0;
@@ -298,8 +318,12 @@ public class CalculadoraBasica extends AppCompatActivity {
         Float resultadoOperacion = Operacion.calcularOperacionBasica(operacionACalcular);
         if(resultadoOperacion != null && resultadoOperacion%1 == 0){
             resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
+        }else if(resultadoOperacion != null && resultadoOperacion.isNaN()){
+            resultado.setText("Error matemático");
         }else if (resultadoOperacion != null){
             resultado.setText(resultadoOperacion.toString());
+        }else{
+            resultado.setText("Error de sintaxis");
         }
     }
 

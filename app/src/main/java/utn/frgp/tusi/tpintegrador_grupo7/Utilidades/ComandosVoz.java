@@ -120,13 +120,19 @@ public class ComandosVoz implements RecognitionListener {
         boolean textLetras = true;
         if (matchesFound != null) {
             for(String match : matchesFound){
-                if(textLetras && !soloLetras(match)){
+                textLetras = true;
+                if(!soloLetras(match)){
                     textLetras = false;
                 }
-                String opTraducida = match.toLowerCase();
-                opTraducida = traducirOperacion(opTraducida);
-                operacion.setText(opTraducida.replace(" ", ""));
-                operacion.setSelection(operacion.length());
+                if(!textLetras){
+                    String opTraducida = match.toLowerCase();
+                    opTraducida = traducirOperacion(opTraducida);
+                    if(opTraducida != null){
+                        operacion.setText(opTraducida.replace(" ", ""));
+                        operacion.setSelection(operacion.length());
+                        break;
+                    }
+                }
             }
             if(textLetras){
                 audio.emitirAudio("Ingreso incorrecto");
@@ -134,13 +140,13 @@ public class ComandosVoz implements RecognitionListener {
 
             Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
 
-            if(Float.isNaN(resultadoOperacion)){
+            if(resultadoOperacion != null && Float.isNaN(resultadoOperacion)){
                 resultado.setText("Error matemático");
                 audio.emitirAudio("Error matemático");
-            }else if(resultadoOperacion%1 == 0 && resultadoOperacion != -1){
+            }else if(resultadoOperacion != null && resultadoOperacion%1 == 0 && resultadoOperacion != -1){
                 resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
                 audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
-            }else if (resultadoOperacion != -1){
+            }else if (resultadoOperacion != null && resultadoOperacion != -1){
                 resultado.setText(resultadoOperacion.toString());
                 audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
             }else{

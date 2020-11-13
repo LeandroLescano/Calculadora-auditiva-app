@@ -63,8 +63,8 @@ public class Utilidades {
 
     public static final String INSERTAR_TABLA_ESTADO="INSERT INTO " + TABLA_ESTADO + "(" + CAMPO_DESCRIPCION_ESTADO + ") VALUES ('Siempre'), ('Solo resultados'), ('Solo errores'), ('Nunca')";
 
-    public static final String INSERTAR_TABLA_CONFIGURACION="INSERT INTO " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + ", " + CAMPO_COLORBOTON_CONFIG + ", " + CAMPO_TIPOGRAFIA_CONFIG + ", " + CAMPO_TAMANO_CONFIG + ", " + CAMPO_ESTADO_VIBRACION + ", " + CAMPO_ESTADO_SONIDO + ") VALUES (1,1,1,1,1,1)";
+    public static final String INSERTAR_TABLA_CONFIGURACION="INSERT INTO " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + ", " + CAMPO_COLORBOTON_CONFIG + ", " + CAMPO_TIPOGRAFIA_CONFIG + ", " + CAMPO_TAMANO_CONFIG + ", " + CAMPO_ESTADO_VIBRACION + ", " + CAMPO_ESTADO_SONIDO + ") VALUES (4,5,1,4,1,1)";
 
-    public static final String INSERTAR_TABLA_HISTORIAL="INSERT INTO " + TABLA_HISTORIAL + "(" + CAMPO_OPERACION + ") VALUES ('2+2=4'), ('5+5=10'), ('1*1=1'), ('4/2=2'), ('7^2=49')";
+    public static final String INSERTAR_TABLA_HISTORIAL="INSERT INTO " + TABLA_HISTORIAL + "(" + CAMPO_OPERACION + ") VALUES ('2+2=4'), ('5+5=10'), ('1x1=1'), ('4/2=2'), ('7^2=49')";
 
 }

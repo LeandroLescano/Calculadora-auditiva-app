@@ -112,25 +112,25 @@ public class AyudaAuditiva {
             if(textoAudio.contains("^")){
                 textoAudio = textoAudio.replace("^", " elevado a la ");
             }
-            if(textoAudio.contains("ln")){
+            if(textoAudio.contains("ln(")){
                 textoAudio = textoAudio.replace("ln", " logaritmo natural de ");
             }
-            if(textoAudio.contains("lg")){
+            if(textoAudio.contains("lg(")){
                 textoAudio = textoAudio.replace("lg", " logaritmo decimal de ");
             }
-            if(textoAudio.contains("arccos")){
+            if(textoAudio.contains("arccos(")){
                 textoAudio = textoAudio.replace("arccos", " coseno inverso de ");
-            }else if(textoAudio.contains("cos")){
+            }else if(textoAudio.contains("cos(")){
                 textoAudio = textoAudio.replace("cos", " coseno de ");
             }
-            if(textoAudio.contains("arctan")){
+            if(textoAudio.contains("arctan(")){
                 textoAudio = textoAudio.replace("arctan", " tangente inversa de ");
-            }else if(textoAudio.contains("tan")){
+            }else if(textoAudio.contains("tan(")){
                 textoAudio = textoAudio.replace("tan", " tangente de ");
             }
-            if(textoAudio.contains("arcsin")){
+            if(textoAudio.contains("arcsin(")){
                 textoAudio = textoAudio.replace("arcsin", " seno inverso de ");
-            }else if(textoAudio.contains("sin")){
+            }else if(textoAudio.contains("sin(")){
                 textoAudio = textoAudio.replace("sin", " seno de ");
             }
 
