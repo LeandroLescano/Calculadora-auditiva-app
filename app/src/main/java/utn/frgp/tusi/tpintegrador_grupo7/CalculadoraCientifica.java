@@ -16,12 +16,14 @@ import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import androidx.annotation.RequiresApi;
@@ -30,6 +32,7 @@ import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
@@ -49,6 +52,14 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private String MuestraVieja = "";
     private String buttonText = "";
     private String NumeroViejo = "";
+    private ConfiguracionDao config;
+    private ArrayList<View> botones, botonesTam, botonesImg;
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarConfig();
+    }
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -89,6 +100,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
         }
         //Consultar configuración para cambiar aspecto.
         //formatearAspecto();
+
+        //Cargar configuración
+        cargarConfig();
 
         audio = new AyudaAuditiva(this);
     }
@@ -461,4 +475,74 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    //Agregar botones a lista modificables en tamaño
+
+    public ArrayList<View> agregarBotones ()
+    {
+        ArrayList<View> listaCompleta = new ArrayList<View>();
+        listaCompleta.add(findViewById(R.id.btn0));
+        listaCompleta.add(findViewById(R.id.btn1));
+        listaCompleta.add(findViewById(R.id.btn2));
+        listaCompleta.add(findViewById(R.id.btn3));
+        listaCompleta.add(findViewById(R.id.btn4));
+        listaCompleta.add(findViewById(R.id.btn5));
+        listaCompleta.add(findViewById(R.id.btn6));
+        listaCompleta.add(findViewById(R.id.btn7));
+        listaCompleta.add(findViewById(R.id.btn8));
+        listaCompleta.add(findViewById(R.id.btn9));
+        listaCompleta.add(findViewById(R.id.btnPunto));
+        listaCompleta.add(findViewById(R.id.btnIgual));
+        listaCompleta.add(findViewById(R.id.btnSumar));
+        listaCompleta.add(findViewById(R.id.btnResta));
+
+        return listaCompleta;
+    }
+
+    //Agregar image buttons a lista
+
+    public ArrayList<View> agregarBotonesImg ()
+    {
+        ArrayList<View> listaCompleta = new ArrayList<View>();
+        listaCompleta.add(findViewById(R.id.btnIzquierda));
+        listaCompleta.add(findViewById(R.id.btnDerecha));
+        listaCompleta.add(findViewById(R.id.btnMic));
+
+        return listaCompleta;
+    }
+
+    //Carga configuracion actual en las listas de todos los botones
+
+    public void cargarConfig()
+    {
+        config = new ConfiguracionDao();
+        botonesImg = agregarBotonesImg();
+        botonesTam = agregarBotones();
+        botones = layout.getTouchables();
+
+        for(View v : botones){
+            if(v.getId() != R.id.txtOperacion && v.getId() != R.id.btnDerecha && v.getId() != R.id.btnIzquierda && v.getId() != R.id.btnMic){
+                Button boton = (Button) v;
+                boton.setBackgroundColor(config.setearColorBoton(this));
+                boton.setTextColor(config.setearColorTexto(this));
+                boton.setTypeface(config.setearTipografia(this));
+            }
+        }
+
+        for(View i : botonesImg){
+
+            ImageButton boton = (ImageButton) i;
+            boton.setColorFilter(config.setearColorTexto(this));
+            boton.setBackgroundColor(config.setearColorBoton(this));
+
+        }
+
+        for(View b : botonesTam){
+
+            Button boton = (Button) b;
+            boton.setTextSize(config.setearTamano(this));
+
+        }
+    }
+
 }

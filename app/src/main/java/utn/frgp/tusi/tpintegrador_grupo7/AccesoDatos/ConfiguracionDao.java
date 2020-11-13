@@ -443,4 +443,15 @@ public class ConfiguracionDao {
 
         return Arial;
     }
+
+    public int setearTamano (Context context)
+    {
+        int tamano;
+        config = traerConfiguracion(context);
+        tamano = config.getTamano().getTamano() +12;
+
+        return tamano;
+    }
+
+
 }

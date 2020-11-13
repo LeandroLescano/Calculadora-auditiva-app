@@ -11,6 +11,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
+
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
@@ -26,6 +28,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,11 +50,20 @@ public class CalculadoraBasica extends AppCompatActivity {
     private TextToSpeech mTTS;
     private AyudaAuditiva audio;
     private ComandosVoz voz;
+    private ConfiguracionDao config;
     private Button alertaGrabando, alertaProcesando;
     private ConstraintLayout fondoProcesando;
     private LinearLayout layout;
     private Vibrator vibrator;
     private Vibracion vibra;
+    private ArrayList<View> botones, botonesTam, botonesImg;
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        cargarConfig();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,6 +71,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         setContentView(R.layout.activity_basica);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        config = new ConfiguracionDao();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         alertaGrabando = findViewById(R.id.alerta_grabando);
         alertaProcesando = findViewById(R.id.alerta_procesando);
@@ -68,6 +81,8 @@ public class CalculadoraBasica extends AppCompatActivity {
         resultado = findViewById(R.id.txtResultado);
         resultado.setAlpha((float) 0.5);
         resultado.setText("0");
+
+
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             operacion.setShowSoftInputOnFocus(false);
@@ -91,6 +106,10 @@ public class CalculadoraBasica extends AppCompatActivity {
         //Consultar configuración para cambiar aspecto.
         //formatearAspecto();
         audio = new AyudaAuditiva(this);
+
+        //Cargar configuración
+        cargarConfig();
+
     }
 
     public void ingresarDigito(View view){
@@ -370,5 +389,74 @@ public class CalculadoraBasica extends AppCompatActivity {
         }
 
         super.onDestroy();
+    }
+
+    //Agregar botones a lista modificables en tamaño
+
+    public ArrayList<View> agregarBotones ()
+    {
+        ArrayList<View> listaCompleta = new ArrayList<View>();
+        listaCompleta.add(findViewById(R.id.btn0));
+        listaCompleta.add(findViewById(R.id.btn1));
+        listaCompleta.add(findViewById(R.id.btn2));
+        listaCompleta.add(findViewById(R.id.btn3));
+        listaCompleta.add(findViewById(R.id.btn4));
+        listaCompleta.add(findViewById(R.id.btn5));
+        listaCompleta.add(findViewById(R.id.btn6));
+        listaCompleta.add(findViewById(R.id.btn7));
+        listaCompleta.add(findViewById(R.id.btn8));
+        listaCompleta.add(findViewById(R.id.btn9));
+        listaCompleta.add(findViewById(R.id.btnPunto));
+        listaCompleta.add(findViewById(R.id.btnIgual));
+        listaCompleta.add(findViewById(R.id.btnSumar));
+        listaCompleta.add(findViewById(R.id.btnResta));
+
+        return listaCompleta;
+    }
+
+    //Agregar image buttons a lista
+
+    public ArrayList<View> agregarBotonesImg ()
+    {
+        ArrayList<View> listaCompleta = new ArrayList<View>();
+        listaCompleta.add(findViewById(R.id.btnIzquierda));
+        listaCompleta.add(findViewById(R.id.btnDerecha));
+        listaCompleta.add(findViewById(R.id.btnMic));
+
+        return listaCompleta;
+    }
+
+    //Carga configuracion actual en las listas de todos los botones
+
+    public void cargarConfig()
+    {
+        config = new ConfiguracionDao();
+        botonesImg = agregarBotonesImg();
+        botonesTam = agregarBotones();
+        botones = layout.getTouchables();
+
+        for(View v : botones){
+            if(v.getId() != R.id.txtOperacion && v.getId() != R.id.btnDerecha && v.getId() != R.id.btnIzquierda && v.getId() != R.id.btnMic){
+                Button boton = (Button) v;
+                boton.setBackgroundColor(config.setearColorBoton(this));
+                boton.setTextColor(config.setearColorTexto(this));
+                boton.setTypeface(config.setearTipografia(this));
+            }
+        }
+
+        for(View i : botonesImg){
+
+            ImageButton boton = (ImageButton) i;
+            boton.setColorFilter(config.setearColorTexto(this));
+            boton.setBackgroundColor(config.setearColorBoton(this));
+
+        }
+
+        for(View b : botonesTam){
+
+            Button boton = (Button) b;
+            boton.setTextSize(config.setearTamano(this));
+
+        }
     }
 }
