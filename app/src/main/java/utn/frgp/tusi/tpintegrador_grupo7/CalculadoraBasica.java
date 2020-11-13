@@ -418,6 +418,18 @@ public class CalculadoraBasica extends AppCompatActivity {
         botonesImg = agregarBotonesImg();
         botonesTam = agregarBotones();
         botones = layout.getTouchables();
+        Button botonChequeo, botonConfig;
+        botonChequeo = (Button) findViewById(R.id.btn0);
+        botonConfig = (Button) findViewById(R.id.btn1);
+
+        botonConfig.setBackgroundColor(config.setearColorBoton(this));
+        botonConfig.setTextColor(config.setearColorTexto(this));
+        botonConfig.setTypeface(config.setearTipografia(this));
+        botonConfig.setTextSize(config.setearTamano(this));
+
+        if (!botonChequeo.getBackground().toString().equals(botonConfig.getBackground().toString()) || botonChequeo.getCurrentTextColor() != botonConfig.getCurrentTextColor() || !botonChequeo.getTypeface().toString().equals(botonConfig.getTypeface().toString()) || botonChequeo.getTextSize()  != botonConfig.getTextSize())
+        {
+
 
         for(View v : botones){
             if(v.getId() != R.id.txtOperacion && v.getId() != R.id.btnDerecha && v.getId() != R.id.btnIzquierda && v.getId() != R.id.btnMic){
@@ -441,6 +453,7 @@ public class CalculadoraBasica extends AppCompatActivity {
             Button boton = (Button) b;
             boton.setTextSize(config.setearTamano(this));
 
+        }
         }
     }
 }

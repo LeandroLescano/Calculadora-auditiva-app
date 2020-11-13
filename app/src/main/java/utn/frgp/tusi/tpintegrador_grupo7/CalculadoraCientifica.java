@@ -516,15 +516,24 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     //Carga configuracion actual en las listas de todos los botones
 
-    public void cargarConfig()
-    {
+    public void cargarConfig() {
         config = new ConfiguracionDao();
         botonesImg = agregarBotonesImg();
         botonesTam = agregarBotones();
         botones = layout.getTouchables();
+        Button botonChequeo, botonConfig;
+        botonChequeo = (Button) findViewById(R.id.btn0);
+        botonConfig = (Button) findViewById(R.id.btn1);
 
-        for(View v : botones){
-            if(v.getId() != R.id.txtOperacion && v.getId() != R.id.btnDerecha && v.getId() != R.id.btnIzquierda && v.getId() != R.id.btnMic){
+        botonConfig.setBackgroundColor(config.setearColorBoton(this));
+        botonConfig.setTextColor(config.setearColorTexto(this));
+        botonConfig.setTypeface(config.setearTipografia(this));
+        botonConfig.setTextSize(config.setearTamano(this));
+
+        if (!botonChequeo.getBackground().toString().equals(botonConfig.getBackground().toString()) || botonChequeo.getCurrentTextColor() != botonConfig.getCurrentTextColor() || !botonChequeo.getTypeface().toString().equals(botonConfig.getTypeface().toString()) || botonChequeo.getTextSize()  != botonConfig.getTextSize())
+        {
+        for (View v : botones) {
+            if (v.getId() != R.id.txtOperacion && v.getId() != R.id.btnDerecha && v.getId() != R.id.btnIzquierda && v.getId() != R.id.btnMic) {
                 Button boton = (Button) v;
                 boton.setBackgroundColor(config.setearColorBoton(this));
                 boton.setTextColor(config.setearColorTexto(this));
@@ -532,7 +541,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
             }
         }
 
-        for(View i : botonesImg){
+        for (View i : botonesImg) {
 
             ImageButton boton = (ImageButton) i;
             boton.setColorFilter(config.setearColorTexto(this));
@@ -540,12 +549,13 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
         }
 
-        for(View b : botonesTam){
+        for (View b : botonesTam) {
 
             Button boton = (Button) b;
             boton.setTextSize(config.setearTamano(this));
 
         }
+    }
     }
 
 }
