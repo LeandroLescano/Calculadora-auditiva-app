@@ -264,29 +264,6 @@ public class CalculadoraBasica extends AppCompatActivity {
         return  Error;
     }
 
-    /*public void Calcular(String Num){
-        switch (signo) {
-            case "+":
-                cuenta += Float.parseFloat(Num);
-                break;
-            case "-":
-                cuenta -= Float.parseFloat(Num);
-                break;
-            case "*":
-                cuenta = cuenta * Float.parseFloat(Num);
-                break;
-            case "/":
-                if (Float.parseFloat(Num) > 0) {
-                    cuenta = cuenta / Float.parseFloat(Num);
-                }
-                break;
-            case "=":
-                resultado.setText(cuenta+"");
-                resultado.setAlpha((float) 1);
-                break;
-        }
-    }*/
-
     public void Calcular(){
         String operacionACalcular = operacion.getText().toString();
         ArrayList<Integer> posParentesis = new ArrayList<>();
@@ -294,6 +271,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         Boolean poseeParentesis = false;
         char ultimoParentesis = 0;
 
+        operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
         //Detección de posición de paréntisis
         if(operacionACalcular.contains("(") && operacionACalcular.contains(")")){
             poseeParentesis = true;
@@ -305,7 +283,6 @@ public class CalculadoraBasica extends AppCompatActivity {
                 }
             }
         }
-
         //Separación de los terminos dentro de los paréntesis
         if(poseeParentesis){
             int contador = 0;

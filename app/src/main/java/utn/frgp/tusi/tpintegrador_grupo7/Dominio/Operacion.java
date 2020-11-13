@@ -238,5 +238,26 @@ public class Operacion {
         return opLocal;
     }
 
+    public static String agregarMultiplicaciones(String operacion) {
+        String[] split = operacion.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
+        String[] caracteres = new String[]{"+","-","/","x","^","√", "cos", "tan", "sin", "arccos", "arctan", "arcsin", "lg", "ln"};
+        for (int x = 0; x < split.length; x++) {
+            if (split[x].equals("(")) {
+                boolean contiene = false;
+                for(String c : caracteres){
+                    if(split[x-1].contains(c)){
+                        contiene = true;
+                        break;
+                    }
+                }
+                if(!contiene){
+                    operacion = operacion.replace(split[x], "x" + split[x]);
+                }
+            }
+
+        }
+        return operacion;
+    }
+
 }
 

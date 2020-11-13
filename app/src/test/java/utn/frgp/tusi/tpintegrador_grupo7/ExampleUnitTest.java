@@ -24,8 +24,28 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void calculoBasico() {
+    public void calculoBasicoMenosMas() {
         assertEquals("-1.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("-6+5")).toString());
+    }
+
+    @Test
+    public void calculoBasicoMasMas() {
+        assertEquals("11.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("6+5")).toString());
+    }
+
+    @Test
+    public void calculoBasicoParentesis() {
+        assertEquals("-1.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("6+6-(7+4)-(4/2)")).toString());
+    }
+
+    @Test
+    public void calculoBasicoMultiplicacionParentesis() {
+        assertEquals("22.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("2(5+6)")).toString());
+    }
+
+    @Test
+    public void calculoBasicoMenosMenos() {
+        assertEquals("-12.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("-6-6")).toString());
     }
 
     @Test

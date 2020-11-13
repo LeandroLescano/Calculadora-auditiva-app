@@ -403,7 +403,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
     }
 
     public void calcular(){
-        Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
+        String operacionACalcular = operacion.getText().toString();
+        operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
+        Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacionACalcular));
         if(resultadoOp != null && resultadoOp%1 == 0){
             if(resultadoOp.toString().contains("E")){
                 resultado.setText(new BigDecimal(resultadoOp).toPlainString());
