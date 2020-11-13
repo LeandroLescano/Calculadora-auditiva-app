@@ -61,7 +61,7 @@ public class OperacionAdapter extends BaseAdapter {
         if(convertView == null){
             view = inflater.inflate(R.layout.card_template, null);
         }
-        config = new ConfiguracionDao();
+
         final TextView operacion = (TextView) view.findViewById(R.id.txt_operacion);
         operacion.setText(getItem(position).getOperacion());
         botonVer = (Button) view.findViewById(R.id.btn_Ver);
@@ -92,10 +92,18 @@ public class OperacionAdapter extends BaseAdapter {
                 context.startActivity(intent);
             }
         });
+
+        cargarConfiguracion(view);
+        return view;
+    }
+
+    public void cargarConfiguracion(View view)
+    {
+        
+        config = new ConfiguracionDao();
+        botonVer = (Button) view.findViewById(R.id.btn_Ver);
         botonVer.setBackgroundColor(config.setearColorBoton(context));
         botonVer.setTextColor(config.setearColorTexto(context));
         botonVer.setTypeface(config.setearTipografia(context));
-
-        return view;
     }
 }
