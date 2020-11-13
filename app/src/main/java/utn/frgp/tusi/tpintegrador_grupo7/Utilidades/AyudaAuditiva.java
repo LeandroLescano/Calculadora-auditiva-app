@@ -133,7 +133,6 @@ public class AyudaAuditiva {
             }else if(textoAudio.contains("sin(")){
                 textoAudio = textoAudio.replace("sin", " seno de ");
             }
-
             if(textoAudio.contains("√")){
                 textoAudio = textoAudio.replace("√", " raiz cuadrada de ");
             }

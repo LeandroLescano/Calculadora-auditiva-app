@@ -91,7 +91,7 @@ public class ConfiguracionDao {
             */
 
         }
-
+        BasedeDatos.close();
         return config;
     }
 

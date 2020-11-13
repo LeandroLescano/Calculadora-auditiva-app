@@ -38,7 +38,7 @@ public class Operacion {
                 .replace("+-", "-")
                 .replace("-+", "-")
                 .replace("++","+");
-        String[] split = opLocal.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
+        String[] split = opLocal.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.-])(?=[\\d.-])");
         String sumaResta = "";
         Float resultadoParcial;
         try{
@@ -136,7 +136,7 @@ public class Operacion {
                 }
             }
         }catch(Exception e){
-            e.printStackTrace();
+            //e.printStackTrace();
             resultadoParcial = null; //Operación incompleta
         }
 
@@ -242,7 +242,9 @@ public class Operacion {
         String[] split = operacion.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
         String[] caracteres = new String[]{"+","-","/","x","^","√", "cos", "tan", "sin", "arccos", "arctan", "arcsin", "lg", "ln"};
         for (int x = 0; x < split.length; x++) {
-            if (split[x].equals("(")) {
+            if(split[x].equals(")(")){
+                operacion = operacion.replace(")(", ")x(");
+            }else if (split[x].equals("(")) {
                 if(x > split.length-1){
                     boolean contiene = false;
                         for(String c : caracteres){

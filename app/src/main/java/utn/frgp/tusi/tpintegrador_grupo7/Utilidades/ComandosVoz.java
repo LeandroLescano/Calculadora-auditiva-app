@@ -136,23 +136,23 @@ public class ComandosVoz implements RecognitionListener {
             }
             if(textLetras){
                 audio.emitirAudio("Ingreso incorrecto");
-            }
-
-            Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
-
-            if(resultadoOperacion != null && Float.isNaN(resultadoOperacion)){
-                resultado.setText("Error matemático");
-                audio.emitirAudio("Error matemático");
-            }else if(resultadoOperacion != null && resultadoOperacion%1 == 0 && resultadoOperacion != -1){
-                resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
-                audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
-            }else if (resultadoOperacion != null && resultadoOperacion != -1){
-                resultado.setText(resultadoOperacion.toString());
-                audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
             }else{
-                operacion.setText("");
-                resultado.setText(R.string.ing_incorrecto);
-                audio.emitirAudio("Ingreso incorrecto");
+                Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
+
+                if(resultadoOperacion != null && Float.isNaN(resultadoOperacion)){
+                    resultado.setText("Error matemático");
+                    audio.emitirAudio("Error matemático");
+                }else if(resultadoOperacion != null && resultadoOperacion%1 == 0 && resultadoOperacion != -1){
+                    resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
+                    audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
+                }else if (resultadoOperacion != null && resultadoOperacion != -1){
+                    resultado.setText(resultadoOperacion.toString());
+                    audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
+                }else{
+                    operacion.setText("");
+                    resultado.setText(R.string.ing_incorrecto);
+                    audio.emitirAudio("Ingreso incorrecto");
+                }
             }
             Log.e("onResults", matchesFound.get(0));
         }
@@ -235,8 +235,16 @@ public class ComandosVoz implements RecognitionListener {
         if(opTraducida.contains("raíz cuadrada de")){
             opTraducida = opTraducida.replace("raíz cuadrada de","√");
         }
+        if(opTraducida.contains("a el cuadrado") || opTraducida.contains("al cuadrado")){
+            opTraducida = opTraducida.replace("a el cuadrado","^2");
+            opTraducida = opTraducida.replace("al cuadrado","^2");
+        }
+        if(opTraducida.contains("a el cubo") || opTraducida.contains("al cubo")){
+            opTraducida = opTraducida.replace("a el cubo","^3");
+            opTraducida = opTraducida.replace("al cubo","^3");
+        }
         if(opTraducida.contains("raíz de")){
-            opTraducida = opTraducida.replace("raíz","√");
+            opTraducida = opTraducida.replace("raíz de","√");
         }
         if(opTraducida.contains("pi")){
             opTraducida = opTraducida.replace("pi",String.valueOf(Math.PI).substring(0,10));

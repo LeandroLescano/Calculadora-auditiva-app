@@ -234,85 +234,46 @@ public class CalculadoraBasica extends AppCompatActivity {
 
     public boolean ObtenerOperador(){
         String[] Operadores = { "+", "-", "x", "/", "="};
-        boolean Error = true;
-        if (Arrays.asList(Operadores).contains(buttonText)) {
-            if(MuestraVieja.isEmpty()){
-                if(buttonText.equals("-")) {
-                    Error = false;
-                }
-                else{
-                    Error = true;
-                }
-            }
-            else {
-                    String UltimoCaracter= MuestraVieja.substring(MuestraVieja.length()-1);
-                    if(Arrays.asList(Operadores).contains(UltimoCaracter)){
-                        Error = true;
-                    }
-                    else {
-                        operacion.setText(MuestraVieja + buttonText);
-                        signo = buttonText;
-                        //Calcular(Numero);
-                        MuestraVieja = Numero + buttonText;
-                        Numero = "";
-                        Error = true;
-                    }
-                }
-        }
-        else{
-            Error = false;
-        }
+        boolean Error = false;
+//        if (Arrays.asList(Operadores).contains(buttonText)) {
+//            if(MuestraVieja.isEmpty()){
+//                if(buttonText.equals("-")) {
+//                    Error = false;
+//                }
+//                else{
+//                    Error = true;
+//                }
+//            }
+//            else {
+//                String UltimoCaracter;
+//                if(operacion.getSelectionEnd() <= operacion.length()-1){
+//                    UltimoCaracter = MuestraVieja.substring(operacion.getSelectionEnd()-1,operacion.getSelectionEnd());
+//                }else{
+//                    UltimoCaracter= MuestraVieja.substring(MuestraVieja.length()-1);
+//                }
+//                if(UltimoCaracter.equals("x") || UltimoCaracter.equals("/")){
+//                    if(!buttonText.equals("-") && !buttonText.equals("+")){
+//                        Error = true;
+//                    }
+//                }else if(UltimoCaracter.equals(buttonText)){
+//                    Error = true;
+//                }
+//            }
+//        }
+//        else{
+//            Error = false;
+//        }
         return  Error;
     }
 
     public void Calcular(){
         String operacionACalcular = operacion.getText().toString();
-        ArrayList<Integer> posParentesis = new ArrayList<>();
-        ArrayList<String> calculoParentesis = new ArrayList<>();
-        Boolean poseeParentesis = false;
-        char ultimoParentesis = 0;
-        ArrayList<Integer> posParentesisAbierto = new ArrayList<>();
-        ArrayList<Integer> posParentesisCerrado = new ArrayList<>();
-        Float resultadoParcial = 0f;
-        String substring, prueba = "";
 
+        //Agregar multiplicación entre parentesis
         operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
 
         //Detección de posición de paréntisis
-        while(operacionACalcular.contains("(") && operacionACalcular.contains(")")) {
-            int cantidadParentesis = 0;
-            posParentesisAbierto.clear();
-            posParentesisCerrado.clear();
-            poseeParentesis = true;
-            for (int x = 0; x < operacionACalcular.length(); x++) {
-                char c = operacionACalcular.charAt(x);
-                if (c == 40) {
-                    posParentesisAbierto.add(x);
-                }
-                if (c == 41) {
-                    cantidadParentesis++;
-                    posParentesisCerrado.add(x);
-                }
-            }
-            if(cantidadParentesis == posParentesisCerrado.size()){
-                substring = operacionACalcular.substring(posParentesisAbierto.get(posParentesisAbierto.size()-1)+1, posParentesisCerrado.get(0));
-                resultadoParcial = Operacion.calcularOperacionBasica(substring);
-                if(resultadoParcial != null){
-                    operacionACalcular = operacionACalcular.replace("(" + substring + ")", resultadoParcial.toString());
-                }
-            }
-        }
-
-        //Separación de los terminos dentro de los paréntesis
-        if(poseeParentesis){
-            int contador = 0;
-            for(int x =0; x < posParentesis.size()/2; x++){
-                calculoParentesis.add(operacionACalcular.substring(posParentesis.get(contador)+1, posParentesis.get(contador+1)));
-                contador += 2;
-            }
-        }
-
-        Log.i("terminos", calculoParentesis.toString());
+        operacionACalcular = sacarParentesis(operacionACalcular);
 
         //Calculo de operación
         Float resultadoOperacion = Operacion.calcularOperacionBasica(operacionACalcular);
@@ -325,6 +286,28 @@ public class CalculadoraBasica extends AppCompatActivity {
         }else{
             resultado.setText("Error de sintaxis");
         }
+    }
+
+    public String sacarParentesis(String operacionACalcular) {
+        String[] split = new String[]{""};
+        while(operacionACalcular.contains("(") && operacionACalcular.contains(")")) {
+            split = operacionACalcular.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
+            Log.e("split", Arrays.toString(split));
+            boolean finded = false;
+            for (int x = 1; x < split.length - 1; x++) {
+                if (split[x + 1].contains(")") && split[x - 1].contains("(")) {
+                    Log.e("term", split[x]);
+                    finded = true;
+                    Float resultadoParcial = Operacion.calcularOperacionBasica(split[x]);
+                    operacionACalcular = operacionACalcular.replace("(" + split[x] + ")", resultadoParcial.toString());
+                }
+            }
+            if(!finded){
+                operacionACalcular = operacionACalcular.replace("(", "").replace(")", "");
+            }
+        }
+        Log.e("sacarParentesis",  operacionACalcular);
+        return operacionACalcular;
     }
 
     public void comandoDeVoz(View view){

@@ -265,34 +265,35 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     public boolean ObtenerOperador(){
         String[] Operadores = { "+", "-", "x", "/", "="};
-        boolean Error = true;
-        if (Arrays.asList(Operadores).contains(buttonText)) {
-            if(MuestraVieja.isEmpty()){
-                if(buttonText.equals("-")) {
-                    Error = false;
-                }
-                else{
-                    Error = true;
-                }
-            }
-            else {
-                String UltimoCaracter= MuestraVieja.substring(MuestraVieja.length()-1);
-                if(Arrays.asList(Operadores).contains(UltimoCaracter)){
-                    Error = true;
-                }
-                else {
-                    operacion.setText(MuestraVieja + buttonText);
-                    Signo = buttonText;
-                    //Calcular(Numero);
-                    MuestraVieja = Numero + buttonText;
-                    Numero = "";
-                    Error = true;
-                }
-            }
-        }
-        else{
-            Error = false;
-        }
+        boolean Error = false;
+//        if (Arrays.asList(Operadores).contains(buttonText)) {
+//            if(MuestraVieja.isEmpty()){
+//                if(buttonText.equals("-")) {
+//                    Error = false;
+//                }
+//                else{
+//                    Error = true;
+//                }
+//            }
+//            else {
+//                String UltimoCaracter;
+//                if(operacion.getSelectionEnd() <= operacion.length()-1){
+//                    UltimoCaracter = MuestraVieja.substring(operacion.getSelectionEnd()-1,operacion.getSelectionEnd());
+//                }else{
+//                    UltimoCaracter= MuestraVieja.substring(MuestraVieja.length()-1);
+//                }
+//                if(UltimoCaracter.equals("x") || UltimoCaracter.equals("/")){
+//                    if(!buttonText.equals("-") && !buttonText.equals("+")){
+//                        Error = true;
+//                    }
+//                }else if(UltimoCaracter.equals(buttonText)){
+//                    Error = true;
+//                }
+//            }
+//        }
+//        else{
+//            Error = false;
+//        }
         return  Error;
     }
 
