@@ -245,7 +245,7 @@ public class Operacion {
             if(split[x].equals(")(")){
                 operacion = operacion.replace(")(", ")x(");
             }else if (split[x].equals("(")) {
-                if(x > split.length-1){
+                if(x < split.length-1){
                     boolean contiene = false;
                         for(String c : caracteres){
                             if(split[x-1].contains(c)){
