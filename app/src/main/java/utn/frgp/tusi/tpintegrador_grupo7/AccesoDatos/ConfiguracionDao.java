@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
@@ -20,6 +21,7 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tamano;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
 import utn.frgp.tusi.tpintegrador_grupo7.R;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.Vibracion;
 
 public class ConfiguracionDao {
 
@@ -46,49 +48,35 @@ public class ConfiguracionDao {
         vibracion = new Estado();
         sonido = new Estado();
 
-        Cursor configs = BasedeDatos.rawQuery("select id_color, id_tipografia, id_tamano, estado_vibracion, estado_sonido, id_colorBoton from configuracion", null);
+//        Cursor configs = BasedeDatos.rawQuery("select id_color, id_tipografia, id_tamano, estado_vibracion, estado_sonido, id_colorBoton from configuracion", null);
+        Cursor configs = BasedeDatos.rawQuery("select c.id, c.color, tipografias.id, tipografias.tipografia, tamanos.id, tamanos.tamano, v.id, v.descripcion, s.id, s.descripcion, cb.id, cb.color from configuracion " +
+                "inner join colores as c on c.id = configuracion.id_color " +
+                "inner join tipografias on tipografias.id = configuracion.id_tipografia " +
+                "inner join tamanos on tamanos.id = configuracion.id_tamano " +
+                "inner join estados as v on v.id = configuracion.estado_vibracion " +
+                "inner join estados as s on s.id = configuracion.estado_sonido " +
+                "inner join colores as cb on cb.id = configuracion.id_colorBoton", null);
+        Log.e("configbd", configs.toString());
         if(configs.moveToFirst()){
-
             config = new Configuracion();
 
-            color = traerColor(Integer.parseInt(configs.getString(0)), context);
+            color = new Color(configs.getInt(0), configs.getString(1));
             config.setColor(color);
 
-            tipografia = traerTipografia(Integer.parseInt(configs.getString(1)), context);
+            tipografia = new Tipografia(configs.getInt(2), configs.getString(3));
             config.setTipografia(tipografia);
 
-            tamano = traerTamano(Integer.parseInt(configs.getString(2)), context);
+            tamano = new Tamano(configs.getInt(4), configs.getInt(5));
             config.setTamano(tamano);
 
-            vibracion = traerEstado(Integer.parseInt(configs.getString(3)), context);
+            vibracion = new Estado(configs.getInt(6), configs.getString(7));
             config.setVibracion(vibracion);
 
-            sonido = traerEstado(Integer.parseInt(configs.getString(4)), context);
+            sonido = new Estado(configs.getInt(8), configs.getString(9));
             config.setSonido(sonido);
 
-            colorBoton = traerColor(Integer.parseInt(configs.getString(5)), context);
+            colorBoton = new Color(configs.getInt(10), configs.getString(11));
             config.setColorBoton(colorBoton);
-
-            /*
-            while(configs.moveToNext()){
-
-                config = new Configuracion();
-                color = traerColor(Integer.parseInt(configs.getString(0)), context);
-                tipografia = traerTipografia(Integer.parseInt(configs.getString(1)), context);
-                tamano = traerTamano(Integer.parseInt(configs.getString(2)), context);
-                vibracion = traerEstado(Integer.parseInt(configs.getString(3)), context);
-                sonido = traerEstado(Integer.parseInt(configs.getString(4)), context);
-                colorBoton = traerColor(Integer.parseInt(configs.getString(5)), context);
-
-                config.setColor(color);
-                config.setColorBoton(colorBoton);
-                config.setTipografia(tipografia);
-                config.setTamano(tamano);
-                config.setVibracion(vibracion);
-                config.setSonido(sonido);
-
-            }
-            */
 
         }
         BasedeDatos.close();
