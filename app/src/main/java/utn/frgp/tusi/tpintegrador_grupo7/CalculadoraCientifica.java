@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Vibrator;
 import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
@@ -59,6 +60,8 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private Configuracion cfgActual;
     private ArrayList<View> botones, botonesTam, botonesImg;
     private Vibracion vibra;
+    private Vibrator vibrator;
+    private boolean vibrarBoton = true;
     private HistorialDao hist;
 
     @Override
@@ -83,6 +86,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
         resultado = findViewById(R.id.txtResultado);
         resultado.setAlpha((float) 0.5);
         resultado.setText("0");
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibra = new Vibracion();
+        vibra = vibra.getManager(this);
         hist = new HistorialDao();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             operacion.setShowSoftInputOnFocus(false);
@@ -265,6 +271,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
             }
 
             calcular();
+            if(vibrarBoton){
+                vibra.VibracionBoton();
+            }
         }else{
             if(posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje){
                 posActual++;
@@ -336,6 +345,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
         }
         calcular();
+        if(vibrarBoton){
+            vibra.VibracionBoton();
+        }
     }
 
     //Mueve el cursor hacia la izquierda o derecha.
@@ -358,6 +370,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
                 audio.emitirAudio("izquierda");
                 break;
+        }
+        if(vibrarBoton){
+            vibra.VibracionBoton();
         }
     }
 
@@ -384,6 +399,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
             resultado.setText("0");
         }
         calcular();
+        if(vibrarBoton){
+            vibra.VibracionBoton();
+        }
     }
 
     //Chequea si la operacion contiene funciones de tipo trigonométricas y logaritmicas.
@@ -402,6 +420,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
         operacion.setText("");
         resultado.setText("0");
         resultado.setAlpha((float) 0.5);
+        if(vibrarBoton){
+            vibra.VibracionBoton();
+        }
     }
 
     //Realiza el cálculo de la operación.
@@ -574,17 +595,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         botonesImg = agregarBotonesImg();
         botonesTam = agregarBotones();
         botones = layout.getTouchables();
-        Button botonChequeo, botonConfig;
-        botonChequeo = (Button) findViewById(R.id.btn0);
-        botonConfig = (Button) findViewById(R.id.btn1);
 
-        botonConfig.setBackgroundColor(config.setearColorBoton(this));
-        botonConfig.setTextColor(config.setearColorTexto(this));
-        botonConfig.setTypeface(config.setearTipografia(this));
-        botonConfig.setTextSize(config.setearTamano(this));
-
-        if (!botonChequeo.getBackground().toString().equals(botonConfig.getBackground().toString()) || botonChequeo.getCurrentTextColor() != botonConfig.getCurrentTextColor() || !botonChequeo.getTypeface().toString().equals(botonConfig.getTypeface().toString()) || botonChequeo.getTextSize()  != botonConfig.getTextSize())
-        {
         for (View v : botones) {
             if (v.getId() != R.id.txtOperacion && v.getId() != R.id.btnDerecha && v.getId() != R.id.btnIzquierda && v.getId() != R.id.btnMic) {
                 Button boton = (Button) v;
@@ -595,20 +606,21 @@ public class CalculadoraCientifica extends AppCompatActivity {
         }
 
         for (View i : botonesImg) {
-
             ImageButton boton = (ImageButton) i;
             boton.setColorFilter(config.setearColorTexto(this));
             boton.setBackgroundColor(config.setearColorBoton(this));
-
         }
 
         for (View b : botonesTam) {
-
             Button boton = (Button) b;
             boton.setTextSize(config.setearTamano(this));
-
         }
-    }
+
+        if(cfgActual.getVibracion().getDescripcion().equals("Siempre")){
+            vibrarBoton = true;
+        }else{
+            vibrarBoton = false;
+        }
     }
 
 }

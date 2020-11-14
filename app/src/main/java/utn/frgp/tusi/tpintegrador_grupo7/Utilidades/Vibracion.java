@@ -39,11 +39,25 @@ public class Vibracion {
         v.vibrate(tiempo);
     }
 
+    public void VibracionGrabar()
+    {
+        getVibrator();
+        long tiempo = 100; //en milisegundos
+        v.vibrate(tiempo);
+    }
+
     public void VibracionError()
     {
         getVibrator();
-        long[] tiempo = {400,
-                        500,400,500};
+        long[] tiempo = {200,
+                        300,200,300};
         v.vibrate(tiempo, -1);
+    }
+
+    public void VibracionBoton()
+    {
+        getVibrator();
+        long tiempo = 50; //en milisegundos
+        v.vibrate(tiempo);
     }
 }

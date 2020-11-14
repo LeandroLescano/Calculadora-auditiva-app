@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Vibrator;
 import android.speech.RecognitionListener;
 import android.speech.RecognizerIntent;
 import android.speech.SpeechRecognizer;
@@ -40,6 +41,8 @@ public class ComandosVoz implements RecognitionListener {
     private Button grabando, procesando;
     private ConstraintLayout fondoProcesando;
     private ArrayList<View> botones;
+    private Vibracion vibrar;
+    private Vibrator vibrator;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     public ComandosVoz(Context context, Activity activity, EditText operacion, TextView resultado, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout){
@@ -57,6 +60,9 @@ public class ComandosVoz implements RecognitionListener {
         speechIntent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 1);
         speechRecognizer = SpeechRecognizer.createSpeechRecognizer(context);
         speechRecognizer.setRecognitionListener(this);
+        vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+        vibrar = new Vibracion();
+        vibrar = vibrar.getManager(context);
     }
 
     @Override
@@ -67,7 +73,7 @@ public class ComandosVoz implements RecognitionListener {
     @Override
     public void onBeginningOfSpeech() {
         grabando.setVisibility(Button.VISIBLE);
-        Log.i("Msg", "Grabando...");
+        vibrar.VibracionGrabar();
         if(!isListening)
             isListening = true;
     }
@@ -99,6 +105,7 @@ public class ComandosVoz implements RecognitionListener {
         }else{
             isListening = false;
         }
+        vibrar.VibracionError();
         grabando.setVisibility(Button.INVISIBLE);
         fondoProcesando.setVisibility(ConstraintLayout.INVISIBLE);
         procesando.setVisibility(Button.INVISIBLE);
@@ -142,16 +149,20 @@ public class ComandosVoz implements RecognitionListener {
                 if(resultadoOperacion != null && Float.isNaN(resultadoOperacion)){
                     resultado.setText("Error matemático");
                     audio.emitirAudio("Error matemático");
+                    vibrar.VibracionError();
                 }else if(resultadoOperacion != null && resultadoOperacion%1 == 0 && resultadoOperacion != -1){
                     resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
                     audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
+                    vibrar.VibracionGrabar();
                 }else if (resultadoOperacion != null && resultadoOperacion != -1){
                     resultado.setText(resultadoOperacion.toString());
                     audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
+                    vibrar.VibracionGrabar();
                 }else{
                     operacion.setText("");
                     resultado.setText(R.string.ing_incorrecto);
                     audio.emitirAudio("Ingreso incorrecto");
+                    vibrar.VibracionError();
                 }
             }
             Log.e("onResults", matchesFound.get(0));

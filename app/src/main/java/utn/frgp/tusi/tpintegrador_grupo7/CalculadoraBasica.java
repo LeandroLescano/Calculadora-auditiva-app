@@ -62,6 +62,7 @@ public class CalculadoraBasica extends AppCompatActivity {
     private LinearLayout layout;
     private Vibrator vibrator;
     private Vibracion vibra;
+    private boolean vibrarBoton = true;
     private ArrayList<View> botones, botonesTam, botonesImg;
 
 
@@ -80,6 +81,8 @@ public class CalculadoraBasica extends AppCompatActivity {
         config = new ConfiguracionDao();
         hist = new HistorialDao();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        vibra = new Vibracion();
+        vibra = vibra.getManager(this);
         alertaGrabando = findViewById(R.id.alerta_grabando);
         alertaProcesando = findViewById(R.id.alerta_procesando);
         layout = findViewById(R.id.layout_basica);
@@ -133,6 +136,9 @@ public class CalculadoraBasica extends AppCompatActivity {
         if(!ObtenerOperador()){
             operacion.setText(MuestraVieja.substring(0,posActual).concat(buttonText.concat(MuestraVieja.substring(posActual))));
             Numero = Numero + buttonText;
+            if(vibrarBoton){
+                vibra.VibracionBoton();
+            }
         }
         if(posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje){
             posActual++;
@@ -159,6 +165,9 @@ public class CalculadoraBasica extends AppCompatActivity {
         }
         Calcular();
         audio.emitirAudio("borrar");
+        if(vibrarBoton){
+            vibra.VibracionBoton();
+        }
     }
 
     //Coloca en pantalla el último número ingresado dividido 100
@@ -191,6 +200,9 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         }
         Calcular();
+        if(vibrarBoton){
+            vibra.VibracionBoton();
+        }
     }
 
     //Mueve el cursor hacia la izquierda o derecha.
@@ -213,6 +225,9 @@ public class CalculadoraBasica extends AppCompatActivity {
                 audio.emitirAudio("izquierda");
                 break;
         }
+        if(vibrarBoton){
+            vibra.VibracionBoton();
+        }
     }
 
     //Borra toda la operación
@@ -223,6 +238,9 @@ public class CalculadoraBasica extends AppCompatActivity {
         cuenta = 0f;
         Numero = "";
         audio.emitirAudio("Borrar todo");
+        if(vibrarBoton){
+            vibra.VibracionBoton();
+        }
     }
 
     public void calcularOperacion(View view){
@@ -446,6 +464,11 @@ public class CalculadoraBasica extends AppCompatActivity {
         for(View b : botonesTam){
             Button boton = (Button) b;
             boton.setTextSize(config.setearTamano(this));
+        }
+        if(cfgActual.getVibracion().getDescripcion().equals("Siempre")){
+            vibrarBoton = true;
+        }else{
+            vibrarBoton = false;
         }
     }
 }
