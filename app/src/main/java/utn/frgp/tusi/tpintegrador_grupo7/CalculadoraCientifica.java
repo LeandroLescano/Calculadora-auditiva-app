@@ -570,6 +570,17 @@ public class CalculadoraCientifica extends AppCompatActivity {
         listaCompleta.add(findViewById(R.id.btnIgual));
         listaCompleta.add(findViewById(R.id.btnSumar));
         listaCompleta.add(findViewById(R.id.btnResta));
+        listaCompleta.add(findViewById(R.id.btnLogNatural));
+        listaCompleta.add(findViewById(R.id.btnLogDecimal));
+        listaCompleta.add(findViewById(R.id.btnPotencia));
+        listaCompleta.add(findViewById(R.id.btnEliminar));
+        listaCompleta.add(findViewById(R.id.btnBorrar));
+        listaCompleta.add(findViewById(R.id.btnDividir));
+        listaCompleta.add(findViewById(R.id.btnMultiplicar));
+        listaCompleta.add(findViewById(R.id.btnRaiz));
+        listaCompleta.add(findViewById(R.id.btnPi));
+        listaCompleta.add(findViewById(R.id.btnPorcentaje));
+
 
         return listaCompleta;
     }
