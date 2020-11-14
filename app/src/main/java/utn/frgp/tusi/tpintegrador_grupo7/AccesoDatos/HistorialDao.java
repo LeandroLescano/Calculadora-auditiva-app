@@ -27,7 +27,7 @@ public class HistorialDao {
         ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
         SQLiteDatabase BasedeDatos = admin.getWritableDatabase();
         lista = new ArrayList<>();
-        Cursor ops = BasedeDatos.rawQuery("select id, operacion from historial", null);
+        Cursor ops = BasedeDatos.rawQuery("select id, operacion from historial ORDER BY id DESC", null);
         if(ops.moveToFirst()){
             do{
                 operacion = new Operacion();
