@@ -299,10 +299,10 @@ public class CalculadoraBasica extends AppCompatActivity {
 //                }
 //                if(UltimoCaracter.equals("x") || UltimoCaracter.equals("/")){
 //                    if(!buttonText.equals("-") && !buttonText.equals("+")){
-//                        Error = true;
+//                        Error = false;
 //                    }
 //                }else if(UltimoCaracter.equals(buttonText)){
-//                    Error = true;
+//                    Error = false;
 //                }
 //            }
 //        }

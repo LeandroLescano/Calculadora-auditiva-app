@@ -245,7 +245,7 @@ public class Operacion {
             if(split[x].equals(")(")){
                 operacion = operacion.replace(")(", ")x(");
             }else if (split[x].equals("(")) {
-                if(x < split.length-1){
+                if(x-1 >= split.length-1){
                     boolean contiene = false;
                         for(String c : caracteres){
                             if(split[x-1].contains(c)){
@@ -272,7 +272,11 @@ public class Operacion {
                 if (split[x + 1].contains(")") && split[x - 1].contains("(")) {
                     finded = true;
                     Float resultadoParcial = Operacion.calcularOperacionBasica(split[x]);
-                    operacionACalcular = operacionACalcular.replace("(" + split[x] + ")", resultadoParcial.toString());
+                    if(resultadoParcial != null){
+                        operacionACalcular = operacionACalcular.replace("(" + split[x] + ")", resultadoParcial.toString());
+                    }else{
+                        operacionACalcular = operacionACalcular.replace("(" + split[x] + ")", "");
+                    }
                 }
             }
             if(!finded){
