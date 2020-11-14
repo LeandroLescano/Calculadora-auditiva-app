@@ -14,6 +14,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
@@ -52,6 +54,8 @@ public class CalculadoraBasica extends AppCompatActivity {
     private AyudaAuditiva audio;
     private ComandosVoz voz;
     private ConfiguracionDao config;
+    private Configuracion cfgActual;
+    private HistorialDao hist;
     private Button alertaGrabando, alertaProcesando;
     private ConstraintLayout fondoProcesando;
     private LinearLayout layout;
@@ -226,8 +230,37 @@ public class CalculadoraBasica extends AppCompatActivity {
         if(vibra == null){
             vibra = vibra.getManager(this);
         }
-        vibra.VibracionResultado();
-        audio.emitirAudio("Resultado: " + resultado.getText() );
+
+
+
+
+        if (!resultado.getText().equals("Error matemático") && !resultado.getText().equals("Error de sintaxis"))
+        {
+        hist.cargarOperacion(resultado.getText().toString(), this);
+
+        if (cfgActual.getVibracion().getDescripcion().equals("Siempre") || cfgActual.getVibracion().getDescripcion().equals("Solo resultados"))
+        {
+            vibra.VibracionResultado();
+        }
+
+            if (cfgActual.getSonido().getDescripcion().equals("Siempre") || cfgActual.getSonido().getDescripcion().equals("Solo resultados"))
+            {
+                audio.emitirAudio("Resultado: " + resultado.getText() );
+            }
+        }
+        else
+        {
+            if (cfgActual.getVibracion().getDescripcion().equals("Siempre") || cfgActual.getVibracion().getDescripcion().equals("Solo errores"))
+            {
+                vibra.VibracionError();
+            }
+
+            if (cfgActual.getSonido().getDescripcion().equals("Siempre") || cfgActual.getSonido().getDescripcion().equals("Solo errores"))
+            {
+                audio.emitirAudio(resultado.getText().toString());
+            }
+        }
+
         resultado.setAlpha(1f);
 
     }
@@ -415,6 +448,8 @@ public class CalculadoraBasica extends AppCompatActivity {
     public void cargarConfig()
     {
         config = new ConfiguracionDao();
+        cfgActual = new Configuracion();
+        cfgActual = config.traerConfiguracion(this);
         botonesImg = agregarBotonesImg();
         botonesTam = agregarBotones();
         botones = layout.getTouchables();

@@ -33,9 +33,12 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.constraintlayout.widget.ConstraintLayout;
 
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.Vibracion;
 
 public class CalculadoraCientifica extends AppCompatActivity {
     private TextView resultado;
@@ -53,7 +56,10 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private String buttonText = "";
     private String NumeroViejo = "";
     private ConfiguracionDao config;
+    private Configuracion cfgActual;
     private ArrayList<View> botones, botonesTam, botonesImg;
+    private Vibracion vibra;
+    private HistorialDao hist;
 
     @Override
     public void onResume() {
@@ -399,23 +405,59 @@ public class CalculadoraCientifica extends AppCompatActivity {
     @SuppressLint("SetTextI18n")
     public void calcularOperacion(View view){
         calcular();
-        audio.emitirAudio("Resultado: " + resultado.getText());
+        if(vibra == null){
+            vibra = vibra.getManager(this);
+        }
+
+        if (!resultado.getText().equals("Error matemático") && !resultado.getText().equals("Error de sintaxis"))
+        {
+            hist.cargarOperacion(resultado.getText().toString(), this);
+
+            if (cfgActual.getVibracion().getDescripcion().equals("Siempre") || cfgActual.getVibracion().getDescripcion().equals("Solo resultados"))
+            {
+                vibra.VibracionResultado();
+            }
+
+            if (cfgActual.getSonido().getDescripcion().equals("Siempre") || cfgActual.getSonido().getDescripcion().equals("Solo resultados"))
+            {
+                audio.emitirAudio("Resultado: " + resultado.getText() );
+            }
+        }
+        else
+        {
+            if (cfgActual.getVibracion().getDescripcion().equals("Siempre") || cfgActual.getVibracion().getDescripcion().equals("Solo errores"))
+            {
+                vibra.VibracionError();
+            }
+
+            if (cfgActual.getSonido().getDescripcion().equals("Siempre") || cfgActual.getSonido().getDescripcion().equals("Solo errores"))
+            {
+                audio.emitirAudio(resultado.getText().toString());
+            }
+        }
         resultado.setAlpha(1f);
+
     }
 
     public void calcular(){
         String operacionACalcular = operacion.getText().toString();
         operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
         Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacionACalcular));
+
         if(resultadoOp != null && resultadoOp%1 == 0){
             if(resultadoOp.toString().contains("E")){
                 resultado.setText(new BigDecimal(resultadoOp).toPlainString());
             }else{
                 resultado.setText(String.valueOf(Math.round(resultadoOp)));
             }
+        }else if(resultadoOp != null && resultadoOp.isNaN()){
+            resultado.setText("Error matemático");
         }else if (resultadoOp != null){
             resultado.setText(resultadoOp.toString());
+        }else{
+            resultado.setText("Error de sintaxis");
         }
+
     }
 
 
@@ -518,6 +560,8 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     public void cargarConfig() {
         config = new ConfiguracionDao();
+        cfgActual = new Configuracion();
+        cfgActual = config.traerConfiguracion(this);
         botonesImg = agregarBotonesImg();
         botonesTam = agregarBotones();
         botones = layout.getTouchables();

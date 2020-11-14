@@ -29,6 +29,18 @@ public class HistorialOperaciones extends AppCompatActivity {
     private GridView grid;
     private HistorialDao hist;
 
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        operaciones = new ArrayList<Operacion>();
+        hist = new HistorialDao();
+        operaciones = hist.listarOperaciones(this);
+        adapter = new OperacionAdapter(this, operaciones);
+        grid = (GridView) findViewById(R.id.gv_operaciones);
+        grid.setAdapter(adapter);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
