@@ -77,6 +77,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         config = new ConfiguracionDao();
+        hist = new HistorialDao();
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
         alertaGrabando = findViewById(R.id.alerta_grabando);
         alertaProcesando = findViewById(R.id.alerta_procesando);
@@ -236,7 +237,7 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         if (!resultado.getText().equals("Error matemático") && !resultado.getText().equals("Error de sintaxis"))
         {
-        hist.cargarOperacion(resultado.getText().toString(), this);
+        hist.cargarOperacion(operacion.getText() + "=" + resultado.getText(), this);
 
         if (cfgActual.getVibracion().getDescripcion().equals("Siempre") || cfgActual.getVibracion().getDescripcion().equals("Solo resultados"))
         {
@@ -445,26 +446,13 @@ public class CalculadoraBasica extends AppCompatActivity {
 
     //Carga configuracion actual en las listas de todos los botones
 
-    public void cargarConfig()
-    {
+    public void cargarConfig() {
         config = new ConfiguracionDao();
         cfgActual = new Configuracion();
         cfgActual = config.traerConfiguracion(this);
         botonesImg = agregarBotonesImg();
         botonesTam = agregarBotones();
         botones = layout.getTouchables();
-        Button botonChequeo, botonConfig;
-        botonChequeo = (Button) findViewById(R.id.btn0);
-        botonConfig = (Button) findViewById(R.id.btn1);
-
-        botonConfig.setBackgroundColor(config.setearColorBoton(this));
-        botonConfig.setTextColor(config.setearColorTexto(this));
-        botonConfig.setTypeface(config.setearTipografia(this));
-        botonConfig.setTextSize(config.setearTamano(this));
-
-        if (!botonChequeo.getBackground().toString().equals(botonConfig.getBackground().toString()) || botonChequeo.getCurrentTextColor() != botonConfig.getCurrentTextColor() || !botonChequeo.getTypeface().toString().equals(botonConfig.getTypeface().toString()) || botonChequeo.getTextSize()  != botonConfig.getTextSize())
-        {
-
 
         for(View v : botones){
             if(v.getId() != R.id.txtOperacion && v.getId() != R.id.btnDerecha && v.getId() != R.id.btnIzquierda && v.getId() != R.id.btnMic){
@@ -474,21 +462,14 @@ public class CalculadoraBasica extends AppCompatActivity {
                 boton.setTypeface(config.setearTipografia(this));
             }
         }
-
         for(View i : botonesImg){
-
             ImageButton boton = (ImageButton) i;
             boton.setColorFilter(config.setearColorTexto(this));
             boton.setBackgroundColor(config.setearColorBoton(this));
-
         }
-
         for(View b : botonesTam){
-
             Button boton = (Button) b;
             boton.setTextSize(config.setearTamano(this));
-
-        }
         }
     }
 }

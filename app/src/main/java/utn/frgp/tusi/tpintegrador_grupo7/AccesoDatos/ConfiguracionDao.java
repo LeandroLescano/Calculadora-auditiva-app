@@ -146,15 +146,11 @@ public class ConfiguracionDao {
             tipografia = new Tipografia();
             tipografia.setId(idTipografia);
             tipografia.setTipografia(tipogs.getString(1));
-
             while (tipogs.moveToNext()) {
-
                 tipografia = new Tipografia();
                 tipografia.setId(idTipografia);
                 tipografia.setTipografia(tipogs.getString(1));
-
             }
-
         }
 
         BasedeDatos.close();
@@ -338,8 +334,6 @@ public class ConfiguracionDao {
         Blanco = 0xFFFFFFFF;
         Negro = 0xFF000000;
 
-        config = traerConfiguracion(context);
-
         if (config.getColor().getColor().equals("Rojo"))
         {
             return Rojo;
@@ -371,8 +365,6 @@ public class ConfiguracionDao {
         Amarillo = 0xFFFFFF00;
         Blanco = 0xFFFFFFFF;
         Negro = 0xFF000000;
-
-        config = traerConfiguracion(context);
 
         if (config.getColorBoton().getColor().equals("Rojo"))
         {
@@ -406,7 +398,6 @@ public class ConfiguracionDao {
         Roboto = ResourcesCompat.getFont(context, R.font.roboto);
         ComicSans = ResourcesCompat.getFont(context, R.font.comicsans);
 
-        config = traerConfiguracion(context);
 
         if (config.getTipografia().getTipografia().equals("Arial"))
         {
@@ -435,7 +426,6 @@ public class ConfiguracionDao {
     public int setearTamano (Context context)
     {
         int tamano;
-        config = traerConfiguracion(context);
         tamano = config.getTamano().getTamano() +12;
 
         return tamano;

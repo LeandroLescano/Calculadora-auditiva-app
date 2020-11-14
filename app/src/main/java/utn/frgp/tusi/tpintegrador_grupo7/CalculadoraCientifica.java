@@ -83,6 +83,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         resultado = findViewById(R.id.txtResultado);
         resultado.setAlpha((float) 0.5);
         resultado.setText("0");
+        hist = new HistorialDao();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             operacion.setShowSoftInputOnFocus(false);
         }
@@ -411,7 +412,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
         if (!resultado.getText().equals("Error matemático") && !resultado.getText().equals("Error de sintaxis"))
         {
-            hist.cargarOperacion(resultado.getText().toString(), this);
+            hist.cargarOperacion(operacion.getText() + "=" + resultado.getText(), this);
 
             if (cfgActual.getVibracion().getDescripcion().equals("Siempre") || cfgActual.getVibracion().getDescripcion().equals("Solo resultados"))
             {

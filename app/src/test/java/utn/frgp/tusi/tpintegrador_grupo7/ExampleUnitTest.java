@@ -40,7 +40,7 @@ public class ExampleUnitTest {
 
     @Test
     public void calculoBasicoMultiplicacionParentesis() {
-        assertEquals("22.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("2(5+6)")).toString());
+        assertEquals("22.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("2x(5+6)")).toString());
     }
 
     @Test

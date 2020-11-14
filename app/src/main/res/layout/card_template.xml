@@ -31,8 +31,11 @@
                 android:id="@+id/txt_operacion"
                 android:layout_width="314dp"
                 android:layout_height="wrap_content"
+                android:ellipsize="start"
                 android:paddingStart="5dp"
                 android:paddingEnd="5dp"
+                android:singleLine="true"
+                android:textAlignment="viewStart"
                 android:textColor="#000000"
                 android:textSize="30sp" />
 
