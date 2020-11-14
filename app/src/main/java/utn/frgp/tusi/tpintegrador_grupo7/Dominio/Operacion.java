@@ -263,5 +263,23 @@ public class Operacion {
         return operacion;
     }
 
+    public static String sacarParentesis(String operacionACalcular) {
+        String[] split = new String[]{""};
+        while(operacionACalcular.contains("(") && operacionACalcular.contains(")")) {
+            split = operacionACalcular.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
+            boolean finded = false;
+            for (int x = 1; x < split.length - 1; x++) {
+                if (split[x + 1].contains(")") && split[x - 1].contains("(")) {
+                    finded = true;
+                    Float resultadoParcial = Operacion.calcularOperacionBasica(split[x]);
+                    operacionACalcular = operacionACalcular.replace("(" + split[x] + ")", resultadoParcial.toString());
+                }
+            }
+            if(!finded){
+                operacionACalcular = operacionACalcular.replace("(", "").replace(")", "");
+            }
+        }
+        return operacionACalcular;
+    }
 }
 

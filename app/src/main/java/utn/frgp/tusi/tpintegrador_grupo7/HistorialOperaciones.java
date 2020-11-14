@@ -28,6 +28,7 @@ public class HistorialOperaciones extends AppCompatActivity {
     private OperacionAdapter adapter;
     private GridView grid;
     private HistorialDao hist;
+    private ConfiguracionDao config;
 
 
     @Override
@@ -35,6 +36,7 @@ public class HistorialOperaciones extends AppCompatActivity {
         super.onResume();
         operaciones = new ArrayList<Operacion>();
         hist = new HistorialDao();
+        config = new ConfiguracionDao();
         operaciones = hist.listarOperaciones(this);
         adapter = new OperacionAdapter(this, operaciones);
         grid = (GridView) findViewById(R.id.gv_operaciones);
@@ -51,6 +53,7 @@ public class HistorialOperaciones extends AppCompatActivity {
         adapter = new OperacionAdapter(this, operaciones);
         grid = (GridView) findViewById(R.id.gv_operaciones);
         grid.setAdapter(adapter);
+        config = new ConfiguracionDao();
 
         //Seteos de configuración
 

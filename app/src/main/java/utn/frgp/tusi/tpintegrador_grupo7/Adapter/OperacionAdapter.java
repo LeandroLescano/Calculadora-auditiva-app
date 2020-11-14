@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.R;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 
@@ -29,6 +30,7 @@ public class OperacionAdapter extends BaseAdapter {
     private Context context;
     private Button botonVer;
     private ConfiguracionDao config;
+    private Configuracion cfgActual;
     private SharedPreferences preferences;
     private final String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
 
@@ -99,8 +101,8 @@ public class OperacionAdapter extends BaseAdapter {
 
     public void cargarConfiguracion(View view)
     {
-        
         config = new ConfiguracionDao();
+        cfgActual = config.traerConfiguracion(context);
         botonVer = (Button) view.findViewById(R.id.btn_Ver);
         botonVer.setBackgroundColor(config.setearColorBoton(context));
         botonVer.setTextColor(config.setearColorTexto(context));

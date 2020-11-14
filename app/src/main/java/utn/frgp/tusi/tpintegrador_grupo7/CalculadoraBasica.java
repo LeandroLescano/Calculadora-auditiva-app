@@ -36,6 +36,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
@@ -88,8 +89,6 @@ public class CalculadoraBasica extends AppCompatActivity {
         resultado.setAlpha((float) 0.5);
         resultado.setText("0");
 
-
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             operacion.setShowSoftInputOnFocus(false);
         }
@@ -119,7 +118,11 @@ public class CalculadoraBasica extends AppCompatActivity {
     }
 
     public void ingresarDigito(View view){
-        if(resultado.getAlpha() == 1f){
+        if (resultado.getAlpha() == 1f) {
+            if(resultado.getText().equals("Error matemático") || resultado.getText().equals("Error de sintaxis")){
+                operacion.setText("");
+                resultado.setText("0");
+            }
             resultado.setAlpha(0.5f);
         }
         Button digit = (Button)view;
@@ -223,17 +226,10 @@ public class CalculadoraBasica extends AppCompatActivity {
     }
 
     public void calcularOperacion(View view){
-        //Calcular(Numero);
-        //signo = "=";
-        //Calcular(Numero);
-        //Numero = "0";
         Calcular();
         if(vibra == null){
             vibra = vibra.getManager(this);
         }
-
-
-
 
         if (!resultado.getText().equals("Error matemático") && !resultado.getText().equals("Error de sintaxis"))
         {
@@ -261,9 +257,7 @@ public class CalculadoraBasica extends AppCompatActivity {
                 audio.emitirAudio(resultado.getText().toString());
             }
         }
-
         resultado.setAlpha(1f);
-
     }
 
     public boolean ObtenerOperador(){
@@ -307,12 +301,16 @@ public class CalculadoraBasica extends AppCompatActivity {
         operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
 
         //Detección de posición de paréntisis
-        operacionACalcular = sacarParentesis(operacionACalcular);
+        operacionACalcular = Operacion.sacarParentesis(operacionACalcular);
 
         //Calculo de operación
         Float resultadoOperacion = Operacion.calcularOperacionBasica(operacionACalcular);
         if(resultadoOperacion != null && resultadoOperacion%1 == 0){
-            resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
+            if(resultadoOperacion.toString().contains("E")){
+                resultado.setText(new BigDecimal(resultadoOperacion).toPlainString());
+            }else{
+                resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
+            }
         }else if(resultadoOperacion != null && resultadoOperacion.isNaN()){
             resultado.setText("Error matemático");
         }else if (resultadoOperacion != null){
@@ -320,28 +318,6 @@ public class CalculadoraBasica extends AppCompatActivity {
         }else{
             resultado.setText("Error de sintaxis");
         }
-    }
-
-    public String sacarParentesis(String operacionACalcular) {
-        String[] split = new String[]{""};
-        while(operacionACalcular.contains("(") && operacionACalcular.contains(")")) {
-            split = operacionACalcular.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
-            Log.e("split", Arrays.toString(split));
-            boolean finded = false;
-            for (int x = 1; x < split.length - 1; x++) {
-                if (split[x + 1].contains(")") && split[x - 1].contains("(")) {
-                    Log.e("term", split[x]);
-                    finded = true;
-                    Float resultadoParcial = Operacion.calcularOperacionBasica(split[x]);
-                    operacionACalcular = operacionACalcular.replace("(" + split[x] + ")", resultadoParcial.toString());
-                }
-            }
-            if(!finded){
-                operacionACalcular = operacionACalcular.replace("(", "").replace(")", "");
-            }
-        }
-        Log.e("sacarParentesis",  operacionACalcular);
-        return operacionACalcular;
     }
 
     public void comandoDeVoz(View view){

@@ -35,12 +35,12 @@ public class ExampleUnitTest {
 
     @Test
     public void calculoBasicoParentesis() {
-        assertEquals("-1.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("6+6-(7+4)-(4/2)")).toString());
+        assertEquals("-1.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(Operacion.sacarParentesis("6+6-(7+4)-(4/2)"))).toString());
     }
 
     @Test
     public void calculoBasicoMultiplicacionParentesis() {
-        assertEquals("22.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("2x(5+6)")).toString());
+        assertEquals("2x11.0",Operacion.sacarParentesis("2x(5+6)"));
     }
 
     @Test

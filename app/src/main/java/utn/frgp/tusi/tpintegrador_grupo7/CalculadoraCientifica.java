@@ -120,13 +120,17 @@ public class CalculadoraCientifica extends AppCompatActivity {
         Button digit = (Button)view;
         buttonText = digit.getText().toString();
 
-            posActual = operacion.getSelectionEnd();
-            if (resultado.getAlpha() == 1f) {
-                resultado.setAlpha(0.5f);
+        if (resultado.getAlpha() == 1f) {
+            if(resultado.getText().equals("Error matemático") || resultado.getText().equals("Error de sintaxis")){
+                operacion.setText("");
+                resultado.setText("0");
             }
-            MuestraVieja = operacion.getText().toString();
-            NumeroViejo = Numero;
-            if(!ObtenerOperador()) {
+            resultado.setAlpha(0.5f);
+        }
+        posActual = operacion.getSelectionEnd();
+        MuestraVieja = operacion.getText().toString();
+        NumeroViejo = Numero;
+        if(!ObtenerOperador()) {
             audio.emitirAudio(buttonText);
             switch (view.getId()) {
                 case R.id.btn0:
@@ -261,13 +265,12 @@ public class CalculadoraCientifica extends AppCompatActivity {
             }
 
             calcular();
-        }
-            else{
-                if(posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje){
-                    posActual++;
-                    operacion.setSelection(posActual);
-                }
+        }else{
+            if(posActual < operacion.getText().length() && view.getId() != R.id.btnPorcentaje){
+                posActual++;
+                operacion.setSelection(posActual);
             }
+        }
     }
 
     public boolean ObtenerOperador(){
@@ -303,7 +306,6 @@ public class CalculadoraCientifica extends AppCompatActivity {
 //        }
         return  Error;
     }
-
 
     //Coloca en pantalla el último número ingresado dividido 100
     public void porcentajeNumero(String muestra){
@@ -442,9 +444,15 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     public void calcular(){
         String operacionACalcular = operacion.getText().toString();
-        operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
-        Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacionACalcular));
 
+        //Agregar multiplicación entre parentesis
+        operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
+
+        //Detección de posición de paréntisis
+        operacionACalcular = Operacion.sacarParentesis(operacionACalcular);
+
+        //Calculo de operación.
+        Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacionACalcular));
         if(resultadoOp != null && resultadoOp%1 == 0){
             if(resultadoOp.toString().contains("E")){
                 resultado.setText(new BigDecimal(resultadoOp).toPlainString());
