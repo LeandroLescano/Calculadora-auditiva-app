@@ -36,6 +36,7 @@ public class HistorialDao {
                 lista.add(operacion);
             }while(ops.moveToNext());
         }
+        BasedeDatos.close();
         return lista;
     }
 
@@ -46,41 +47,51 @@ public class HistorialDao {
 
         Cursor ops = BasedeDatos.rawQuery("select count (id) from historial", null);
         if(ops.moveToFirst()){
-            while(ops.moveToNext()){
-
-                cantidadOps = Integer.parseInt(ops.getString(0));
-
-            }
+            cantidadOps = Integer.parseInt(ops.getString(0));
         }
+        BasedeDatos.close();
         return cantidadOps;
     }
 
-    public boolean cargarOperacion(String op, Context context) {
+    public void cargarOperacion(String op, Context context) {
 
+        boolean existe = false;
 
-        ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
-        SQLiteDatabase BaseDatos = admin.getWritableDatabase();
-        cantidadOps = contarOperaciones(context);
+        lista = new ArrayList<Operacion>();
+        lista = listarOperaciones(context);
 
-        try {
-            ContentValues registro = new ContentValues();
-
-            if (cantidadOps>9)
+        for (int x=0 ; x < lista.size() ; x++)
+        {
+            if (lista.get(x).getOperacion().equals(op))
             {
-                borrarUltima(context);
+                existe = true;
             }
 
-            registro.put("operacion", op);
-            BaseDatos.insert("historial", null, registro);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            BaseDatos.close();
         }
 
-        return true;
+        if (!existe) {
+            ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
+            SQLiteDatabase BaseDatos = admin.getWritableDatabase();
+            cantidadOps = contarOperaciones(context);
+
+            try {
+                ContentValues registro = new ContentValues();
+
+                if (cantidadOps > 9) {
+                    borrarUltima(context);
+                }
+
+                registro.put("operacion", op);
+                BaseDatos.insert("historial", null, registro);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+
+            } finally {
+                BaseDatos.close();
+            }
+        }
+
     }
 
     public void borrarUltima(Context context){
@@ -88,7 +99,7 @@ public class HistorialDao {
         SQLiteDatabase BasedeDatos = admin.getWritableDatabase();
         //Chequear
         BasedeDatos.delete("historial", "id = (select MIN (id) from historial)", null);
-
+        BasedeDatos.close();
     }
 
 
