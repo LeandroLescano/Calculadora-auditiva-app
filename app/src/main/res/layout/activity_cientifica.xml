@@ -104,7 +104,7 @@
                     android:text="@string/taninverso"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="30dp" />
+                    android:textSize="30sp" />
 
                 <Button
                     android:id="@+id/btnSinInverso"
@@ -117,7 +117,7 @@
                     android:text="@string/sininverso"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="30dp" />
+                    android:textSize="30sp" />
 
                 <Button
                     android:id="@+id/btnCosInverso"
@@ -206,7 +206,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="#000000"
-                    android:gravity="center_horizontal"
+                    android:gravity="center|center_horizontal"
                     android:onClick="ingresarDigito"
                     android:text="@string/parentAbrir"
                     android:textColor="#FFFFFF"
@@ -219,7 +219,7 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="#000000"
-                    android:gravity="center_horizontal"
+                    android:gravity="center|center_horizontal"
                     android:onClick="ingresarDigito"
                     android:text="@string/parentCerrar"
                     android:textColor="#FFFFFF"

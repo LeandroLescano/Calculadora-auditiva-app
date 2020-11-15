@@ -581,7 +581,6 @@ public class CalculadoraCientifica extends AppCompatActivity {
         listaCompleta.add(findViewById(R.id.btnPi));
         listaCompleta.add(findViewById(R.id.btnPorcentaje));
 
-
         return listaCompleta;
     }
 
@@ -604,7 +603,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         cfgActual = new Configuracion();
         cfgActual = config.traerConfiguracion(this);
         botonesImg = agregarBotonesImg();
-        botonesTam = agregarBotones();
+//        botonesTam = agregarBotones();
         botones = layout.getTouchables();
 
         for (View v : botones) {
@@ -622,9 +621,87 @@ public class CalculadoraCientifica extends AppCompatActivity {
             boton.setBackgroundColor(config.setearColorBoton(this));
         }
 
-        for (View b : botonesTam) {
-            Button boton = (Button) b;
-            boton.setTextSize(config.setearTamano(this));
+        for (View b : botones) {
+                if(b.getId() == R.id.btnDerecha || b.getId() == R.id.btnIzquierda || b.getId() == R.id.btnMic){
+                    ImageButton img = (ImageButton) b;
+                    int tamano = config.setearTamano(this)-12;
+                    if(b.getId() == R.id.btnDerecha){
+                        switch (tamano){
+                            case 16:
+                                img.setImageResource(R.drawable.ic_flecha_der_16);
+                                break;
+                            case 24:
+                                img.setImageResource(R.drawable.ic_flecha_der_24);
+                                break;
+                            case 32:
+                                img.setImageResource(R.drawable.ic_flecha_der_32);
+                                break;
+                            case 40:
+                                img.setImageResource(R.drawable.ic_flecha_der_40);
+                                break;
+                            case 48:
+                                img.setImageResource(R.drawable.ic_flecha_der_48);
+                                break;
+                            default:
+                                break;
+                        }
+                    }else if(b.getId() == R.id.btnIzquierda){
+                        switch (tamano){
+                            case 16:
+                                img.setImageResource(R.drawable.ic_flecha_izq_16);
+                                break;
+                            case 24:
+                                img.setImageResource(R.drawable.ic_flecha_izq_24);
+                                break;
+                            case 32:
+                                img.setImageResource(R.drawable.ic_flecha_izq_32);
+                                break;
+                            case 40:
+                                img.setImageResource(R.drawable.ic_flecha_izq_40);
+                                break;
+                            case 48:
+                                img.setImageResource(R.drawable.ic_flecha_izq_48);
+                                break;
+                            default:
+                                break;
+                        }
+                    }else{
+                        switch (tamano){
+                            case 16:
+                                img.setImageResource(R.drawable.ic_mic_16);
+                                break;
+                            case 24:
+                                img.setImageResource(R.drawable.ic_mic_24);
+                                break;
+                            case 32:
+                                img.setImageResource(R.drawable.ic_mic_32);
+                                break;
+                            case 40:
+                                img.setImageResource(R.drawable.ic_mic_40);
+                                break;
+                            case 48:
+                                img.setImageResource(R.drawable.ic_mic_48);
+                                break;
+                            default:
+                                break;
+                        }
+                    }
+                }else if(b.getId() != R.id.txtOperacion){
+                    Button boton = (Button) b;
+                    int tamano = config.setearTamano(this);
+                    if(tamano <= 40){
+                        boton.setTextSize(tamano);
+                    }else if (b.getId() == R.id.btntan || b.getId() == R.id.btnsin || b.getId() == R.id.btncos
+                              || b.getId() == R.id.btnBorrar) {
+                        boton.setTextSize(38);
+                    }else if(b.getId() == R.id.btnLogDecimal || b.getId() == R.id.btnLogNatural || b.getId() == R.id.btnEliminar){
+                        boton.setTextSize(42);
+                    }else if (b.getId() == R.id.btnTanInverso || b.getId() == R.id.btnCosInverso || b.getId() == R.id.btnSinInverso){
+                        boton.setTextSize(28);
+                    }else{
+                        boton.setTextSize(tamano);
+                    }
+            }
         }
 
         if(cfgActual.getVibracion().getDescripcion().equals("Siempre")){

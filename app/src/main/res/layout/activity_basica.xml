@@ -162,10 +162,10 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="#000000"
-                    android:gravity="center_horizontal"
+                    android:gravity="center|center_horizontal"
+                    android:onClick="ingresarDigito"
                     android:text="@string/parentAbrir"
                     android:textColor="#FFFFFF"
-                    android:onClick="ingresarDigito"
                     android:textSize="50sp" />
 
                 <Button
@@ -175,10 +175,10 @@
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="#000000"
-                    android:gravity="center_horizontal"
+                    android:gravity="center|center_horizontal"
+                    android:onClick="ingresarDigito"
                     android:text="@string/parentCerrar"
                     android:textColor="#FFFFFF"
-                    android:onClick="ingresarDigito"
                     android:textSize="50sp" />
 
                 <Button

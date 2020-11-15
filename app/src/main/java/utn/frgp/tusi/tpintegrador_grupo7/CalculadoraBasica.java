@@ -449,7 +449,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         cfgActual = new Configuracion();
         cfgActual = config.traerConfiguracion(this);
         botonesImg = agregarBotonesImg();
-        botonesTam = agregarBotones();
+//        botonesTam = agregarBotones();
         botones = layout.getTouchables();
 
         for(View v : botones){
@@ -465,9 +465,75 @@ public class CalculadoraBasica extends AppCompatActivity {
             boton.setColorFilter(config.setearColorTexto(this));
             boton.setBackgroundColor(config.setearColorBoton(this));
         }
-        for(View b : botonesTam){
-            Button boton = (Button) b;
-            boton.setTextSize(config.setearTamano(this));
+        for(View b : botones){
+            if(b.getId() == R.id.btnDerecha || b.getId() == R.id.btnIzquierda || b.getId() == R.id.btnMic){
+                ImageButton img = (ImageButton) b;
+                int tamano = config.setearTamano(this)-12;
+                if(b.getId() == R.id.btnDerecha){
+                    switch (tamano){
+                        case 16:
+                            img.setImageResource(R.drawable.ic_flecha_der_16);
+                            break;
+                        case 24:
+                            img.setImageResource(R.drawable.ic_flecha_der_24);
+                            break;
+                        case 32:
+                            img.setImageResource(R.drawable.ic_flecha_der_32);
+                            break;
+                        case 40:
+                            img.setImageResource(R.drawable.ic_flecha_der_40);
+                            break;
+                        case 48:
+                            img.setImageResource(R.drawable.ic_flecha_der_48);
+                            break;
+                        default:
+                            break;
+                    }
+                }else if(b.getId() == R.id.btnIzquierda){
+                    switch (tamano){
+                        case 16:
+                            img.setImageResource(R.drawable.ic_flecha_izq_16);
+                            break;
+                        case 24:
+                            img.setImageResource(R.drawable.ic_flecha_izq_24);
+                            break;
+                        case 32:
+                            img.setImageResource(R.drawable.ic_flecha_izq_32);
+                            break;
+                        case 40:
+                            img.setImageResource(R.drawable.ic_flecha_izq_40);
+                            break;
+                        case 48:
+                            img.setImageResource(R.drawable.ic_flecha_izq_48);
+                            break;
+                        default:
+                            break;
+                    }
+                }else{
+                    switch (tamano){
+                        case 16:
+                            img.setImageResource(R.drawable.ic_mic_16);
+                            break;
+                        case 24:
+                            img.setImageResource(R.drawable.ic_mic_24);
+                            break;
+                        case 32:
+                            img.setImageResource(R.drawable.ic_mic_32);
+                            break;
+                        case 40:
+                            img.setImageResource(R.drawable.ic_mic_40);
+                            break;
+                        case 48:
+                            img.setImageResource(R.drawable.ic_mic_48);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }else if(b.getId() != R.id.txtOperacion){
+                Button boton = (Button) b;
+                boton.setTextSize(config.setearTamano(this));
+            }
         }
         if(cfgActual.getVibracion().getDescripcion().equals("Siempre")){
             vibrarBoton = true;
