@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.R;
 
@@ -43,6 +44,8 @@ public class ComandosVoz implements RecognitionListener {
     private ArrayList<View> botones;
     private Vibracion vibrar;
     private Vibrator vibrator;
+    private HistorialDao hist;
+    private Context context;
     private final Handler handler = new Handler(Looper.getMainLooper());
 
     public ComandosVoz(Context context, Activity activity, EditText operacion, TextView resultado, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout){
@@ -51,6 +54,7 @@ public class ComandosVoz implements RecognitionListener {
         this.grabando = grabando;
         this.procesando = procesando;
         this.fondoProcesando = fondoProcesando;
+        this.context = context;
         botones = layout.getTouchables();
         audio = new AyudaAuditiva(context);
         ActivityCompat.requestPermissions(activity, new String[]{RECORD_AUDIO}, PackageManager.PERMISSION_GRANTED);
@@ -63,6 +67,7 @@ public class ComandosVoz implements RecognitionListener {
         vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
         vibrar = new Vibracion();
         vibrar = vibrar.getManager(context);
+        hist = new HistorialDao();
     }
 
     @Override
@@ -153,10 +158,12 @@ public class ComandosVoz implements RecognitionListener {
                 }else if(resultadoOperacion != null && resultadoOperacion%1 == 0 && resultadoOperacion != -1){
                     resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
                     audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
+                    hist.cargarOperacion(operacion.getText() + "=" + resultado.getText(), context);
                     vibrar.VibracionGrabar();
                 }else if (resultadoOperacion != null && resultadoOperacion != -1){
                     resultado.setText(resultadoOperacion.toString());
                     audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
+                    hist.cargarOperacion(operacion.getText() + "=" + resultado.getText(), context);
                     vibrar.VibracionGrabar();
                 }else{
                     operacion.setText("");
