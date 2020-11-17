@@ -146,7 +146,17 @@ public class Operacion {
     //Resolución de funciones trigonométricas, raíces y exponentes
     public static String calcularOperacionCientifica(String operacion){
         String opLocal = operacion;
-        String[] split = operacion.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.-])(?=[\\d.-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
+
+        String[] splitP = operacion.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
+        for(int x=1; x < splitP.length; x++){
+            if(splitP[x-1].contains("(") && splitP[x+1].contains(")")
+                    && !splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
+                opLocal = opLocal.replace(splitP[x], String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]))));
+            }
+        }
+
+
+        String[] split = opLocal.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.-])(?=[\\d.-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
         String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
         String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
         boolean primerOperador = false, contieneOperadores = false;

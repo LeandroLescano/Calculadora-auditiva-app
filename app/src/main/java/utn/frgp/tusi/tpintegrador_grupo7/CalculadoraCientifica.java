@@ -469,11 +469,14 @@ public class CalculadoraCientifica extends AppCompatActivity {
         //Agregar multiplicación entre parentesis
         operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
 
+        //Resolución de funciones
+        operacionACalcular = Operacion.calcularOperacionCientifica(operacionACalcular);
+
         //Detección de posición de paréntisis
         operacionACalcular = Operacion.sacarParentesis(operacionACalcular);
 
         //Calculo de operación.
-        Float resultadoOp = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacionACalcular));
+        Float resultadoOp = Operacion.calcularOperacionBasica(operacionACalcular);
         if(resultadoOp != null && resultadoOp%1 == 0){
             if(resultadoOp.toString().contains("E")){
                 resultado.setText(new BigDecimal(resultadoOp).toPlainString());
