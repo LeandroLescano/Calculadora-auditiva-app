@@ -143,7 +143,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
         MuestraVieja = operacion.getText().toString();
         NumeroViejo = Numero;
         if(!ObtenerOperador()) {
-            audio.emitirAudio(buttonText);
+            if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+                audio.emitirAudio(buttonText);
+            }
             switch (view.getId()) {
                 case R.id.btn0:
                     operacion.setText(MuestraVieja.substring(0, posActual).concat("0".concat(MuestraVieja.substring(posActual))));
@@ -324,7 +326,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     //Coloca en pantalla el último número ingresado dividido 100
     public void porcentajeNumero(String muestra){
-        audio.emitirAudio("%");
+        if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+            audio.emitirAudio("%");
+        }
         String opActual = operacion.getText().toString().substring(0, posActual);
         Integer ultimaPos=0, numeroInt = 0, posNumero;
         Float charCode, numeroFloat;
@@ -373,15 +377,18 @@ public class CalculadoraCientifica extends AppCompatActivity {
                     posActual++;
                     operacion.setSelection(posActual);
                 }
-                audio.emitirAudio("derecha");
+                if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+                    audio.emitirAudio("derecha");
+                }
                 break;
             case R.id.btnIzquierda:
                 if(posActual-1 >= 0){
                     posActual--;
                     operacion.setSelection(posActual);
                 }
-
-                audio.emitirAudio("izquierda");
+                if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+                    audio.emitirAudio("izquierda");
+                }
                 break;
         }
         if(vibrarBoton){
@@ -391,7 +398,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     //Borra un dígito a la izquierda de la posición actual del cursor.
     public void borrarDigito(View view){
-        audio.emitirAudio("borrar");
+        if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+            audio.emitirAudio("borrar");
+        }
         String opActual = operacion.getText().toString();
         if(opActual.length() > 0 && posActual > 0){
             int posFuncion = contieneOperadores(opActual);
@@ -429,7 +438,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     //Borra toda la operación en pantalla y resetea la calculadora en 0.
     public void eliminarOperacion(View view){
-        audio.emitirAudio("borrar todo");
+        if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+            audio.emitirAudio("borrar todo");
+        }
         operacion.setText("");
         resultado.setText("0");
         resultado.setAlpha((float) 0.5);

@@ -106,7 +106,10 @@ public class Operacion {
                 }
             }
             //Log.e("sumaResta", sumaResta);
-            String[] sumaRestaSplit = sumaResta.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
+            String[] sumaRestaSplit = sumaResta.replace("--", "+")
+                    .replace("+-", "-")
+                    .replace("-+", "-")
+                    .replace("++","+").split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
 
             //Calculo las sumas y restas
             int primerSimbolo = 1;
@@ -146,6 +149,18 @@ public class Operacion {
     //Resolución de funciones trigonométricas, raíces y exponentes
     public static String calcularOperacionCientifica(String operacion){
         String opLocal = operacion;
+
+        String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
+        String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
+        boolean primerOperador = false, contieneOperadores = false;
+        //Si no tiene operadores, llama directamente a calcularOperacionBasica
+        for (String op : operadores) {
+            if (opLocal.contains(op)) {
+                contieneOperadores = true;
+                break;
+            }
+        }
+        if(contieneOperadores){
         boolean checked = false;
         int vueltas = opLocal.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])").length, cVueltas = 0;
         //Check de que no haya parentesis dentro de otras funciones
@@ -212,17 +227,6 @@ public class Operacion {
 //        String[] split = opLocal.split("(?<=[\\d.-])(?=[^\\d.-])|(?<=[^\\d.])(?=[\\d.])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
         String[] split = opLocal.split("(?<=[\\d.+/x-])(?=[^\\d.+/x-])|(?<=[^\\d.+/x-])(?=[\\d.+/x-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])|(?<=[\\√])(?=[^\\√])");
 
-        String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
-        String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
-        boolean primerOperador = false, contieneOperadores = false;
-        //Si no tiene operadores, llama directamente a calcularOperacionBasica
-        for (String op : operadores) {
-            if (opLocal.contains(op)) {
-                contieneOperadores = true;
-                break;
-            }
-        }
-        if(contieneOperadores){
             try {
                 for (String operador : funciones) {
                     if (split[0].contains(operador)) {

@@ -66,6 +66,12 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void calculoTest(){
+        assertEquals("24.0",Operacion.calcularOperacionBasica(Operacion.sacarParentesis(
+                Operacion.calcularOperacionCientifica("4x((-6)x(0-((-9)-1)/(-10)))"))).toString());
+    }
+
+    @Test
     public void calculoBasicoMultiplicacionParentesis() {
         assertEquals("2x11.0",Operacion.sacarParentesis("2x(5+6)"));
     }

@@ -135,7 +135,9 @@ public class CalculadoraBasica extends AppCompatActivity {
         buttonText = digit.getText().toString();
         posActual = operacion.getSelectionEnd();
         MuestraVieja = operacion.getText().toString();
-        audio.emitirAudio(buttonText);
+        if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+            audio.emitirAudio(buttonText);
+        }
         if(!ObtenerOperador()){
             operacion.setText(MuestraVieja.substring(0,posActual).concat(buttonText.concat(MuestraVieja.substring(posActual))));
             Numero = Numero + buttonText;
@@ -167,7 +169,9 @@ public class CalculadoraBasica extends AppCompatActivity {
             resultado.setText("0");
         }
         Calcular();
-        audio.emitirAudio("borrar");
+        if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+            audio.emitirAudio("borrar");
+        }
         if(vibrarBoton){
             vibra.VibracionBoton();
         }
@@ -175,7 +179,9 @@ public class CalculadoraBasica extends AppCompatActivity {
 
     //Coloca en pantalla el último número ingresado dividido 100
     public void porcentajeNumero(View view){
-        audio.emitirAudio("%");
+        if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+            audio.emitirAudio("%");
+        }
         String muestra = operacion.getText().toString();
         String opActual = operacion.getText().toString().substring(0, posActual);
         Integer ultimaPos=0, numeroInt = 0, posNumero;
@@ -225,14 +231,18 @@ public class CalculadoraBasica extends AppCompatActivity {
                     posActual++;
                     operacion.setSelection(posActual);
                 }
-                audio.emitirAudio("derecha");
+                if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+                    audio.emitirAudio("derecha");
+                }
                 break;
             case R.id.btnIzquierda:
                 if(posActual-1 >= 0){
                     posActual--;
                     operacion.setSelection(posActual);
                 }
-                audio.emitirAudio("izquierda");
+                if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+                    audio.emitirAudio("izquierda");
+                }
                 break;
         }
         if(vibrarBoton){
@@ -247,7 +257,9 @@ public class CalculadoraBasica extends AppCompatActivity {
         resultado.setAlpha((float) 0.5);
         cuenta = 0f;
         Numero = "";
-        audio.emitirAudio("Borrar todo");
+        if(cfgActual.getSonido().getDescripcion().equals("Siempre")){
+            audio.emitirAudio("Borrar todo");
+        }
         if(vibrarBoton){
             vibra.VibracionBoton();
         }
