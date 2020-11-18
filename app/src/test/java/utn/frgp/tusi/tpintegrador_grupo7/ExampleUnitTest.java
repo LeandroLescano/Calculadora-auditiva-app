@@ -51,6 +51,16 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void calculoFuncionParentesis3(){
+        assertEquals("7.605882",Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica("lg(7^9)"))).toString());
+    }
+
+    @Test
+    public void calculoFuncionParentesis4(){
+        assertEquals("1.0760211",Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica("√tan(4)"))).toString());
+    }
+
+    @Test
     public void calculoIncompleto(){
         assertEquals(null,Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica("cos(())"))));
     }

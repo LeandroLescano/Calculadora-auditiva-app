@@ -148,6 +148,7 @@ public class Operacion {
         String opLocal = operacion;
         boolean checked = false;
         int vueltas = opLocal.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])").length, cVueltas = 0;
+        //Check de que no haya parentesis dentro de otras funciones
         while(!checked && cVueltas < vueltas){
             String[] splitP = opLocal.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
             for(int x=1; x < splitP.length; x++){
@@ -157,8 +158,13 @@ public class Operacion {
                 if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")")
                         && !splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
                     if(splitP[x-1].contains("cos") || splitP[x-1].contains("tan") || splitP[x-1].contains("sin") || splitP[x-1].contains("l")){
-
-                        opLocal = opLocal.replace(splitP[x], String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]))));
+                        Float parcialNum = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]));
+                        if(parcialNum != null && parcialNum.toString().contains("E")){
+                            //Si el número contiene E lo convierte en decimal
+                            opLocal = opLocal.replace(splitP[x], new BigDecimal(parcialNum).toPlainString());
+                        }else if(parcialNum != null){
+                            opLocal = opLocal.replace(splitP[x], parcialNum.toString());
+                        }
                     }else{
                         opLocal = opLocal.replace("(" + splitP[x] + ")", String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]))));
                     }
@@ -169,6 +175,8 @@ public class Operacion {
                     }
                 }
             }
+
+
             String[] splitCheck = opLocal.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
             int count = 0, countChecked = 0;
             for(int x=1; x < splitCheck.length; x++) {
@@ -177,9 +185,7 @@ public class Operacion {
                     boolean primeroAbierto = false, primeroCerrado = false;
                     for(int y=x+1; y < splitCheck.length; y++) {
                         if(splitCheck[y].contains("(")){
-                            if(!primeroCerrado){
-                                primeroAbierto = true;
-                            }
+                            primeroAbierto = true;
                         }else if(splitCheck[y].contains(")")){
                             if(!primeroAbierto){
                                 primeroCerrado = true;
@@ -204,7 +210,7 @@ public class Operacion {
 
 
 //        String[] split = opLocal.split("(?<=[\\d.-])(?=[^\\d.-])|(?<=[^\\d.])(?=[\\d.])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
-        String[] split = opLocal.split("(?<=[\\d.+/x-])(?=[^\\d.+/x-])|(?<=[^\\d.+/x-])(?=[\\d.+/x-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
+        String[] split = opLocal.split("(?<=[\\d.+/x-])(?=[^\\d.+/x-])|(?<=[^\\d.+/x-])(?=[\\d.+/x-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])|(?<=[\\√])(?=[^\\√])");
 
         String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
         String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
@@ -254,10 +260,6 @@ public class Operacion {
                             }
                         }
                         x++;
-                    } else if (split[x].contains("√")) {
-                        double raiz = Math.sqrt(Double.parseDouble(split[x + 1]));
-                        opLocal = opLocal.replace("√" + split[x + 1], Double.toString(raiz));
-                        x++;
                     } else if (split[x].contains("lg(")) {
                         double log10 = Math.log10(Double.parseDouble(split[x + 1]));
                         opLocal = opLocal.replace("lg(" + split[x + 1] + ")", Double.toString(log10));
@@ -289,6 +291,17 @@ public class Operacion {
                             return "";
                         }else{
                             opLocal = opLocal.replace(split[x] + split[x + 1] + split[x+2], Double.toString(cos));
+                        }
+                        x++;
+                    } else if (split[x].contains("√")) {
+                        double raiz = 0;
+                        if(split[x+1].contains("cos") || split[x+1].contains("tan") || split[x+1].contains("sin") || split[x+1].contains("l")){
+                            raiz = Math.sqrt(Double.parseDouble(Operacion.calcularOperacionCientifica(split[x+1]+split[x+2]+split[x+3])));
+                            opLocal = opLocal.replace("√" + split[x + 1] + split[x+2] + split[x+3], Double.toString(raiz));
+                            x+=2;
+                        }else{
+                         raiz = Math.sqrt(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("√" + split[x + 1], Double.toString(raiz));
                         }
                         x++;
                     }
