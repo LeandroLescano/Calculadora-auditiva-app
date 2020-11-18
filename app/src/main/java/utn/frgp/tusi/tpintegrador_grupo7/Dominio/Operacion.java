@@ -146,17 +146,66 @@ public class Operacion {
     //Resolución de funciones trigonométricas, raíces y exponentes
     public static String calcularOperacionCientifica(String operacion){
         String opLocal = operacion;
+        boolean checked = false;
+        int vueltas = opLocal.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])").length, cVueltas = 0;
+        while(!checked && cVueltas < vueltas){
+            String[] splitP = opLocal.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
+            for(int x=1; x < splitP.length; x++){
+                if(splitP[x].equals("null")){
+                    return "";
+                }
+                if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")")
+                        && !splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
+                    if(splitP[x-1].contains("cos") || splitP[x-1].contains("tan") || splitP[x-1].contains("sin") || splitP[x-1].contains("l")){
 
-        String[] splitP = operacion.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
-        for(int x=1; x < splitP.length; x++){
-            if(splitP[x-1].contains("(") && splitP[x+1].contains(")")
-                    && !splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
-                opLocal = opLocal.replace(splitP[x], String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]))));
+                        opLocal = opLocal.replace(splitP[x], String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]))));
+                    }else{
+                        opLocal = opLocal.replace("(" + splitP[x] + ")", String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]))));
+                    }
+                }else if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")")
+                        && splitP[x].matches("(\\d+(?:\\.\\d+)?)")){
+                    if(!splitP[x-1].contains("cos") && !splitP[x-1].contains("tan") && !splitP[x-1].contains("sin") && !splitP[x-1].contains("l")){
+                        opLocal = opLocal.replace(splitP[x-2] + "(" + splitP[x] + ")", splitP[x-2] + splitP[x]);
+                    }
+                }
             }
+            String[] splitCheck = opLocal.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
+            int count = 0, countChecked = 0;
+            for(int x=1; x < splitCheck.length; x++) {
+                if(splitCheck[x].contains("cos") || splitCheck[x].contains("tan") || splitCheck[x].contains("sin") || splitCheck[x].contains("l")){
+                    count++;
+                    boolean primeroAbierto = false, primeroCerrado = false;
+                    for(int y=x+1; y < splitCheck.length; y++) {
+                        if(splitCheck[y].contains("(")){
+                            if(!primeroCerrado){
+                                primeroAbierto = true;
+                            }
+                        }else if(splitCheck[y].contains(")")){
+                            if(!primeroAbierto){
+                                primeroCerrado = true;
+                                if(!splitCheck[y-1].matches("[-+]?[0-9]*\\.?[0-9]+")){
+                                    countChecked++;
+                                }
+                                break;
+                            }
+                        }
+                    }
+                    if(primeroCerrado){
+                        countChecked++;
+                    }
+                }
+            }
+            if(count == countChecked){
+                checked = true;
+            }
+            cVueltas++;
         }
 
 
-        String[] split = opLocal.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.-])(?=[\\d.-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
+
+//        String[] split = opLocal.split("(?<=[\\d.-])(?=[^\\d.-])|(?<=[^\\d.])(?=[\\d.])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
+        String[] split = opLocal.split("(?<=[\\d.+/x-])(?=[^\\d.+/x-])|(?<=[^\\d.+/x-])(?=[\\d.+/x-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
+
         String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
         String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
         boolean primerOperador = false, contieneOperadores = false;
@@ -178,7 +227,7 @@ public class Operacion {
                 if(!primerOperador && !split[split.length-1].equals(")")){
                     Float f = Float.parseFloat(split[split.length - 1]);
                 }
-                for (int x = 0; x < split.length; x++) {
+                for (int x = 0; x < split.length-1; x++) {
                     if (split[x].contains("ln(")) {
                         double logN = Math.log(Double.parseDouble(split[x + 1]));
                         opLocal = opLocal.replace("ln(" + split[x + 1] + ")", Double.toString(logN));
@@ -235,7 +284,12 @@ public class Operacion {
                         x++;
                     } else if (split[x].contains("cos(")) {
                         double cos = Math.cos(Double.parseDouble(split[x + 1]));
-                        opLocal = opLocal.replace("cos(" + split[x + 1] + ")", Double.toString(cos));
+//                        opLocal = opLocal.replace("cos(" + split[x + 1] + ")", Double.toString(cos));
+                        if(x+2 >= split.length){
+                            return "";
+                        }else{
+                            opLocal = opLocal.replace(split[x] + split[x + 1] + split[x+2], Double.toString(cos));
+                        }
                         x++;
                     }
                 }
@@ -250,12 +304,14 @@ public class Operacion {
 
     public static String agregarMultiplicaciones(String operacion) {
         String[] split = operacion.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
+        String[] funciones = new String[]{"arccos", "arctan", "arcsin", "cos", "tan", "sin", "lg", "ln"};
+        String[] operadores = new String[]{"+","-","/","x"};
         String[] caracteres = new String[]{"+","-","/","x","^","√", "cos", "tan", "sin", "arccos", "arctan", "arcsin", "lg", "ln"};
         for (int x = 0; x < split.length; x++) {
             if(split[x].equals(")(")){
                 operacion = operacion.replace(")(", ")x(");
             }else if (split[x].equals("(")) {
-                if(x-1 >= split.length-1){
+                if(x-1 >= 0){
                     boolean contiene = false;
                         for(String c : caracteres){
                             if(split[x-1].contains(c)){
@@ -268,8 +324,29 @@ public class Operacion {
                     }
                 }
             }
-
         }
+
+        split = operacion.split("(?<=[\\d.])(?=[^\\d.])|(?<=[^\\d.])(?=[\\d.])");
+        for (int x = 0; x < split.length; x++) {
+            for(String f: funciones){
+                if(split[x].contains(f)){
+                    if(x-1 >= 0){
+                        boolean contiene = false;
+                        for(String o : operadores){
+                            if(split[x-1].contains(o)){
+                                contiene = true;
+                                break;
+                            }
+                        }
+                        if(!contiene){
+                            operacion = operacion.replace(split[x], "x" + split[x]);
+                        }
+                    }
+                }
+            }
+        }
+
+
         return operacion;
     }
 

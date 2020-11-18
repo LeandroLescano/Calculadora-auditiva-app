@@ -24,8 +24,11 @@ import android.widget.TextView;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Locale;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -63,6 +66,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private Vibrator vibrator;
     private boolean vibrarBoton = true;
     private HistorialDao hist;
+    private DecimalFormat formatter;
 
     @Override
     public void onResume() {
@@ -90,6 +94,8 @@ public class CalculadoraCientifica extends AppCompatActivity {
         vibra = new Vibracion();
         vibra = vibra.getManager(this);
         hist = new HistorialDao();
+        formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        formatter.setMaximumFractionDigits(8);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             operacion.setShowSoftInputOnFocus(false);
         }
@@ -324,7 +330,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         Float charCode, numeroFloat;
         for (int x=0; x<opActual.length(); x++){
             charCode = (float) opActual.charAt(x);
-            if(charCode < 48 || charCode > 57){
+            if(charCode != 46 && (charCode < 48 || charCode > 57)){
                     ultimaPos=x+1;
             }
         }
@@ -332,13 +338,20 @@ public class CalculadoraCientifica extends AppCompatActivity {
             numeroFloat = Float.parseFloat(opActual.substring(ultimaPos))/100;
             posNumero = muestra.lastIndexOf(opActual.substring(ultimaPos));
             String finalOperacion = muestra.substring(posNumero + opActual.substring(ultimaPos).length());
-            if(numeroFloat%2 == 0){
+            if(numeroFloat%1 == 0){
                 numeroInt = Math.round(numeroFloat);
                 operacion.setText(muestra.substring(0, posNumero).concat(numeroInt.toString()).concat(finalOperacion));
                 posActual = operacion.getText().toString().lastIndexOf(numeroInt.toString())+numeroFloat.toString().length()-2;
             }else{
-                operacion.setText(muestra.substring(0, posNumero).concat(numeroFloat.toString()).concat(finalOperacion));
-                posActual = operacion.getText().toString().lastIndexOf(numeroFloat.toString())+numeroFloat.toString().length();
+                if(numeroFloat.toString().contains(("E"))){
+                    NumberFormat formatter = new DecimalFormat("###########.##########");
+                    String numFloatExp = formatter.format(numeroFloat);
+                    operacion.setText(muestra.substring(0, posNumero).concat(numFloatExp).concat(finalOperacion));
+                    posActual = operacion.getText().toString().lastIndexOf(numFloatExp)+numFloatExp.length();
+                }else{
+                    operacion.setText(muestra.substring(0, posNumero).concat(numeroFloat.toString()).concat(finalOperacion));
+                    posActual = operacion.getText().toString().lastIndexOf(numeroFloat.toString())+numeroFloat.toString().length();
+                }
             }
             operacion.setSelection(posActual);
         }catch (NumberFormatException e){
@@ -475,18 +488,22 @@ public class CalculadoraCientifica extends AppCompatActivity {
         //Detección de posición de paréntisis
         operacionACalcular = Operacion.sacarParentesis(operacionACalcular);
 
+
+
         //Calculo de operación.
         Float resultadoOp = Operacion.calcularOperacionBasica(operacionACalcular);
         if(resultadoOp != null && resultadoOp%1 == 0){
             if(resultadoOp.toString().contains("E")){
-                resultado.setText(new BigDecimal(resultadoOp).toPlainString());
+                resultado.setText(formatter.format(new BigDecimal(resultadoOp)));
             }else{
-                resultado.setText(String.valueOf(Math.round(resultadoOp)));
+                resultado.setText(formatter.format(Math.round(resultadoOp)));
             }
         }else if(resultadoOp != null && resultadoOp.isNaN()){
             resultado.setText("Error matemático");
+        }else if(resultadoOp != null && resultadoOp.isInfinite()){
+            resultado.setText("Infinito");
         }else if (resultadoOp != null){
-            resultado.setText(resultadoOp.toString());
+            resultado.setText(formatter.format(resultadoOp));
         }else{
             resultado.setText("Error de sintaxis");
         }

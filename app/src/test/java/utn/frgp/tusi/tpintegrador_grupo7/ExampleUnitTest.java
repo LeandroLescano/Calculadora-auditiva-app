@@ -1,5 +1,7 @@
 package utn.frgp.tusi.tpintegrador_grupo7;
 
+import android.util.Log;
+
 import org.junit.Test;
 
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
@@ -36,6 +38,21 @@ public class ExampleUnitTest {
     @Test
     public void calculoBasicoParentesis() {
         assertEquals("-1.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(Operacion.sacarParentesis("6+6-(7+4)-(4/2)"))).toString());
+    }
+
+    @Test
+    public void calculoFuncionParentesis(){
+        assertEquals("-0.577874",Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica("cos(9-6)+sin((9-6)x3)"))).toString());
+    }
+
+    @Test
+    public void calculoFuncionParentesis2(){
+        assertEquals(null,Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica("cos(9-6)-sin(()"))));
+    }
+
+    @Test
+    public void calculoIncompleto(){
+        assertEquals(null,Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica("cos(())"))));
     }
 
     @Test
