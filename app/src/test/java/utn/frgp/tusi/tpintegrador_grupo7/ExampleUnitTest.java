@@ -77,6 +77,13 @@ public class ExampleUnitTest {
     }
 
     @Test
+    public void calculoCombinado() {
+        assertEquals("1029.0",Operacion.calcularOperacionBasica(Operacion.sacarParentesis(
+                Operacion.calcularOperacionCientifica("(5+4^((-1)x(-9)-4))"))).toString());
+    }
+
+
+    @Test
     public void calculoBasicoMenosMenos() {
         assertEquals("-12.0",Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica("-6-6")).toString());
     }

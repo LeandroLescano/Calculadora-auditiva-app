@@ -170,8 +170,8 @@ public class Operacion {
                 if(splitP[x].equals("null")){
                     return "";
                 }
-                if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")")
-                        && !splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
+                //Si el anterior contiene "(", el posterior ")" y el número no es un dígito lo calcula
+                if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")") && !splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
                     if(splitP[x-1].contains("cos") || splitP[x-1].contains("tan") || splitP[x-1].contains("sin") || splitP[x-1].contains("l")){
                         Float parcialNum = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]));
                         if(parcialNum != null && parcialNum.toString().contains("E")){
@@ -181,10 +181,9 @@ public class Operacion {
                             opLocal = opLocal.replace(splitP[x], parcialNum.toString());
                         }
                     }else{
-                        opLocal = opLocal.replace("(" + splitP[x] + ")", String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]))));
+                    opLocal = opLocal.replace("(" + splitP[x] + ")", String.valueOf(Operacion.calcularOperacionBasica(Operacion     .calcularOperacionCientifica(splitP[x]))));
                     }
-                }else if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")")
-                        && splitP[x].matches("(\\d+(?:\\.\\d+)?)")){
+                }else if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")") && splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
                     if(!splitP[x-1].contains("cos") && !splitP[x-1].contains("tan") && !splitP[x-1].contains("sin") && !splitP[x-1].contains("l")){
                         opLocal = opLocal.replace(splitP[x-2] + "(" + splitP[x] + ")", splitP[x-2] + splitP[x]);
                     }
@@ -195,7 +194,7 @@ public class Operacion {
             String[] splitCheck = opLocal.split("(?<=[\\(])(?=[^\\)])|(?<=[^\\(])(?=[\\)])");
             int count = 0, countChecked = 0;
             for(int x=1; x < splitCheck.length; x++) {
-                if(splitCheck[x].contains("cos") || splitCheck[x].contains("tan") || splitCheck[x].contains("sin") || splitCheck[x].contains("l")){
+                if(splitCheck[x].contains("cos") || splitCheck[x].contains("tan") || splitCheck[x].contains("sin") || splitCheck[x].contains("l") || splitCheck[x].contains("^")){
                     count++;
                     boolean primeroAbierto = false, primeroCerrado = false;
                     for(int y=x+1; y < splitCheck.length; y++) {
@@ -223,9 +222,17 @@ public class Operacion {
         }
 
 
+        contieneOperadores = false;
+        for (String op : operadores) {
+            if (opLocal.contains(op)) {
+                contieneOperadores = true;
+                break;
+            }
+        }
+        if(contieneOperadores) {
 
 //        String[] split = opLocal.split("(?<=[\\d.-])(?=[^\\d.-])|(?<=[^\\d.])(?=[\\d.])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])");
-        String[] split = opLocal.split("(?<=[\\d.+/x-])(?=[^\\d.+/x-])|(?<=[^\\d.+/x-])(?=[\\d.+/x-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])|(?<=[\\√])(?=[^\\√])");
+            String[] split = opLocal.split("(?<=[\\d.+/x])(?=[^\\d.+/x])|(?<=[^\\d.+/x-])(?=[\\d.+/x-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])|(?<=[\\√])(?=[^\\√])");
 
             try {
                 for (String operador : funciones) {
@@ -234,32 +241,63 @@ public class Operacion {
                         break;
                     }
                 }
-                if(!primerOperador && !split[split.length-1].equals(")")){
+                if (!primerOperador && !split[split.length - 1].contains(")")) {
                     Float f = Float.parseFloat(split[split.length - 1]);
                 }
-                for (int x = 0; x < split.length-1; x++) {
+                for (int x = 0; x < split.length - 1; x++) {
                     if (split[x].contains("ln(")) {
                         double logN = Math.log(Double.parseDouble(split[x + 1]));
                         opLocal = opLocal.replace("ln(" + split[x + 1] + ")", Double.toString(logN));
                         x++;
                     } else if (split[x].contains("^")) {
+
+                        boolean parentesisResuelto = false;
+                        if(split[x].contains("(")){
+                            int pAbierto = 1, pCerrado = 0;
+                            String substr = opLocal.substring(opLocal.indexOf("^")+1);
+                            int largo = substr.length(), cont = 0;
+                            while((pAbierto != pCerrado) && cont < largo){
+                                for(int y = 1; y < substr.length(); y++){
+                                    cont++;
+                                    if(substr.charAt(y) == 40)
+                                        pAbierto++;
+                                    if(substr.charAt(y) == 41)
+                                        pCerrado++;
+                                    if(pAbierto == pCerrado){
+                                        String parentesis="";
+                                        if(cont == substr.length()-1){
+                                            parentesis = substr.substring(substr.indexOf("^")+1);
+                                        }else{
+                                            parentesis = substr.substring(substr.indexOf("^")+1, cont+1);
+                                        }
+                                        opLocal = opLocal.replace(parentesis, Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica(parentesis))).toString());
+                                        parentesisResuelto = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        if(parentesisResuelto){
+                            split = opLocal.split("(?<=[\\d.+/x])(?=[^\\d.+/x])|(?<=[^\\d.+/x-])(?=[\\d.+/x-])|(?<=[+x/])(?=[^+x/])|(?<=[^+x/])(?=[+x/])|(?<=[\\√])(?=[^\\√])");
+                        }
+
                         double exp;
-                        if(split[x-1].contains("-")){
-                            exp = Math.pow(Double.parseDouble(split[x - 1])*-1, Double.parseDouble(split[x + 1]));
-                        }else{
+                        if (split[x - 1].contains("-")) {
+                            exp = Math.pow(Double.parseDouble(split[x - 1]) * -1, Double.parseDouble(split[x + 1]));
+                        } else {
                             exp = Math.pow(Double.parseDouble(split[x - 1]), Double.parseDouble(split[x + 1]));
                         }
                         if (String.valueOf(exp).contains("E")) {
                             String expExponencial = new BigDecimal(exp).toPlainString();
-                            if(split[x-1].contains("-")){
+                            if (split[x - 1].contains("-")) {
                                 opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], "-" + expExponencial);
-                            }else{
+                            } else {
                                 opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], expExponencial);
                             }
                         } else {
-                            if(split[x-1].contains("-")) {
+                            if (split[x - 1].contains("-")) {
                                 opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], "-" + Double.toString(exp));
-                            }else{
+                            } else {
                                 opLocal = opLocal.replace(split[x - 1] + "^" + split[x + 1], Double.toString(exp));
                             }
                         }
@@ -281,8 +319,8 @@ public class Operacion {
                         opLocal = opLocal.replace("arccos(" + split[x + 1] + ")", Double.toString(cosInv));
                         x++;
                     } else if (split[x].contains("tan(")) {
-                        double tan= Math.tan(Double.parseDouble(split[x + 1]));
-                        opLocal = opLocal.replace("tan(" + split[x + 1]+ ")", Double.toString(tan));
+                        double tan = Math.tan(Double.parseDouble(split[x + 1]));
+                        opLocal = opLocal.replace("tan(" + split[x + 1] + ")", Double.toString(tan));
                         x++;
                     } else if (split[x].contains("sin(")) {
                         double sin = Math.sin(Double.parseDouble(split[x + 1]));
@@ -291,30 +329,30 @@ public class Operacion {
                     } else if (split[x].contains("cos(")) {
                         double cos = Math.cos(Double.parseDouble(split[x + 1]));
 //                        opLocal = opLocal.replace("cos(" + split[x + 1] + ")", Double.toString(cos));
-                        if(x+2 >= split.length){
+                        if (x + 2 >= split.length) {
                             return "";
-                        }else{
-                            opLocal = opLocal.replace(split[x] + split[x + 1] + split[x+2], Double.toString(cos));
+                        } else {
+                            opLocal = opLocal.replace(split[x] + split[x + 1] + split[x + 2], Double.toString(cos));
                         }
                         x++;
                     } else if (split[x].contains("√")) {
                         double raiz = 0;
-                        if(split[x+1].contains("cos") || split[x+1].contains("tan") || split[x+1].contains("sin") || split[x+1].contains("l")){
-                            raiz = Math.sqrt(Double.parseDouble(Operacion.calcularOperacionCientifica(split[x+1]+split[x+2]+split[x+3])));
-                            opLocal = opLocal.replace("√" + split[x + 1] + split[x+2] + split[x+3], Double.toString(raiz));
-                            x+=2;
-                        }else{
-                         raiz = Math.sqrt(Double.parseDouble(split[x + 1]));
-                        opLocal = opLocal.replace("√" + split[x + 1], Double.toString(raiz));
+                        if (split[x + 1].contains("cos") || split[x + 1].contains("tan") || split[x + 1].contains("sin") || split[x + 1].contains("l")) {
+                            raiz = Math.sqrt(Double.parseDouble(Operacion.calcularOperacionCientifica(split[x + 1] + split[x + 2] + split[x + 3])));
+                            opLocal = opLocal.replace("√" + split[x + 1] + split[x + 2] + split[x + 3], Double.toString(raiz));
+                            x += 2;
+                        } else {
+                            raiz = Math.sqrt(Double.parseDouble(split[x + 1]));
+                            opLocal = opLocal.replace("√" + split[x + 1], Double.toString(raiz));
                         }
                         x++;
                     }
                 }
-            }catch(Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 opLocal = ""; //Operación incompleta
             }
-
+        }
         }
         return opLocal;
     }
