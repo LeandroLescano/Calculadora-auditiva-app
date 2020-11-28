@@ -188,6 +188,32 @@
                 android:entries="@array/Sonido"
                 android:padding="5dp" />
 
+            <TextView
+                android:id="@+id/txtDecimales"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="@string/txtDecimales"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+
+            <Spinner
+                android:id="@+id/cbDecimales"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_weight="1"
+                android:background="@drawable/spinner_border"
+                android:entries="@array/Decimales"
+                android:padding="5dp" />
+
             <Button
                 android:id="@+id/btnGuardar"
                 android:layout_width="148dp"

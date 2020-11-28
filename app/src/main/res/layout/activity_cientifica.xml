@@ -140,6 +140,7 @@
                     android:layout_weight="1"
                     android:background="#000000"
                     android:onClick="moverCursor"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_flecha_izq" />
 
                 <ImageButton
@@ -151,6 +152,7 @@
                     android:background="#000000"
                     android:onClick="moverCursor"
                     android:src="@drawable/ic_flecha_der"
+                    android:scaleType="fitXY"
                     android:text="@string/derecha" />
 
             </TableRow>
@@ -518,13 +520,14 @@
 
                 <ImageButton
                     android:id="@+id/btnMic"
-                    android:layout_width="80dp"
+                    android:layout_width="50dp"
                     android:layout_height="match_parent"
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="#000000"
                     android:contentDescription="@string/todo"
                     android:onClick="comandoDeVoz"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_mic" />
 
                 <Button

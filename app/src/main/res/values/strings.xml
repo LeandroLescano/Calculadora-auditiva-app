@@ -47,6 +47,7 @@
     <string name="txtBotones">Color de los Botones</string>
     <string name="txtVibracion">Estado de Vibración</string>
     <string name="txtSonido">Estado de Emision de Sonido</string>
+    <string name="txtDecimales">Cantidad de decimales</string>
     <string name="Guardar">Guardar</string>
     <string name="ver">VER</string>
     <string name="todo">TODO</string>
@@ -106,6 +107,13 @@
         <item>Solo Resultado</item>
         <item>Solo Errores</item>
         <item>Nunca</item>
+    </string-array>
+
+    <string-array name="Decimales">
+        <item>2 Decimales</item>
+        <item>3 Decimales</item>
+        <item>4 Decimales</item>
+        <item>Todos los Decimales</item>
     </string-array>
 
 </resources>

@@ -16,6 +16,7 @@ import java.util.ArrayList;
 
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Color;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Decimales;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Estado;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tamano;
@@ -30,6 +31,7 @@ public class ConfiguracionDao {
     private Tipografia tipografia;
     private Tamano tamano;
     private Estado estado, vibracion, sonido;
+    private Decimales decimales;
     private ArrayList<Color> listCol;
     private ArrayList<Tamano> listTam;
     private ArrayList<Tipografia> listTip;
@@ -47,6 +49,7 @@ public class ConfiguracionDao {
         tamano = new Tamano();
         vibracion = new Estado();
         sonido = new Estado();
+        decimales = new Decimales();
 
 //        Cursor configs = BasedeDatos.rawQuery("select id_color, id_tipografia, id_tamano, estado_vibracion, estado_sonido, id_colorBoton from configuracion", null);
         Cursor configs = BasedeDatos.rawQuery("select c.id, c.color, tipografias.id, tipografias.tipografia, tamanos.id, tamanos.tamano, v.id, v.descripcion, s.id, s.descripcion, cb.id, cb.color from configuracion " +
@@ -429,6 +432,14 @@ public class ConfiguracionDao {
         tamano = config.getTamano().getTamano() +12;
 
         return tamano;
+    }
+
+    public int setearDecimal (Context context)
+    {
+        int cantidad;
+        cantidad = config.getDecimales().getCantidad();
+
+        return cantidad;
     }
 
 

@@ -524,10 +524,19 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     public void comandoDeVoz(View view){
         ImageView micButton = (ImageView) view;
+        boolean cambiarCalculadora = false;
         if(voz == null){
             voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout);
         }
-        voz.startStop();
+        cambiarCalculadora = voz.startStop();
+        if(cambiarCalculadora == true){
+            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica.class);
+            SharedPreferences preferences = this.getSharedPreferences("calculadora", Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor = preferences.edit();
+            editor.putString("ultima", "basica");
+            editor.apply();
+            startActivity(intent);
+        }
     }
 
     //Configura la calculadora visualmente.

@@ -8,17 +8,19 @@ public class Configuracion {
     private Tamano tamano;
     private Estado vibracion;
     private Estado sonido;
+    private Decimales decimales;
 
     public Configuracion() {
     }
 
-    public Configuracion(Color color, Color colorBoton, Tipografia tipografia, Tamano tamano, Estado vibracion, Estado sonido) {
+    public Configuracion(Color color, Color colorBoton, Tipografia tipografia, Tamano tamano, Estado vibracion, Estado sonido, Decimales decimales) {
         this.color = color;
         this.colorBoton = colorBoton;
         this.tipografia = tipografia;
         this.tamano = tamano;
         this.vibracion = vibracion;
         this.sonido = sonido;
+        this.decimales = decimales;
     }
 
     public Color getColor() {
@@ -67,5 +69,13 @@ public class Configuracion {
 
     public void setColorBoton(Color colorBoton) {
         this.colorBoton = colorBoton;
+    }
+
+    public Decimales getDecimales() {
+        return decimales;
+    }
+
+    public void setDecimales(Decimales decimales) {
+        this.decimales = decimales;
     }
 }

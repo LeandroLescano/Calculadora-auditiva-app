@@ -47,6 +47,7 @@ public class ComandosVoz implements RecognitionListener {
     private HistorialDao hist;
     private Context context;
     private final Handler handler = new Handler(Looper.getMainLooper());
+    private boolean cambiarCalculadora = false;
 
     public ComandosVoz(Context context, Activity activity, EditText operacion, TextView resultado, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout){
         this.operacion = operacion;
@@ -69,6 +70,15 @@ public class ComandosVoz implements RecognitionListener {
         vibrar = vibrar.getManager(context);
         hist = new HistorialDao();
     }
+
+   /*public boolean getActivity(){
+        boolean changeActivity = false;
+        boolean textLetras = true;
+        ArrayList<String> matchesFound = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
+        if (matchesFound != null) {
+            for(String match : matchesFound){
+        return  changeActivity;
+    }*/
 
     @Override
     public void onReadyForSpeech(Bundle bundle) {
@@ -130,6 +140,7 @@ public class ComandosVoz implements RecognitionListener {
         }
         ArrayList<String> matchesFound = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         boolean textLetras = true;
+        cambiarCalculadora = false;
         if (matchesFound != null) {
             for(String match : matchesFound){
                 textLetras = true;
@@ -147,7 +158,15 @@ public class ComandosVoz implements RecognitionListener {
                 }
             }
             if(textLetras){
-                audio.emitirAudio("Ingreso incorrecto");
+                        if (matchesFound.contains("calculadora científica") || matchesFound.contains("calculadora básica") ) {
+                            cambiarCalculadora = true;
+                    }
+                        if(matchesFound.contains("el más grande")){
+                            audio.emitirAudio("El diego el mas grande");
+                        }
+                    if(cambiarCalculadora == false){
+                        audio.emitirAudio("Ingreso incorrecto");
+                    }
             }else{
                 Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
 
@@ -195,7 +214,7 @@ public class ComandosVoz implements RecognitionListener {
         }
     }
 
-    public void startStop() {
+    public boolean startStop() {
         if (isListening) {
             isListening = false;
             grabando.setVisibility(Button.INVISIBLE);
@@ -221,6 +240,7 @@ public class ComandosVoz implements RecognitionListener {
             speechRecognizer.startListening(speechIntent);
             Log.i("onClick", "startListening");
         }
+        return cambiarCalculadora;
     }
 
     public static String traducirOperacion(String opTraducida){
