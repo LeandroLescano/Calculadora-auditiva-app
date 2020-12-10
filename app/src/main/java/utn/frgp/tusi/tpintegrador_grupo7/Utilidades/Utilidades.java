@@ -24,11 +24,11 @@ public class Utilidades {
     public static final String CREAR_TABLA_TAMANO="CREATE TABLE " + TABLA_TAMANO + "(" + CAMPO_ID_TAMANO + " integer primary key autoincrement, " + CAMPO_VALOR_TAMANO + " integer)";
 
     //Constantes campos tabla Decimales
-    public static final String TABLA_DECIMAL="decimales";
+    public static final String TABLA_DECIMAL="decimales"    ;
     public static final String CAMPO_ID_DECIMAL="id";
     public static final String CAMPO_CANTIDAD_DECIMAL="cantidad";
 
-    public static final String CREAR_TABLA_DECIMAL="CREATE TABLE " + TABLA_DECIMAL + "(" + CAMPO_ID_DECIMAL + " integer primary key autoincrement, " + CAMPO_CANTIDAD_DECIMAL + " text)";
+    public static final String CREAR_TABLA_DECIMAL="CREATE TABLE " + TABLA_DECIMAL + "(" + CAMPO_ID_DECIMAL + " integer primary key autoincrement, " + CAMPO_CANTIDAD_DECIMAL + " integer)";
 
     //Constantes campos tabla Estados
     public static final String TABLA_ESTADO="estados";
@@ -45,17 +45,17 @@ public class Utilidades {
     public static final String CAMPO_TAMANO_CONFIG="id_tamano";
     public static final String CAMPO_ESTADO_VIBRACION="estado_vibracion";
     public static final String CAMPO_ESTADO_SONIDO="estado_sonido";
-    public static final String CAMPO_CANTIDAD_DECIMALES="cant_decimales";
+    public static final String CAMPO_DECIMAL_CONFIG="id_decimal";
 
 
-    public static final String CREAR_TABLA_CONFIG="CREATE TABLE " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + " integer, " + CAMPO_COLORBOTON_CONFIG + " integer, "+ CAMPO_TIPOGRAFIA_CONFIG + " integer, "+ CAMPO_TAMANO_CONFIG + " integer, " + CAMPO_ESTADO_VIBRACION + " integer, " + CAMPO_ESTADO_SONIDO + " integer, " + CAMPO_CANTIDAD_DECIMALES + " integer, " +
+    public static final String CREAR_TABLA_CONFIG="CREATE TABLE " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + " integer, " + CAMPO_COLORBOTON_CONFIG + " integer, "+ CAMPO_TIPOGRAFIA_CONFIG + " integer, "+ CAMPO_TAMANO_CONFIG + " integer, " + CAMPO_ESTADO_VIBRACION + " integer, " + CAMPO_ESTADO_SONIDO + " integer, " + CAMPO_DECIMAL_CONFIG + " integer, " +
             "FOREIGN KEY ("+CAMPO_COLOR_CONFIG+") REFERENCES "+ TABLA_COLOR +"("+CAMPO_ID_COLOR+"), " +
             "FOREIGN KEY ("+CAMPO_COLORBOTON_CONFIG+") REFERENCES "+ TABLA_COLOR +"("+CAMPO_ID_COLOR+"), " +
             "FOREIGN KEY ("+CAMPO_TIPOGRAFIA_CONFIG+") REFERENCES "+ TABLA_TIPOGRAFIA +"("+CAMPO_ID_TIPOGRAFIA+"), " +
             "FOREIGN KEY ("+CAMPO_TAMANO_CONFIG+") REFERENCES "+ TABLA_TAMANO +"("+CAMPO_ID_TAMANO+"), " +
             "FOREIGN KEY ("+CAMPO_ESTADO_VIBRACION+") REFERENCES "+ TABLA_ESTADO +"("+CAMPO_ID_ESTADO+"), " +
             "FOREIGN KEY ("+CAMPO_ESTADO_SONIDO+") REFERENCES "+ TABLA_ESTADO +"("+CAMPO_ID_ESTADO+")" +
-            "FOREIGN KEY ("+CAMPO_CANTIDAD_DECIMALES+") REFERENCES "+ TABLA_DECIMAL +"("+CAMPO_ID_DECIMAL+"))";
+            "FOREIGN KEY ("+CAMPO_DECIMAL_CONFIG+") REFERENCES "+ TABLA_DECIMAL +"("+CAMPO_ID_DECIMAL+"))";
 
     //Constantes campos tabla Historial
 

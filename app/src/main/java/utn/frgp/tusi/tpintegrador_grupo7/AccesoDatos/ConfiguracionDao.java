@@ -30,12 +30,14 @@ public class ConfiguracionDao {
     private Color color, colorBoton;
     private Tipografia tipografia;
     private Tamano tamano;
+    private Decimales decimal;
     private Estado estado, vibracion, sonido;
     private Decimales decimales;
     private ArrayList<Color> listCol;
     private ArrayList<Tamano> listTam;
     private ArrayList<Tipografia> listTip;
     private ArrayList<Estado> listEst;
+    private ArrayList<Decimales> listdecimal;
     private int Rojo, Azul, Amarillo, Blanco, Negro;
     private Typeface Helvetica, Verdana, ComicSans, Arial, Roboto;
 
@@ -52,13 +54,14 @@ public class ConfiguracionDao {
         decimales = new Decimales();
 
 //        Cursor configs = BasedeDatos.rawQuery("select id_color, id_tipografia, id_tamano, estado_vibracion, estado_sonido, id_colorBoton from configuracion", null);
-        Cursor configs = BasedeDatos.rawQuery("select c.id, c.color, tipografias.id, tipografias.tipografia, tamanos.id, tamanos.tamano, v.id, v.descripcion, s.id, s.descripcion, cb.id, cb.color from configuracion " +
+        Cursor configs = BasedeDatos.rawQuery("select c.id, c.color, tipografias.id, tipografias.tipografia, tamanos.id, tamanos.tamano, v.id, v.descripcion, s.id, s.descripcion, cb.id, cb.color, dc.id , dc.cantidad from configuracion " +
                 "inner join colores as c on c.id = configuracion.id_color " +
                 "inner join tipografias on tipografias.id = configuracion.id_tipografia " +
                 "inner join tamanos on tamanos.id = configuracion.id_tamano " +
                 "inner join estados as v on v.id = configuracion.estado_vibracion " +
                 "inner join estados as s on s.id = configuracion.estado_sonido " +
-                "inner join colores as cb on cb.id = configuracion.id_colorBoton", null);
+                "inner join colores as cb on cb.id = configuracion.id_colorBoton " +
+                "inner join decimales as dc on dc.id = configuracion.id_decimal", null);
         Log.e("configbd", configs.toString());
         if(configs.moveToFirst()){
             config = new Configuracion();
@@ -81,13 +84,16 @@ public class ConfiguracionDao {
             colorBoton = new Color(configs.getInt(10), configs.getString(11));
             config.setColorBoton(colorBoton);
 
+            decimales = new Decimales(configs.getInt(12), configs.getInt(13));
+            config.setDecimales(decimales);
+
         }
         BasedeDatos.close();
         return config;
     }
 
 
-    public boolean cargarConfiguracion(int idColor, int idColorBoton, int idTipografia, int idTamano, int idEstadoVibracion, int idEstadoSonido, Context context) {
+    public boolean cargarConfiguracion(int idColor, int idColorBoton, int idTipografia, int idTamano, int idEstadoVibracion, int idEstadoSonido, int IdDecimal, Context context) {
 
 
             ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
@@ -101,6 +107,7 @@ public class ConfiguracionDao {
                 registro.put("id_tamano", idTamano);
                 registro.put("estado_vibracion", idEstadoVibracion);
                 registro.put("estado_sonido", idEstadoSonido);
+                registro.put("cantidad_decimales", IdDecimal);
                 //Ver si funciona - tiene que haber config inicial ya en la BD
                 BaseDatos.update("configuracion", registro, null, null);
                 //BaseDatos.insert("configuracion", null, registro);
@@ -297,6 +304,36 @@ public class ConfiguracionDao {
 
         BasedeDatos.close();
         return listTam;
+    }
+
+    public ArrayList<Decimales> listarDecimales(Context context){
+        ConexionSQLiteHelper admin = new ConexionSQLiteHelper(context, "db_calculadora", null, 1);
+        SQLiteDatabase BasedeDatos = admin.getWritableDatabase();
+
+        listdecimal = new ArrayList<>();
+
+
+        Cursor cfg = BasedeDatos.rawQuery("select id, cantidad from decimales", null);
+        if(cfg.moveToFirst()){
+
+            decimal = new Decimales();
+            decimal.setId(Integer.parseInt(cfg.getString(0)));
+            decimal.setCantidad(Integer.parseInt(cfg.getString(1)));
+            listdecimal.add(decimal);
+
+
+            while(cfg.moveToNext()){
+
+                decimal = new Decimales();
+                decimal.setId(Integer.parseInt(cfg.getString(0)));
+                decimal.setCantidad(Integer.parseInt(cfg.getString(1)));
+                listdecimal.add(decimal);
+
+            }
+        }
+
+        BasedeDatos.close();
+        return listdecimal;
     }
 
     public ArrayList<Estado> listarEstados(Context context){

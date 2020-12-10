@@ -4,10 +4,13 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.number.NumberFormatter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.InputFilter;
 import android.text.InputType;
+import android.text.Spanned;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -29,6 +32,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,6 +47,7 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
+import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.DecimalDigitsInputFilter;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.Vibracion;
 
 public class CalculadoraCientifica extends AppCompatActivity {
@@ -67,6 +73,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private boolean vibrarBoton = true;
     private HistorialDao hist;
     private DecimalFormat formatter;
+    private int decimales;
 
     @Override
     public void onResume() {
@@ -487,6 +494,22 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     }
 
+    public class DecimalDigitsInputFilter  implements InputFilter {
+        private Pattern mPattern;
+
+        DecimalDigitsInputFilter(int digitsBeforeZero, int digitsAfterZero) {
+            mPattern = Pattern.compile("[0-9]{0," + (digitsBeforeZero - 1) + "}+((\\.[0-9]{0," + (digitsAfterZero - 1) + "})?)||(\\.)?");
+        }
+
+        @Override
+        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+            Matcher matcher = mPattern.matcher(dest);
+            if (!matcher.matches())
+                return "";
+            return null;
+        }
+    }
+
     public void calcular(){
         String operacionACalcular = operacion.getText().toString();
 
@@ -506,8 +529,11 @@ public class CalculadoraCientifica extends AppCompatActivity {
         if(resultadoOp != null && resultadoOp%1 == 0){
             if(resultadoOp.toString().contains("E")){
                 resultado.setText(formatter.format(new BigDecimal(resultadoOp)));
+                resultado.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
+
             }else{
                 resultado.setText(formatter.format(Math.round(resultadoOp)));
+                resultado.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
             }
         }else if(resultadoOp != null && resultadoOp.isNaN()){
             resultado.setText("Error matemático");
@@ -524,12 +550,15 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     public void comandoDeVoz(View view){
         ImageView micButton = (ImageView) view;
-        boolean cambiarCalculadora = false;
         if(voz == null){
             voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout);
         }
-        cambiarCalculadora = voz.startStop();
-        if(cambiarCalculadora == true){
+            voz.startStop();
+    }
+
+    public void cambiarCalculadoraCientifica(boolean cambiar){
+        boolean cambiarCalculadora = cambiar;
+        if(cambiarCalculadora  == true ){
             Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica.class);
             SharedPreferences preferences = this.getSharedPreferences("calculadora", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
@@ -667,6 +696,12 @@ public class CalculadoraCientifica extends AppCompatActivity {
                     int tamano = config.setearTamano(this)-12;
                     if(b.getId() == R.id.btnDerecha){
                         switch (tamano){
+                            case 8:
+                                img.setImageResource(R.drawable.ic_flecha_der_8);
+                                break;
+                            case 12:
+                                img.setImageResource(R.drawable.ic_flecha_der_12);
+                                break;
                             case 16:
                                 img.setImageResource(R.drawable.ic_flecha_der_16);
                                 break;
@@ -687,6 +722,12 @@ public class CalculadoraCientifica extends AppCompatActivity {
                         }
                     }else if(b.getId() == R.id.btnIzquierda){
                         switch (tamano){
+                            case 8:
+                                img.setImageResource(R.drawable.ic_flecha_izq_8);
+                                break;
+                            case 12:
+                                img.setImageResource(R.drawable.ic_flecha_izq_12);
+                                break;
                             case 16:
                                 img.setImageResource(R.drawable.ic_flecha_izq_16);
                                 break;
@@ -707,6 +748,12 @@ public class CalculadoraCientifica extends AppCompatActivity {
                         }
                     }else{
                         switch (tamano){
+                            case 8:
+                                img.setImageResource(R.drawable.ic_mic_8);
+                                break;
+                            case 12:
+                                img.setImageResource(R.drawable.ic_mic_12);
+                                break;
                             case 16:
                                 img.setImageResource(R.drawable.ic_mic_16);
                                 break;
@@ -743,7 +790,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
                     }
             }
         }
-
+        decimales = cfgActual.getDecimales().getCantidad();
         if(cfgActual.getVibracion().getDescripcion().equals("Siempre")){
             vibrarBoton = true;
         }else{

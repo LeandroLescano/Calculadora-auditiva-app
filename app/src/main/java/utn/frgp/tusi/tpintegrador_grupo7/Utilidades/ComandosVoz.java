@@ -26,6 +26,8 @@ import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
+import utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica;
+import utn.frgp.tusi.tpintegrador_grupo7.CalculadoraCientifica;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.R;
 
@@ -158,11 +160,15 @@ public class ComandosVoz implements RecognitionListener {
                 }
             }
             if(textLetras){
-                        if (matchesFound.contains("calculadora científica") || matchesFound.contains("calculadora básica") ) {
+                        if (matchesFound.contains("calculadora científica")){
                             cambiarCalculadora = true;
-                    }
-                        if(matchesFound.contains("el más grande")){
+                          /*  CalculadoraCientifica cc = new CalculadoraCientifica();
+                            cc.cambiarCalculadoraCientifica(cambiarCalculadora);*/
                             audio.emitirAudio("El diego el mas grande");
+                        }  if(matchesFound.contains("calculadora básica") ) {
+                            cambiarCalculadora = true;
+                        CalculadoraBasica cb = new CalculadoraBasica();
+                        cb.cambiarCalculadoraBasica(cambiarCalculadora);
                         }
                     if(cambiarCalculadora == false){
                         audio.emitirAudio("Ingreso incorrecto");

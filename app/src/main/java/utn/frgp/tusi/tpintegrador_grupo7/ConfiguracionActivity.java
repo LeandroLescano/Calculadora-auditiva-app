@@ -21,13 +21,14 @@ import java.util.ArrayList;
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Color;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Decimales;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Estado;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tamano;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
 
 public class ConfiguracionActivity extends AppCompatActivity {
 
-    private Spinner tamano, tipografia, color, botones, vibracion, sonido;
+    private Spinner tamano, tipografia, color, botones, vibracion, sonido, decimales;
     private Button botonGuardar;
     private Toast toast;
     private ConfiguracionDao config;
@@ -35,6 +36,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private ArrayList<Tipografia> listTip;
     private ArrayList<Color> listCol;
     private ArrayList<Estado> listEst;
+    private  ArrayList<Decimales> listDecimal;
     private Configuracion cfgActual;
     private Color colSelec;
     private Color colBotSelec;
@@ -42,6 +44,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private Tipografia tipSelec;
     private Estado estVibSelec;
     private Estado estSonSelec;
+    private Decimales cantDecimal;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +57,13 @@ public class ConfiguracionActivity extends AppCompatActivity {
         listTip = new ArrayList<Tipografia>();
         listCol = new ArrayList<Color>();
         listEst = new ArrayList<Estado>();
+        listDecimal = new ArrayList<Decimales>();
 
         listTam = config.listarTamanos(this);
         listTip = config.listarTipografias(this);
         listCol = config.listarColores(this);
         listEst = config.listarEstados(this);
+        listDecimal = config.listarDecimales(this);
 
         cfgActual = config.traerConfiguracion(this);
 
@@ -77,6 +82,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         botones = findViewById(R.id.cbBotones);
         vibracion = findViewById(R.id.cbVibracion);
         sonido = findViewById(R.id.cbSonido);
+        decimales = findViewById(R.id.cbDecimales);
         adapterTamano.setDropDownViewResource(R.layout.spinner_item);
         adapterTipo.setDropDownViewResource(R.layout.spinner_item);
         adapterColor.setDropDownViewResource(R.layout.spinner_item);
@@ -89,6 +95,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         botones.setAdapter(adapterBotones);
         vibracion.setAdapter(adapterVibracion);
         sonido.setAdapter(adapterSonido);
+        /*decimales.setAdapter(ada);*/
 
         tamano.setSelection(cfgActual.getTamano().getId()-1);
         tipografia.setSelection(cfgActual.getTipografia().getId()-1);
@@ -96,6 +103,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         botones.setSelection(cfgActual.getColorBoton().getId()-1);
         vibracion.setSelection(cfgActual.getVibracion().getId()-1);
         sonido.setSelection(cfgActual.getSonido().getId()-1);
+        decimales.setSelection(cfgActual.getDecimales().getId()-1);
 
         //Seteos de configuración
 
@@ -173,7 +181,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         colSelec = new Color();
         estVibSelec = new Estado();
         estSonSelec = new Estado();
-
+        cantDecimal = new Decimales();
 
         //    private Spinner vibracion, sonido;
 
@@ -183,6 +191,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         colSelec = (Color) color.getSelectedItem();
         estVibSelec = (Estado) vibracion.getSelectedItem();
         estSonSelec = (Estado) sonido.getSelectedItem();
+        cantDecimal = (Decimales) decimales.getSelectedItem();
 
         if (colSelec.getId() == colBotSelec.getId())
         {
@@ -192,7 +201,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         else
 
         {
-            if (config.cargarConfiguracion(colSelec.getId(), colBotSelec.getId(), tipSelec.getId(), tamSelec.getId(), estVibSelec.getId(), estSonSelec.getId(), this))
+            if (config.cargarConfiguracion(colSelec.getId(), colBotSelec.getId(), tipSelec.getId(), tamSelec.getId(), estVibSelec.getId(), estSonSelec.getId(), cantDecimal.getId(), this))
             {
 
                 toast = Toast.makeText(this, "Configuración modificada exitosamente", Toast.LENGTH_SHORT);

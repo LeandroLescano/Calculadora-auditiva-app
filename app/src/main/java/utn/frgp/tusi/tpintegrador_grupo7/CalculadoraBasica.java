@@ -369,22 +369,26 @@ public class CalculadoraBasica extends AppCompatActivity {
     public void comandoDeVoz(View view){
         ImageView micButton = (ImageView) view;
         boolean changeAcivity = false;
-        boolean cambiarCalculadora = false;
         if(voz == null){
             voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout);
         }
-        cambiarCalculadora = voz.startStop();
+        voz.startStop();
+
+        /*changeAcivity = voz.getActivity():*/
+        if(changeAcivity != false){
+            Intent intent = new Intent(this, ConfiguracionActivity.class);
+            startActivity(intent);
+        }
+    }
+
+    public void cambiarCalculadoraBasica(boolean cambiar){
+        boolean cambiarCalculadora = cambiar;
         if(cambiarCalculadora  == true ){
             Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraCientifica.class);
             SharedPreferences preferences = this.getSharedPreferences("calculadora", Context.MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
             editor.putString("ultima", "cientifica");
             editor.apply();
-            startActivity(intent);
-        }
-        /*changeAcivity = voz.getActivity():*/
-        if(changeAcivity != false){
-            Intent intent = new Intent(this, ConfiguracionActivity.class);
             startActivity(intent);
         }
     }
