@@ -54,7 +54,7 @@ public class ConfiguracionDao {
         decimales = new Decimales();
 
 //        Cursor configs = BasedeDatos.rawQuery("select id_color, id_tipografia, id_tamano, estado_vibracion, estado_sonido, id_colorBoton from configuracion", null);
-        Cursor configs = BasedeDatos.rawQuery("select c.id, c.color, tipografias.id, tipografias.tipografia, tamanos.id, tamanos.tamano, v.id, v.descripcion, s.id, s.descripcion, cb.id, cb.color, dc.id , dc.cantidad from configuracion " +
+        Cursor configs = BasedeDatos.rawQuery("select c.id, c.color, tipografias.id, tipografias.tipografia, tamanos.id, tamanos.tamano, v.id, v.descripcion, s.id, s.descripcion, cb.id, cb.color, dc.id, dc.cantidad from configuracion " +
                 "inner join colores as c on c.id = configuracion.id_color " +
                 "inner join tipografias on tipografias.id = configuracion.id_tipografia " +
                 "inner join tamanos on tamanos.id = configuracion.id_tamano " +
