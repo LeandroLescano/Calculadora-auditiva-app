@@ -4,20 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.number.NumberFormatter;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.text.InputFilter;
-import android.text.InputType;
 import android.text.Spanned;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -25,17 +19,14 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.lang.reflect.Array;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.appcompat.widget.Toolbar;
@@ -47,7 +38,6 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
-import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.DecimalDigitsInputFilter;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.Vibracion;
 
 public class CalculadoraCientifica extends AppCompatActivity {

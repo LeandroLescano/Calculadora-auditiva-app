@@ -33,7 +33,7 @@ public class Operacion {
         this.operacion = operacion;
     }
 
-    public static Float calcularOperacionBasica(String operacion){
+    public static Float  calcularOperacionBasica(String operacion){
         String opLocal = operacion.replace("--", "+")
                 .replace("+-", "-")
                 .replace("-+", "-")

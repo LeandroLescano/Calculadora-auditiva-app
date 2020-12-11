@@ -74,6 +74,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         ArrayAdapter<Color> adapterBotones = new ArrayAdapter<Color>(this, R.layout.spinner_item, listCol);
         ArrayAdapter<Estado> adapterVibracion = new ArrayAdapter<Estado>(this, R.layout.spinner_item, listEst);
         ArrayAdapter<Estado> adapterSonido = new ArrayAdapter<Estado>(this, R.layout.spinner_item, listEst);
+        ArrayAdapter<Decimales> adapterDecimales = new ArrayAdapter<Decimales>(this, R.layout.spinner_item, listDecimal);
 
         botonGuardar = findViewById(R.id.btnGuardar);
         tamano = findViewById(R.id.cbTamano);
@@ -89,13 +90,14 @@ public class ConfiguracionActivity extends AppCompatActivity {
         adapterBotones.setDropDownViewResource(R.layout.spinner_item);
         adapterVibracion.setDropDownViewResource(R.layout.spinner_item);
         adapterSonido.setDropDownViewResource(R.layout.spinner_item);
+        adapterDecimales.setDropDownViewResource(R.layout.spinner_item);
         tamano.setAdapter(adapterTamano);
         tipografia.setAdapter(adapterTipo);
         color.setAdapter(adapterColor);
         botones.setAdapter(adapterBotones);
         vibracion.setAdapter(adapterVibracion);
         sonido.setAdapter(adapterSonido);
-        /*decimales.setAdapter(ada);*/
+        decimales.setAdapter(adapterDecimales);
 
         tamano.setSelection(cfgActual.getTamano().getId()-1);
         tipografia.setSelection(cfgActual.getTipografia().getId()-1);

@@ -95,6 +95,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         resultado.setText("0");
         formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
 
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             operacion.setShowSoftInputOnFocus(false);
         }
@@ -120,7 +121,6 @@ public class CalculadoraBasica extends AppCompatActivity {
 
         //Cargar configuración
         cargarConfig();
-
         Utilidades utilidad = new Utilidades();
         /*utilidad.INSERTAR_TABLA_TAMANO();*/
 
@@ -495,6 +495,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         config = new ConfiguracionDao();
         cfgActual = new Configuracion();
         cfgActual = config.traerConfiguracion(this);
+        formatter.setMaximumFractionDigits(cfgActual.getDecimales().getCantidad());
         botonesImg = agregarBotonesImg();
 //        botonesTam = agregarBotones();
         botones = layout.getTouchables();
