@@ -20,14 +20,21 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import androidx.annotation.RequiresApi;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
+
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
 import utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica;
 import utn.frgp.tusi.tpintegrador_grupo7.CalculadoraCientifica;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Decimales;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.R;
 
@@ -50,8 +57,15 @@ public class ComandosVoz implements RecognitionListener {
     private Context context;
     private final Handler handler = new Handler(Looper.getMainLooper());
     private boolean cambiarCalculadora = false;
+    private DecimalFormat formatter;
+    private ConfiguracionDao config;
+    private Decimales d;
+    private int cantidad;
+    private String valorActual;
+    private int formatoActual;
 
-    public ComandosVoz(Context context, Activity activity, EditText operacion, TextView resultado, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout){
+
+    public ComandosVoz(Context context, Activity activity, EditText operacion, TextView resultado, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout, int cant , int format){
         this.operacion = operacion;
         this.resultado = resultado;
         this.grabando = grabando;
@@ -71,6 +85,9 @@ public class ComandosVoz implements RecognitionListener {
         vibrar = new Vibracion();
         vibrar = vibrar.getManager(context);
         hist = new HistorialDao();
+        formatter = (DecimalFormat) NumberFormat.getNumberInstance(Locale.GERMAN);
+        cantidad = cant;
+        formatoActual = format;
     }
 
    /*public boolean getActivity(){
@@ -174,19 +191,21 @@ public class ComandosVoz implements RecognitionListener {
                         audio.emitirAudio("Ingreso incorrecto");
                     }
             }else{
-                Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(operacion.getText().toString()));
-
+                Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,operacion.getText().toString(),formatoActual));
+                formatter.setMaximumFractionDigits(cantidad);
                 if(resultadoOperacion != null && Float.isNaN(resultadoOperacion)){
                     resultado.setText("Error matemático");
                     audio.emitirAudio("Error matemático");
                     vibrar.VibracionError();
                 }else if(resultadoOperacion != null && resultadoOperacion%1 == 0 && resultadoOperacion != -1){
+                    valorActual = formatter.format(resultadoOperacion);
                     resultado.setText(String.valueOf(Math.round(resultadoOperacion)));
                     audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
                     hist.cargarOperacion(operacion.getText() + "=" + resultado.getText(), context);
                     vibrar.VibracionGrabar();
                 }else if (resultadoOperacion != null && resultadoOperacion != -1){
-                    resultado.setText(resultadoOperacion.toString());
+                    valorActual = formatter.format(resultadoOperacion);
+                    resultado.setText(valorActual);
                     audio.emitirAudio("El resultado de " + operacion.getText() + " es " + resultado.getText());
                     hist.cargarOperacion(operacion.getText() + "=" + resultado.getText(), context);
                     vibrar.VibracionGrabar();

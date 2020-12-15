@@ -3,7 +3,10 @@ package utn.frgp.tusi.tpintegrador_grupo7.Dominio;
 import android.util.Log;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.util.Arrays;
+
+import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
 
 public class Operacion {
 
@@ -147,8 +150,10 @@ public class Operacion {
     }
 
     //Resolución de funciones trigonométricas, raíces y exponentes
-    public static String calcularOperacionCientifica(String operacion){
+    public static String calcularOperacionCientifica(int cant , String operacion , int formatoActual){
         String opLocal = operacion;
+        int cantidad = cant;
+        int formato = formatoActual;
 
         String[] funciones = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln("};
         String[] operadores = new String[]{"arctan(", "arcsin(", "arccos(", "tan(", "sin(", "cos(", "lg(", "ln(", "^", "√"};
@@ -173,7 +178,7 @@ public class Operacion {
                 //Si el anterior contiene "(", el posterior ")" y el número no es un dígito lo calcula
                 if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")") && !splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
                     if(splitP[x-1].contains("cos") || splitP[x-1].contains("tan") || splitP[x-1].contains("sin") || splitP[x-1].contains("l")){
-                        Float parcialNum = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(splitP[x]));
+                        Float parcialNum = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,splitP[x],formato));
                         if(parcialNum != null && parcialNum.toString().contains("E")){
                             //Si el número contiene E lo convierte en decimal
                             opLocal = opLocal.replace(splitP[x], new BigDecimal(parcialNum).toPlainString());
@@ -181,7 +186,7 @@ public class Operacion {
                             opLocal = opLocal.replace(splitP[x], parcialNum.toString());
                         }
                     }else{
-                    opLocal = opLocal.replace("(" + splitP[x] + ")", String.valueOf(Operacion.calcularOperacionBasica(Operacion     .calcularOperacionCientifica(splitP[x]))));
+                    opLocal = opLocal.replace("(" + splitP[x] + ")", String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,splitP[x],formato))));
                     }
                 }else if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")") && splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
                     if(!splitP[x-1].contains("cos") && !splitP[x-1].contains("tan") && !splitP[x-1].contains("sin") && !splitP[x-1].contains("l")){
@@ -270,7 +275,7 @@ public class Operacion {
                                         }else{
                                             parentesis = substr.substring(substr.indexOf("^")+1, cont+1);
                                         }
-                                        opLocal = opLocal.replace(parentesis, Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica(parentesis))).toString());
+                                        opLocal = opLocal.replace(parentesis, Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica(cantidad,parentesis,formato))).toString());
                                         parentesisResuelto = true;
                                         break;
                                     }
@@ -307,38 +312,78 @@ public class Operacion {
                         opLocal = opLocal.replace("lg(" + split[x + 1] + ")", Double.toString(log10));
                         x++;
                     } else if (split[x].contains("arctan(")) {
-                        double tanInv = Math.atan(Double.parseDouble(split[x + 1]));
+                        double tanInv;
+                        if(formato == 2){
+                            double valorDouble = Double.parseDouble(split[x + 1]);
+                            tanInv = Math.round(Math.atan(Math.toRadians(valorDouble)));
+                        } else{
+                            tanInv = Math.atan(Double.parseDouble(split[x + 1]));
+                        }
                         opLocal = opLocal.replace("arctan(" + split[x + 1] + ")", Double.toString(tanInv));
                         x++;
                     } else if (split[x].contains("arcsin(")) {
-                        double sinInv = Math.asin(Double.parseDouble(split[x + 1]));
+                        double sinInv;
+                        if(formato == 2){
+                            double valorDouble = Double.parseDouble(split[x + 1]);
+                            sinInv = Math.round(Math.asin(Math.toRadians(valorDouble)));
+                        } else{
+                            sinInv = Math.asin(Double.parseDouble(split[x + 1]));
+                        }
                         opLocal = opLocal.replace("arcsin(" + split[x + 1] + ")", Double.toString(sinInv));
                         x++;
                     } else if (split[x].contains("arccos(")) {
-                        double cosInv = Math.acos(Double.parseDouble(split[x + 1]));
+                        double cosInv;
+                        if(formato == 2){
+                            double valorDouble = Double.parseDouble(split[x + 1]);
+                            cosInv = Math.round(Math.acos(Math.toRadians(valorDouble)));
+                        } else{
+                            cosInv = Math.acos(Double.parseDouble(split[x + 1]));
+                        }
                         opLocal = opLocal.replace("arccos(" + split[x + 1] + ")", Double.toString(cosInv));
                         x++;
                     } else if (split[x].contains("tan(")) {
-                        double tan = Math.tan(Double.parseDouble(split[x + 1]));
+                        double tan;
+                        if(formato == 2){
+                            double valorDouble = Double.parseDouble(split[x + 1]);
+                            double tangent = Math.tan(Math.toRadians(valorDouble));
+                            tan = getValueByDecimal(tangent , cantidad);
+                        } else{
+                            tan = Math.tan(Double.parseDouble(split[x + 1]));
+                        }
                         opLocal = opLocal.replace("tan(" + split[x + 1] + ")", Double.toString(tan));
                         x++;
                     } else if (split[x].contains("sin(")) {
-                        double sin = Math.sin(Double.parseDouble(split[x + 1]));
+                        double sin;
+                        if(formato == 2){
+                            double valorDouble = Double.parseDouble(split[x + 1]);
+                            double seno = Math.sin(Math.toRadians(valorDouble));
+                            sin = getValueByDecimal(seno , cantidad);
+                        } else{
+                            sin = Math.sin(Double.parseDouble(split[x + 1]));
+                        }
                         opLocal = opLocal.replace("sin(" + split[x + 1] + ")", Double.toString(sin));
                         x++;
                     } else if (split[x].contains("cos(")) {
-                        double cos = Math.cos(Double.parseDouble(split[x + 1]));
+                        double cos;
+                        if(formato == 2){
+                            double valorDouble = Double.parseDouble(split[x + 1]);
+                            double coseno  = Math.cos(Math.toRadians(valorDouble));
+                            cos = getValueByDecimal(coseno , cantidad);
+                        } else{
+                            cos = Math.cos(Double.parseDouble(split[x + 1]));
+                        }
 //                        opLocal = opLocal.replace("cos(" + split[x + 1] + ")", Double.toString(cos));
                         if (x + 2 >= split.length) {
                             return "";
                         } else {
+                            String valor = String.format("%." + cantidad + "f", cos);
                             opLocal = opLocal.replace(split[x] + split[x + 1] + split[x + 2], Double.toString(cos));
                         }
                         x++;
                     } else if (split[x].contains("√")) {
                         double raiz = 0;
                         if (split[x + 1].contains("cos") || split[x + 1].contains("tan") || split[x + 1].contains("sin") || split[x + 1].contains("l")) {
-                            raiz = Math.sqrt(Double.parseDouble(Operacion.calcularOperacionCientifica(split[x + 1] + split[x + 2] + split[x + 3])));
+                            raiz = Math.sqrt(Double.parseDouble(Operacion.calcularOperacionCientifica(cantidad , (split[x + 1] + split[x + 2] + split[x + 3]), formato)));
                             opLocal = opLocal.replace("√" + split[x + 1] + split[x + 2] + split[x + 3], Double.toString(raiz));
                             x += 2;
                         } else {
@@ -355,6 +400,25 @@ public class Operacion {
         }
         }
         return opLocal;
+    }
+
+    public static double getValueByDecimal(double value , int cantidad){
+        double returnValue = (double) Math.round(value * 100) / 100;
+        switch (cantidad){
+            case 2:
+                returnValue = (double) Math.round(value * 100) / 100;
+                break;
+            case 3:
+                returnValue = (double) Math.round(value * 1000) / 1000;
+                break;
+            case 4:
+                returnValue = (double) Math.round(value * 10000) / 10000;
+                break;
+            case 8:
+                returnValue = (double) Math.round(value * 100000000) / 100000000;
+                break;
+        }
+        return returnValue;
     }
 
     public static String agregarMultiplicaciones(String operacion) {

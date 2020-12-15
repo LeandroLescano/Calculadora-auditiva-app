@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
@@ -16,6 +17,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import java.text.Format;
 import java.util.ArrayList;
 
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
@@ -23,12 +25,14 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Color;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Decimales;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Estado;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Formato;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tamano;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Tipografia;
 
 public class ConfiguracionActivity extends AppCompatActivity {
 
-    private Spinner tamano, tipografia, color, botones, vibracion, sonido, decimales;
+    private Spinner tamano, tipografia, color, botones, vibracion, sonido, decimales, format;
     private Button botonGuardar;
     private Toast toast;
     private ConfiguracionDao config;
@@ -42,9 +46,12 @@ public class ConfiguracionActivity extends AppCompatActivity {
     private Color colBotSelec;
     private Tamano tamSelec;
     private Tipografia tipSelec;
+    private Formato formatoCalculo;
     private Estado estVibSelec;
     private Estado estSonSelec;
     private Decimales cantDecimal;
+    private ArrayList<String>ListaTexto;
+    private ArrayList<Formato> listaFormato;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,15 +65,19 @@ public class ConfiguracionActivity extends AppCompatActivity {
         listCol = new ArrayList<Color>();
         listEst = new ArrayList<Estado>();
         listDecimal = new ArrayList<Decimales>();
+        ListaTexto = new ArrayList<String>();
+        listaFormato = new ArrayList<Formato>();
 
         listTam = config.listarTamanos(this);
         listTip = config.listarTipografias(this);
         listCol = config.listarColores(this);
         listEst = config.listarEstados(this);
         listDecimal = config.listarDecimales(this);
-
+        listaFormato = config.listarFormato(this);
         cfgActual = config.traerConfiguracion(this);
 
+
+        ListaTexto = config.setearDecimal(listDecimal);
 
         ArrayAdapter<Tamano> adapterTamano = new ArrayAdapter<Tamano>(this, R.layout.spinner_item, listTam);
         ArrayAdapter<Tipografia> adapterTipo = new ArrayAdapter<Tipografia>(this, R.layout.spinner_item, listTip);
@@ -74,7 +85,8 @@ public class ConfiguracionActivity extends AppCompatActivity {
         ArrayAdapter<Color> adapterBotones = new ArrayAdapter<Color>(this, R.layout.spinner_item, listCol);
         ArrayAdapter<Estado> adapterVibracion = new ArrayAdapter<Estado>(this, R.layout.spinner_item, listEst);
         ArrayAdapter<Estado> adapterSonido = new ArrayAdapter<Estado>(this, R.layout.spinner_item, listEst);
-        ArrayAdapter<Decimales> adapterDecimales = new ArrayAdapter<Decimales>(this, R.layout.spinner_item, listDecimal);
+        ArrayAdapter<String> adapterDecimales = new ArrayAdapter<String>(this, R.layout.spinner_item, ListaTexto);
+        ArrayAdapter<Formato> adapterFormato = new ArrayAdapter<Formato>(this ,  R.layout.spinner_item, listaFormato);
 
         botonGuardar = findViewById(R.id.btnGuardar);
         tamano = findViewById(R.id.cbTamano);
@@ -84,6 +96,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         vibracion = findViewById(R.id.cbVibracion);
         sonido = findViewById(R.id.cbSonido);
         decimales = findViewById(R.id.cbDecimales);
+        format = findViewById(R.id.cbResultado);
         adapterTamano.setDropDownViewResource(R.layout.spinner_item);
         adapterTipo.setDropDownViewResource(R.layout.spinner_item);
         adapterColor.setDropDownViewResource(R.layout.spinner_item);
@@ -91,6 +104,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         adapterVibracion.setDropDownViewResource(R.layout.spinner_item);
         adapterSonido.setDropDownViewResource(R.layout.spinner_item);
         adapterDecimales.setDropDownViewResource(R.layout.spinner_item);
+        adapterFormato.setDropDownViewResource(R.layout.spinner_item);
         tamano.setAdapter(adapterTamano);
         tipografia.setAdapter(adapterTipo);
         color.setAdapter(adapterColor);
@@ -98,6 +112,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         vibracion.setAdapter(adapterVibracion);
         sonido.setAdapter(adapterSonido);
         decimales.setAdapter(adapterDecimales);
+        format.setAdapter(adapterFormato);
 
         tamano.setSelection(cfgActual.getTamano().getId()-1);
         tipografia.setSelection(cfgActual.getTipografia().getId()-1);
@@ -106,6 +121,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         vibracion.setSelection(cfgActual.getVibracion().getId()-1);
         sonido.setSelection(cfgActual.getSonido().getId()-1);
         decimales.setSelection(cfgActual.getDecimales().getId()-1);
+        format.setSelection(cfgActual.getFormato().getId()-1);
 
         //Seteos de configuración
 
@@ -183,7 +199,9 @@ public class ConfiguracionActivity extends AppCompatActivity {
         colSelec = new Color();
         estVibSelec = new Estado();
         estSonSelec = new Estado();
-        cantDecimal = new Decimales();
+        formatoCalculo = new Formato();
+        int cantDecimal;
+
 
         //    private Spinner vibracion, sonido;
 
@@ -193,7 +211,10 @@ public class ConfiguracionActivity extends AppCompatActivity {
         colSelec = (Color) color.getSelectedItem();
         estVibSelec = (Estado) vibracion.getSelectedItem();
         estSonSelec = (Estado) sonido.getSelectedItem();
-        cantDecimal = (Decimales) decimales.getSelectedItem();
+        formatoCalculo = (Formato) format.getSelectedItem();
+
+
+        cantDecimal = config.getDecimalValue(decimales.getSelectedItem()) ;
 
         if (colSelec.getId() == colBotSelec.getId())
         {
@@ -203,7 +224,7 @@ public class ConfiguracionActivity extends AppCompatActivity {
         else
 
         {
-            if (config.cargarConfiguracion(colSelec.getId(), colBotSelec.getId(), tipSelec.getId(), tamSelec.getId(), estVibSelec.getId(), estSonSelec.getId(), cantDecimal.getId(), this))
+            if (config.cargarConfiguracion(colSelec.getId(), colBotSelec.getId(), tipSelec.getId(), tamSelec.getId(), estVibSelec.getId(), estSonSelec.getId(), cantDecimal , formatoCalculo.getId(), this))
             {
 
                 toast = Toast.makeText(this, "Configuración modificada exitosamente", Toast.LENGTH_SHORT);

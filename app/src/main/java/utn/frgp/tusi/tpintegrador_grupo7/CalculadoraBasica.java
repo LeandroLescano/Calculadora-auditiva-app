@@ -67,6 +67,8 @@ public class CalculadoraBasica extends AppCompatActivity {
     private boolean vibrarBoton = true;
     private ArrayList<View> botones, botonesTam, botonesImg;
     private DecimalFormat formatter;
+    private int cantidad;
+    private int format;
 
     @Override
     public void onResume() {
@@ -93,7 +95,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         resultado = findViewById(R.id.txtResultado);
         resultado.setAlpha((float) 0.5);
         resultado.setText("0");
-        formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
+        formatter = (DecimalFormat) NumberFormat.getNumberInstance(Locale.GERMAN);
 
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -370,7 +372,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         ImageView micButton = (ImageView) view;
         boolean changeAcivity = false;
         if(voz == null){
-            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout);
+            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout ,cantidad, format);
         }
         voz.startStop();
 
@@ -495,6 +497,8 @@ public class CalculadoraBasica extends AppCompatActivity {
         config = new ConfiguracionDao();
         cfgActual = new Configuracion();
         cfgActual = config.traerConfiguracion(this);
+        cantidad = cfgActual.getDecimales().getCantidad();
+        format = cfgActual.getFormato().getId();
         formatter.setMaximumFractionDigits(cfgActual.getDecimales().getCantidad());
         botonesImg = agregarBotonesImg();
 //        botonesTam = agregarBotones();
@@ -516,63 +520,54 @@ public class CalculadoraBasica extends AppCompatActivity {
         for(View b : botones){
             if(b.getId() == R.id.btnDerecha || b.getId() == R.id.btnIzquierda || b.getId() == R.id.btnMic){
                 ImageButton img = (ImageButton) b;
-                int tamano = config.setearTamano(this)-12;
+                int tamano = config.setearTamano(this)-2;
                 if(b.getId() == R.id.btnDerecha){
                     switch (tamano){
+                        case 8:
+                            img.setImageResource(R.drawable.ic_flecha_der_8);
+                            break;
+                        case 12:
+                            img.setImageResource(R.drawable.ic_flecha_der_12);
+                            break;
                         case 16:
                             img.setImageResource(R.drawable.ic_flecha_der_16);
                             break;
                         case 24:
                             img.setImageResource(R.drawable.ic_flecha_der_24);
                             break;
-                        case 32:
-                            img.setImageResource(R.drawable.ic_flecha_der_32);
-                            break;
-                        case 40:
-                            img.setImageResource(R.drawable.ic_flecha_der_40);
-                            break;
-                        case 48:
-                            img.setImageResource(R.drawable.ic_flecha_der_48);
-                            break;
                         default:
                             break;
                     }
                 }else if(b.getId() == R.id.btnIzquierda){
                     switch (tamano){
+                        case 8:
+                            img.setImageResource(R.drawable.ic_flecha_izq_8);
+                            break;
+                        case 12:
+                            img.setImageResource(R.drawable.ic_flecha_izq_12);
+                            break;
                         case 16:
                             img.setImageResource(R.drawable.ic_flecha_izq_16);
                             break;
                         case 24:
                             img.setImageResource(R.drawable.ic_flecha_izq_24);
                             break;
-                        case 32:
-                            img.setImageResource(R.drawable.ic_flecha_izq_32);
-                            break;
-                        case 40:
-                            img.setImageResource(R.drawable.ic_flecha_izq_40);
-                            break;
-                        case 48:
-                            img.setImageResource(R.drawable.ic_flecha_izq_48);
-                            break;
                         default:
                             break;
                     }
                 }else{
                     switch (tamano){
+                        case 8:
+                            img.setImageResource(R.drawable.ic_mic_8);
+                            break;
+                        case 12:
+                            img.setImageResource(R.drawable.ic_mic_12);
+                            break;
                         case 16:
                             img.setImageResource(R.drawable.ic_mic_16);
                             break;
                         case 24:
                             img.setImageResource(R.drawable.ic_mic_24);
-                            break;
-                        case 32:
-                            img.setImageResource(R.drawable.ic_mic_32);
-                            break;
-                        case 40:
-                            img.setImageResource(R.drawable.ic_mic_40);
-                            break;
-                        case 48:
-                            img.setImageResource(R.drawable.ic_mic_48);
                             break;
                         default:
                             break;

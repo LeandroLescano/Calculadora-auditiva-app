@@ -364,7 +364,6 @@
                 android:layout_weight="1">
 
                 <ImageButton
-
                     android:id="@+id/btnMic"
                     android:layout_width="40dp"
                     android:layout_height="match_parent"

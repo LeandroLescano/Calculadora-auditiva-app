@@ -35,6 +35,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
+import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Formato;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
@@ -64,6 +65,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     private HistorialDao hist;
     private DecimalFormat formatter;
     private int decimales;
+    private int format;
 
     @Override
     public void onResume() {
@@ -91,8 +93,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         vibra = new Vibracion();
         vibra = vibra.getManager(this);
         hist = new HistorialDao();
-        formatter = (DecimalFormat) NumberFormat.getInstance(Locale.US);
-        formatter.setMaximumFractionDigits(8);
+        formatter = (DecimalFormat) NumberFormat.getNumberInstance(Locale.GERMAN);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             operacion.setShowSoftInputOnFocus(false);
         }
@@ -253,7 +254,15 @@ public class CalculadoraCientifica extends AppCompatActivity {
                     Numero = NumeroViejo + "ln()";
                     break;
                 case R.id.btnPi:
-                    operacion.setText(MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual))));
+                    if(posActual > 0){
+                        String valor;
+                        valor = MuestraVieja.substring(0, posActual).concat("(" + String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual) + ")"));
+                        operacion.setText(valor);
+                        posActual = posActual + 1;
+                    }
+                    else{
+                        operacion.setText(MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual))));
+                    }
                     Numero = NumeroViejo + String.valueOf(Math.PI);
                     posActual = posActual + 10;
                     operacion.setSelection(posActual);
@@ -507,7 +516,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
 
         //Resolución de funciones
-        operacionACalcular = Operacion.calcularOperacionCientifica(operacionACalcular);
+        operacionACalcular = Operacion.calcularOperacionCientifica(cfgActual.getDecimales().getCantidad() , operacionACalcular , format);
 
         //Detección de posición de paréntisis
         operacionACalcular = Operacion.sacarParentesis(operacionACalcular);
@@ -541,7 +550,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     public void comandoDeVoz(View view){
         ImageView micButton = (ImageView) view;
         if(voz == null){
-            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout);
+            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout , decimales , format);
         }
             voz.startStop();
     }
@@ -661,6 +670,9 @@ public class CalculadoraCientifica extends AppCompatActivity {
         config = new ConfiguracionDao();
         cfgActual = new Configuracion();
         cfgActual = config.traerConfiguracion(this);
+        decimales = cfgActual.getDecimales().getCantidad();
+        format = cfgActual.getFormato().getId();
+        formatter.setMaximumFractionDigits(cfgActual.getDecimales().getCantidad());
         botonesImg = agregarBotonesImg();
 //        botonesTam = agregarBotones();
         botones = layout.getTouchables();
@@ -683,7 +695,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
         for (View b : botones) {
                 if(b.getId() == R.id.btnDerecha || b.getId() == R.id.btnIzquierda || b.getId() == R.id.btnMic){
                     ImageButton img = (ImageButton) b;
-                    int tamano = config.setearTamano(this)-12;
+                    int tamano = config.setearTamano(this)-2;
                     if(b.getId() == R.id.btnDerecha){
                         switch (tamano){
                             case 8:
@@ -697,15 +709,6 @@ public class CalculadoraCientifica extends AppCompatActivity {
                                 break;
                             case 24:
                                 img.setImageResource(R.drawable.ic_flecha_der_24);
-                                break;
-                            case 32:
-                                img.setImageResource(R.drawable.ic_flecha_der_32);
-                                break;
-                            case 40:
-                                img.setImageResource(R.drawable.ic_flecha_der_40);
-                                break;
-                            case 48:
-                                img.setImageResource(R.drawable.ic_flecha_der_48);
                                 break;
                             default:
                                 break;
@@ -724,15 +727,6 @@ public class CalculadoraCientifica extends AppCompatActivity {
                             case 24:
                                 img.setImageResource(R.drawable.ic_flecha_izq_24);
                                 break;
-                            case 32:
-                                img.setImageResource(R.drawable.ic_flecha_izq_32);
-                                break;
-                            case 40:
-                                img.setImageResource(R.drawable.ic_flecha_izq_40);
-                                break;
-                            case 48:
-                                img.setImageResource(R.drawable.ic_flecha_izq_48);
-                                break;
                             default:
                                 break;
                         }
@@ -750,37 +744,23 @@ public class CalculadoraCientifica extends AppCompatActivity {
                             case 24:
                                 img.setImageResource(R.drawable.ic_mic_24);
                                 break;
-                            case 32:
-                                img.setImageResource(R.drawable.ic_mic_32);
-                                break;
-                            case 40:
-                                img.setImageResource(R.drawable.ic_mic_40);
-                                break;
-                            case 48:
-                                img.setImageResource(R.drawable.ic_mic_48);
-                                break;
                             default:
                                 break;
                         }
                     }
                 }else if(b.getId() != R.id.txtOperacion){
                     Button boton = (Button) b;
-                    int tamano = config.setearTamano(this);
-                    if(tamano <= 40){
-                        boton.setTextSize(tamano);
-                    }else if (b.getId() == R.id.btntan || b.getId() == R.id.btnsin || b.getId() == R.id.btncos
-                              || b.getId() == R.id.btnBorrar) {
-                        boton.setTextSize(38);
-                    }else if(b.getId() == R.id.btnLogDecimal || b.getId() == R.id.btnLogNatural || b.getId() == R.id.btnEliminar){
-                        boton.setTextSize(42);
-                    }else if (b.getId() == R.id.btnTanInverso || b.getId() == R.id.btnCosInverso || b.getId() == R.id.btnSinInverso){
-                        boton.setTextSize(28);
-                    }else{
-                        boton.setTextSize(tamano);
-                    }
+                   int tamano = config.setearTamano(this);
+                   if(tamano > 18){
+                       boton.setTextSize(tamano - 6);
+                   }
+                   else{
+                       boton.setTextSize(tamano);
+                   }
+                    /*if(b.getId() == R.id.btnEliminar || b.getId() == R.id.btnTanInverso || b.getId() == R.id.btnCosInverso || b.getId() == R.id.btnSinInverso){
+                    }*/
             }
         }
-        decimales = cfgActual.getDecimales().getCantidad();
         if(cfgActual.getVibracion().getDescripcion().equals("Siempre")){
             vibrarBoton = true;
         }else{

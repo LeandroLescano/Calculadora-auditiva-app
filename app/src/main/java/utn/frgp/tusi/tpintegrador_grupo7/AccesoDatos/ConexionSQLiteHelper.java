@@ -22,6 +22,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db_calculadora.execSQL(Utilidades.CREAR_TABLA_TIPOGRAFIA);
         db_calculadora.execSQL(Utilidades.CREAR_TABLA_HISTORIAL);
         db_calculadora.execSQL(Utilidades.CREAR_TABLA_DECIMAL);
+        db_calculadora.execSQL(Utilidades.CREAR_TABLA_FORMATO);
         db_calculadora.execSQL(Utilidades.CREAR_TABLA_CONFIG);
         db_calculadora.execSQL(Utilidades.INSERTAR_TABLA_COLOR);
         db_calculadora.execSQL(Utilidades.INSERTAR_TABLA_TIPOGRAFIA);
@@ -29,6 +30,7 @@ public class ConexionSQLiteHelper extends SQLiteOpenHelper {
         db_calculadora.execSQL(Utilidades.INSERTAR_TABLA_ESTADO);
         db_calculadora.execSQL(Utilidades.INSERTAR_TABLA_CONFIGURACION);
         db_calculadora.execSQL(Utilidades.INSERTAR_TABLA_DECIMALES);
+        db_calculadora.execSQL(Utilidades.INSERTAR_TABLA_FORMATO);
     }
 
     @Override

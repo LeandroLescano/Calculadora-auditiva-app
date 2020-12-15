@@ -30,15 +30,15 @@
     <string name="parentAbrir">(</string>
     <string name="parentCerrar">)</string>
     <string name="derecha">←</string>
-    <string name="taninverso">Tan-1</string>
-    <string name="sininverso">Sin-1</string>
-    <string name="cosinverso">Cos-1</string>
-    <string name="tan">Tan</string>
-    <string name="sin">Sin</string>
-    <string name="cos">Cos</string>
-    <string name="lognatural">Ln</string>
-    <string name="logdecimal">Lg</string>
-    <string name="potencia">X^</string>
+    <string name="taninverso">tan-1</string>
+    <string name="sininverso">sin-1</string>
+    <string name="cosinverso">cos-1</string>
+    <string name="tan">tan</string>
+    <string name="sin">sin</string>
+    <string name="cos">cos</string>
+    <string name="lognatural">ln</string>
+    <string name="logdecimal">log</string>
+    <string name="potencia">x^</string>
     <string name="raiz">√</string>
     <string name="pi">π</string>
     <string name="txtTamano">Tamaño del Texto</string>
@@ -48,6 +48,7 @@
     <string name="txtVibracion">Estado de Vibración</string>
     <string name="txtSonido">Estado de Emision de Sonido</string>
     <string name="txtDecimales">Cantidad de decimales</string>
+    <string name="txtResultado">Resultado en</string>
     <string name="Guardar">Guardar</string>
     <string name="ver">VER</string>
     <string name="todo">TODO</string>
@@ -113,6 +114,11 @@
         <item>2 Decimales</item>
         <item>3 Decimales</item>
         <item>4 Decimales</item>
+    </string-array>
+
+    <string-array name="Resultado">
+        <item>Radiales</item>
+        <item>Grados</item>
     </string-array>
 
 </resources>

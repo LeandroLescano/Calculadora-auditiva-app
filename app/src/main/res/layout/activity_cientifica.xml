@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".CalculadoraCientifica"
-    tools:ignore="LabelFor">
+    tools:ignore="LabelFor"
+    android:animateLayoutChanges="true">
 
     <com.google.android.material.appbar.AppBarLayout
         android:layout_width="match_parent"
@@ -104,7 +105,7 @@
                     android:text="@string/taninverso"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnSinInverso"
@@ -117,7 +118,7 @@
                     android:text="@string/sininverso"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="30sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnCosInverso"
@@ -130,7 +131,7 @@
                     android:text="@string/cosinverso"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="29sp" />
+                    android:textSize="20sp" />
 
                 <ImageButton
                     android:id="@+id/btnIzquierda"
@@ -140,7 +141,6 @@
                     android:layout_weight="1"
                     android:background="#000000"
                     android:onClick="moverCursor"
-                    android:scaleType="fitXY"
                     android:src="@drawable/ic_flecha_izq" />
 
                 <ImageButton
@@ -152,7 +152,6 @@
                     android:background="#000000"
                     android:onClick="moverCursor"
                     android:src="@drawable/ic_flecha_der"
-                    android:scaleType="fitXY"
                     android:text="@string/derecha" />
 
             </TableRow>
@@ -173,7 +172,7 @@
                     android:text="@string/tan"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="35sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnsin"
@@ -186,7 +185,7 @@
                     android:text="@string/sin"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="35sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btncos"
@@ -199,7 +198,7 @@
                     android:text="@string/cos"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="35sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnAbrirParent"
@@ -212,7 +211,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/parentAbrir"
                     android:textColor="#FFFFFF"
-                    android:textSize="40sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnCerrarParent"
@@ -225,7 +224,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/parentCerrar"
                     android:textColor="#FFFFFF"
-                    android:textSize="40sp" />
+                    android:textSize="20sp" />
             </TableRow>
 
             <TableRow
@@ -244,7 +243,7 @@
                     android:text="@string/lognatural"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnBorrar"
@@ -256,7 +255,7 @@
                     android:onClick="borrarDigito"
                     android:text="@string/borrar"
                     android:textColor="#FFFFFF"
-                    android:textSize="40sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnPorcentaje"
@@ -268,7 +267,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/porcentaje"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnDividir"
@@ -280,7 +279,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/division"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnEliminar"
@@ -292,7 +291,7 @@
                     android:onClick="eliminarOperacion"
                     android:text="@string/eliminar"
                     android:textColor="#FFFFFF"
-                    android:textSize="40sp" />
+                    android:textSize="20sp" />
 
 
             </TableRow>
@@ -313,7 +312,7 @@
                     android:text="@string/logdecimal"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btn7"
@@ -325,7 +324,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/seven"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btn8"
@@ -337,7 +336,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/eight"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btn9"
@@ -349,7 +348,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/nine"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnMultiplicar"
@@ -361,7 +360,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/multi"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
             </TableRow>
 
@@ -380,7 +379,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/potencia"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btn4"
@@ -392,7 +391,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/four"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btn5"
@@ -404,7 +403,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/five"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btn6"
@@ -416,7 +415,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/six"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnResta"
@@ -428,7 +427,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/resta"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
             </TableRow>
 
             <TableRow
@@ -446,7 +445,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/raiz"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
 
                 <Button
@@ -459,7 +458,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/one"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
 
                 <Button
@@ -472,7 +471,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/two"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btn3"
@@ -484,7 +483,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/three"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnSumar"
@@ -496,7 +495,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/suma"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
             </TableRow>
 
@@ -516,18 +515,17 @@
                     android:text="@string/pi"
                     android:textAllCaps="false"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <ImageButton
                     android:id="@+id/btnMic"
-                    android:layout_width="50dp"
+                    android:layout_width="40dp"
                     android:layout_height="match_parent"
                     android:layout_margin="2dp"
                     android:layout_weight="1"
                     android:background="#000000"
                     android:contentDescription="@string/todo"
                     android:onClick="comandoDeVoz"
-                    android:scaleType="fitXY"
                     android:src="@drawable/ic_mic" />
 
                 <Button
@@ -540,7 +538,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/zero"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnPunto"
@@ -552,7 +550,7 @@
                     android:onClick="ingresarDigito"
                     android:text="@string/punto"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
 
                 <Button
                     android:id="@+id/btnIgual"
@@ -564,7 +562,7 @@
                     android:onClick="calcularOperacion"
                     android:text="@string/igual"
                     android:textColor="#FFFFFF"
-                    android:textSize="50sp" />
+                    android:textSize="20sp" />
             </TableRow>
         </TableLayout>
     </LinearLayout>

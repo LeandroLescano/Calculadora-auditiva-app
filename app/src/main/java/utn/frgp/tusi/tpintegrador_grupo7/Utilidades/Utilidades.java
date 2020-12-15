@@ -30,6 +30,13 @@ public class Utilidades {
 
     public static final String CREAR_TABLA_DECIMAL="CREATE TABLE " + TABLA_DECIMAL + "(" + CAMPO_ID_DECIMAL + " integer primary key autoincrement, " + CAMPO_CANTIDAD_DECIMAL + " integer)";
 
+    //Constantes campos tabla Formato
+    public static final String TABLA_FORMATO="formato";
+    public static final String CAMPO_ID_FORMATO="id";
+    public static final String CAMPO_TIPO_FORMATO="tipo";
+
+    public static final String CREAR_TABLA_FORMATO="CREATE TABLE " + TABLA_FORMATO + "(" + CAMPO_ID_FORMATO + " integer primary key autoincrement, " + CAMPO_TIPO_FORMATO + " text)";
+
     //Constantes campos tabla Estados
     public static final String TABLA_ESTADO="estados";
     public static final String CAMPO_ID_ESTADO="id";
@@ -46,16 +53,18 @@ public class Utilidades {
     public static final String CAMPO_ESTADO_VIBRACION="estado_vibracion";
     public static final String CAMPO_ESTADO_SONIDO="estado_sonido";
     public static final String CAMPO_DECIMAL_CONFIG="id_decimal";
+    public static final String CAMPO_FORMATO_CONFIG="id_formato";
 
 
-    public static final String CREAR_TABLA_CONFIG="CREATE TABLE " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + " integer, " + CAMPO_COLORBOTON_CONFIG + " integer, "+ CAMPO_TIPOGRAFIA_CONFIG + " integer, "+ CAMPO_TAMANO_CONFIG + " integer, " + CAMPO_ESTADO_VIBRACION + " integer, " + CAMPO_ESTADO_SONIDO + " integer, " + CAMPO_DECIMAL_CONFIG + " integer, " +
+    public static final String CREAR_TABLA_CONFIG="CREATE TABLE " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + " integer, " + CAMPO_COLORBOTON_CONFIG + " integer, "+ CAMPO_TIPOGRAFIA_CONFIG + " integer, "+ CAMPO_TAMANO_CONFIG + " integer, " + CAMPO_ESTADO_VIBRACION + " integer, " + CAMPO_ESTADO_SONIDO + " integer, " + CAMPO_DECIMAL_CONFIG + " integer, " + CAMPO_FORMATO_CONFIG + " integer, " +
             "FOREIGN KEY ("+CAMPO_COLOR_CONFIG+") REFERENCES "+ TABLA_COLOR +"("+CAMPO_ID_COLOR+"), " +
             "FOREIGN KEY ("+CAMPO_COLORBOTON_CONFIG+") REFERENCES "+ TABLA_COLOR +"("+CAMPO_ID_COLOR+"), " +
             "FOREIGN KEY ("+CAMPO_TIPOGRAFIA_CONFIG+") REFERENCES "+ TABLA_TIPOGRAFIA +"("+CAMPO_ID_TIPOGRAFIA+"), " +
             "FOREIGN KEY ("+CAMPO_TAMANO_CONFIG+") REFERENCES "+ TABLA_TAMANO +"("+CAMPO_ID_TAMANO+"), " +
             "FOREIGN KEY ("+CAMPO_ESTADO_VIBRACION+") REFERENCES "+ TABLA_ESTADO +"("+CAMPO_ID_ESTADO+"), " +
             "FOREIGN KEY ("+CAMPO_ESTADO_SONIDO+") REFERENCES "+ TABLA_ESTADO +"("+CAMPO_ID_ESTADO+")," +
-            "FOREIGN KEY ("+CAMPO_DECIMAL_CONFIG+") REFERENCES "+ TABLA_DECIMAL +"("+CAMPO_ID_DECIMAL+"))";
+            "FOREIGN KEY ("+CAMPO_DECIMAL_CONFIG+") REFERENCES "+ TABLA_DECIMAL +"("+CAMPO_ID_DECIMAL+")," +
+            "FOREIGN KEY ("+CAMPO_FORMATO_CONFIG+") REFERENCES "+ TABLA_FORMATO +"("+CAMPO_ID_FORMATO+"))";
 
     //Constantes campos tabla Historial
 
@@ -73,9 +82,11 @@ public class Utilidades {
 
     public static final String INSERTAR_TABLA_ESTADO="INSERT INTO " + TABLA_ESTADO + "(" + CAMPO_DESCRIPCION_ESTADO + ") VALUES ('Siempre'), ('Solo resultados'), ('Solo errores'), ('Nunca')";
 
-    public static final String INSERTAR_TABLA_CONFIGURACION="INSERT INTO " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + ", " + CAMPO_COLORBOTON_CONFIG + ", " + CAMPO_TIPOGRAFIA_CONFIG + ", " + CAMPO_TAMANO_CONFIG + ", " + CAMPO_ESTADO_VIBRACION + ", " + CAMPO_ESTADO_SONIDO + ", " + CAMPO_DECIMAL_CONFIG + ") VALUES (4,5,1,4,1,1,2)";
+    public static final String INSERTAR_TABLA_CONFIGURACION="INSERT INTO " + TABLA_CONFIG + "(" + CAMPO_COLOR_CONFIG + ", " + CAMPO_COLORBOTON_CONFIG + ", " + CAMPO_TIPOGRAFIA_CONFIG + ", " + CAMPO_TAMANO_CONFIG + ", " + CAMPO_ESTADO_VIBRACION + ", " + CAMPO_ESTADO_SONIDO + ", " + CAMPO_DECIMAL_CONFIG + ", " + CAMPO_FORMATO_CONFIG + ") VALUES (4,5,1,2,1,1,2,1)";
 
  /*   public static final String INSERTAR_TABLA_HISTORIAL="INSERT INTO " + TABLA_HISTORIAL + "(" + CAMPO_OPERACION + ") VALUES ('2+2=4'), ('5+5=10'), ('1x1=1'), ('4/2=2'), ('7^2=49')"; */
 
-    public static final String INSERTAR_TABLA_DECIMALES="INSERT INTO " + TABLA_DECIMAL + "(" + CAMPO_CANTIDAD_DECIMAL + ") VALUES (2), (3), (4)";
+    public static final String INSERTAR_TABLA_DECIMALES="INSERT INTO " + TABLA_DECIMAL + "(" + CAMPO_CANTIDAD_DECIMAL + ") VALUES (2), (3), (4), (8)";
+
+    public static final String INSERTAR_TABLA_FORMATO="INSERT INTO " + TABLA_FORMATO + "(" + CAMPO_TIPO_FORMATO + ") VALUES ('Radiales'), ('Grados')";
 }

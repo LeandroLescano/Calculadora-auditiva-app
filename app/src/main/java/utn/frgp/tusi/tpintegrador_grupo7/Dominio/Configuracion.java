@@ -9,6 +9,7 @@ public class Configuracion {
     private Estado vibracion;
     private Estado sonido;
     private Decimales decimales;
+    private Formato formato;
 
     public Configuracion() {
     }
@@ -78,4 +79,13 @@ public class Configuracion {
     public void setDecimales(Decimales decimales) {
         this.decimales = decimales;
     }
+
+    public Formato getFormato() {
+        return formato;
+    }
+
+    public void setFormato(Formato format) {
+        this.formato = format;
+    }
+
 }
