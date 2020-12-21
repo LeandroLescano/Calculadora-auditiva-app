@@ -256,7 +256,12 @@ public class CalculadoraCientifica extends AppCompatActivity {
                 case R.id.btnPi:
                     if(posActual > 0){
                         String valor;
+                        if (MuestraVieja.substring(posActual-1,posActual ).equals("(")){
+                            valor = MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual)));
+                        }
+                        else {
                         valor = MuestraVieja.substring(0, posActual).concat("(" + String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual) + ")"));
+                        }
                         operacion.setText(valor);
                         posActual = posActual + 1;
                     }
