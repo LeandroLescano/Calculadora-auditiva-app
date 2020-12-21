@@ -255,21 +255,38 @@ public class CalculadoraCientifica extends AppCompatActivity {
                     break;
                 case R.id.btnPi:
                     if(posActual > 0){
+                        String[] A = {"+","-","/","*","√","^","("};
                         String valor;
-                        if (MuestraVieja.substring(posActual-1,posActual ).equals("(")){
-                            valor = MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual)));
+                        boolean Entro= false;
+                        for(String a:A)
+                        {
+                            String XD = MuestraVieja.substring(posActual - 1, posActual);
+                            if (MuestraVieja.substring(posActual - 1, posActual).equals(a)) {
+                                valor = MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual)));
+                                if(MuestraVieja.substring(posActual - 1, posActual).equals("("))
+                                {
+                                    posActual = posActual + 1;
+                                }
+                                operacion.setText(valor);
+                                posActual = posActual + 9;
+                                Entro = true;
+                                break;
+                            }
                         }
-                        else {
-                        valor = MuestraVieja.substring(0, posActual).concat("(" + String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual) + ")"));
+                        if(Entro == false)
+                        {
+                            valor = MuestraVieja.substring(0, posActual).concat("(" + String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual) + ")"));
+                            operacion.setText(valor);
+                            posActual = posActual + 1;
+                            posActual = posActual + 10;
                         }
-                        operacion.setText(valor);
-                        posActual = posActual + 1;
+
                     }
                     else{
                         operacion.setText(MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual))));
+                        posActual = posActual + 9;
                     }
                     Numero = NumeroViejo + String.valueOf(Math.PI);
-                    posActual = posActual + 10;
                     operacion.setSelection(posActual);
                     break;
                 case R.id.btnRaiz:
