@@ -17,6 +17,7 @@ import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.ConfiguracionDao;
 import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
+import utn.frgp.tusi.tpintegrador_grupo7.Interface.ChangeCalculator;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.Utilidades;
@@ -43,7 +44,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Locale;
 
-public class CalculadoraBasica extends AppCompatActivity {
+public class CalculadoraBasica extends AppCompatActivity implements ChangeCalculator {
 
     private TextView resultado;
     private EditText operacion;
@@ -372,7 +373,7 @@ public class CalculadoraBasica extends AppCompatActivity {
         ImageView micButton = (ImageView) view;
         boolean changeAcivity = false;
         if(voz == null){
-            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout ,cantidad, format);
+            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout ,cantidad, format, CalculadoraBasica.this);
         }
         voz.startStop();
 
@@ -582,6 +583,19 @@ public class CalculadoraBasica extends AppCompatActivity {
             vibrarBoton = true;
         }else{
             vibrarBoton = false;
+        }
+    }
+
+    @Override
+    public void basicCalculator(boolean change) {
+
+    }
+
+    @Override
+    public void scientificCalculator(boolean change) {
+        if(change == true){
+            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraCientifica.class);
+            startActivity(intent);
         }
     }
 }

@@ -37,11 +37,12 @@ import utn.frgp.tusi.tpintegrador_grupo7.AccesoDatos.HistorialDao;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Formato;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
+import utn.frgp.tusi.tpintegrador_grupo7.Interface.ChangeCalculator;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.AyudaAuditiva;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.ComandosVoz;
 import utn.frgp.tusi.tpintegrador_grupo7.Utilidades.Vibracion;
 
-public class CalculadoraCientifica extends AppCompatActivity {
+public class CalculadoraCientifica extends AppCompatActivity implements ChangeCalculator {
     private TextView resultado;
     private EditText operacion;
     private String Signo = "";
@@ -256,11 +257,13 @@ public class CalculadoraCientifica extends AppCompatActivity {
                 case R.id.btnPi:
                     if(posActual > 0){
                         String[] A = {"+","-","/","*","√","^","("};
+                        String[] Numeros = {"0","1","2","3","4","5","6","7","8","9"};
                         String valor;
                         boolean Entro= false;
+                        boolean Anterior = false;
+                        String XD = MuestraVieja.substring(posActual - 1, posActual);
                         for(String a:A)
                         {
-                            String XD = MuestraVieja.substring(posActual - 1, posActual);
                             if (MuestraVieja.substring(posActual - 1, posActual).equals(a)) {
                                 valor = MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual)));
                                 if(MuestraVieja.substring(posActual - 1, posActual).equals("("))
@@ -275,12 +278,24 @@ public class CalculadoraCientifica extends AppCompatActivity {
                         }
                         if(Entro == false)
                         {
+                            for(String n:Numeros){
+                                if (MuestraVieja.substring(posActual - 1, posActual).equals(n)) {
+                                    valor = MuestraVieja.substring(0, posActual).concat("x" + String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual)));
+                                    operacion.setText(valor);
+                                    posActual = posActual + 10;
+                                    Anterior = true;
+                                }
+                                if(Anterior == true){
+                                    break;
+                                }
+                            }
+                            if(!Anterior){
                             valor = MuestraVieja.substring(0, posActual).concat("(" + String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual) + ")"));
                             operacion.setText(valor);
                             posActual = posActual + 1;
                             posActual = posActual + 10;
+                            }
                         }
-
                     }
                     else{
                         operacion.setText(MuestraVieja.substring(0, posActual).concat(String.valueOf(Math.PI).substring(0, 10).concat(MuestraVieja.substring(posActual))));
@@ -515,6 +530,19 @@ public class CalculadoraCientifica extends AppCompatActivity {
 
     }
 
+    @Override
+    public void basicCalculator(boolean change) {
+        if(change == true){
+            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica.class);
+            startActivity(intent);
+        }
+    }
+
+    @Override
+    public void scientificCalculator(boolean change) {
+
+    }
+
     public class DecimalDigitsInputFilter  implements InputFilter {
         private Pattern mPattern;
 
@@ -572,7 +600,7 @@ public class CalculadoraCientifica extends AppCompatActivity {
     public void comandoDeVoz(View view){
         ImageView micButton = (ImageView) view;
         if(voz == null){
-            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout , decimales , format);
+            voz = new ComandosVoz(this, this, operacion, resultado, alertaGrabando, alertaProcesando, fondoProcesando, layout , decimales , format , CalculadoraCientifica.this);
         }
             voz.startStop();
     }

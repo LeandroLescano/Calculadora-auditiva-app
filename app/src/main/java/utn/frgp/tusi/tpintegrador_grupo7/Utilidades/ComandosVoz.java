@@ -37,10 +37,11 @@ import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Configuracion;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Decimales;
 import utn.frgp.tusi.tpintegrador_grupo7.Dominio.Operacion;
 import utn.frgp.tusi.tpintegrador_grupo7.R;
+import utn.frgp.tusi.tpintegrador_grupo7.Interface.ChangeCalculator;
 
 import static android.Manifest.permission.RECORD_AUDIO;
 
-public class ComandosVoz implements RecognitionListener {
+public class ComandosVoz implements RecognitionListener  {
 
     private SpeechRecognizer speechRecognizer;
     private Intent speechIntent;
@@ -63,9 +64,10 @@ public class ComandosVoz implements RecognitionListener {
     private int cantidad;
     private String valorActual;
     private int formatoActual;
+    private ChangeCalculator changeCalc;
 
 
-    public ComandosVoz(Context context, Activity activity, EditText operacion, TextView resultado, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout, int cant , int format){
+    public ComandosVoz(Context context, Activity activity, EditText operacion, TextView resultado, Button grabando, Button procesando, ConstraintLayout fondoProcesando, LinearLayout layout, int cant , int format , ChangeCalculator cc){
         this.operacion = operacion;
         this.resultado = resultado;
         this.grabando = grabando;
@@ -88,6 +90,7 @@ public class ComandosVoz implements RecognitionListener {
         formatter = (DecimalFormat) NumberFormat.getNumberInstance(Locale.GERMAN);
         cantidad = cant;
         formatoActual = format;
+        this.changeCalc = cc;
     }
 
    /*public boolean getActivity(){
@@ -159,7 +162,6 @@ public class ComandosVoz implements RecognitionListener {
         }
         ArrayList<String> matchesFound = bundle.getStringArrayList(SpeechRecognizer.RESULTS_RECOGNITION);
         boolean textLetras = true;
-        cambiarCalculadora = false;
         if (matchesFound != null) {
             for(String match : matchesFound){
                 textLetras = true;
@@ -177,16 +179,14 @@ public class ComandosVoz implements RecognitionListener {
                 }
             }
             if(textLetras){
-                        if (matchesFound.contains("calculadora científica")){
+                        if(matchesFound.contains("calculadora básica") ) {
                             cambiarCalculadora = true;
-                          /*  CalculadoraCientifica cc = new CalculadoraCientifica();
-                            cc.cambiarCalculadoraCientifica(cambiarCalculadora);*/
-                            audio.emitirAudio("El diego el mas grande");
-                        }  if(matchesFound.contains("calculadora básica") ) {
-                            cambiarCalculadora = true;
-                        CalculadoraBasica cb = new CalculadoraBasica();
-                        cb.cambiarCalculadoraBasica(cambiarCalculadora);
+                            this.changeCalc.basicCalculator(true);
                         }
+                if(matchesFound.contains("calculadora científica") ) {
+                    cambiarCalculadora = true;
+                    this.changeCalc.scientificCalculator(true);
+                }
                     if(cambiarCalculadora == false){
                         audio.emitirAudio("Ingreso incorrecto");
                     }
