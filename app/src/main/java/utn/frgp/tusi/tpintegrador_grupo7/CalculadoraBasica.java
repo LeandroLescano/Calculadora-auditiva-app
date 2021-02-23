@@ -587,15 +587,21 @@ public class CalculadoraBasica extends AppCompatActivity implements ChangeCalcul
     }
 
     @Override
-    public void basicCalculator(boolean change) {
-
-    }
-
-    @Override
-    public void scientificCalculator(boolean change) {
-        if(change == true){
-            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraCientifica.class);
-            startActivity(intent);
+    public void cambiarPantalla(String pantalla) {
+        Intent intent;
+        switch (pantalla){
+            case "calculadoraCientifica":
+                intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraCientifica.class);
+                startActivity(intent);
+                break;
+            case "configuracion":
+                intent = new Intent(this, ConfiguracionActivity.class);
+                startActivity(intent);
+                break;
+            case "historial":
+                intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.HistorialOperaciones.class);
+                startActivity(intent);
+                break;
         }
     }
 }

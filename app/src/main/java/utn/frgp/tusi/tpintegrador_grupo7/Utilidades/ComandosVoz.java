@@ -181,11 +181,19 @@ public class ComandosVoz implements RecognitionListener  {
             if(textLetras){
                         if(matchesFound.contains("calculadora básica") ) {
                             cambiarCalculadora = true;
-                            this.changeCalc.basicCalculator(true);
+                            this.changeCalc.cambiarPantalla("calculadoraBasica");
                         }
                 if(matchesFound.contains("calculadora científica") ) {
                     cambiarCalculadora = true;
-                    this.changeCalc.scientificCalculator(true);
+                    this.changeCalc.cambiarPantalla("calculadoraCientifica");
+                }
+                if(matchesFound.contains("Configuración") ) {
+                    cambiarCalculadora = true;
+                    this.changeCalc.cambiarPantalla("configuracion");
+                }
+                if(matchesFound.contains("Historial de operaciones") ) {
+                    cambiarCalculadora = true;
+                    this.changeCalc.cambiarPantalla("historial");
                 }
                     if(cambiarCalculadora == false){
                         audio.emitirAudio("Ingreso incorrecto");

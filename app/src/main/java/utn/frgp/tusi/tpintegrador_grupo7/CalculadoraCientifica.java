@@ -531,17 +531,24 @@ public class CalculadoraCientifica extends AppCompatActivity implements ChangeCa
     }
 
     @Override
-    public void basicCalculator(boolean change) {
-        if(change == true){
-            Intent intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica.class);
-            startActivity(intent);
+    public void cambiarPantalla(String pantalla) {
+        Intent intent;
+        switch (pantalla){
+            case "calculadoraBasica":
+                intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.CalculadoraBasica.class);
+                startActivity(intent);
+                break;
+            case "configuracion":
+                intent = new Intent(this, ConfiguracionActivity.class);
+                startActivity(intent);
+                break;
+            case "historial":
+                intent = new Intent(this, utn.frgp.tusi.tpintegrador_grupo7.HistorialOperaciones.class);
+                startActivity(intent);
+                break;
         }
     }
 
-    @Override
-    public void scientificCalculator(boolean change) {
-
-    }
 
     public class DecimalDigitsInputFilter  implements InputFilter {
         private Pattern mPattern;
