@@ -569,7 +569,7 @@ public class CalculadoraCientifica extends AppCompatActivity implements ChangeCa
     public void calcular(){
         String operacionACalcular = operacion.getText().toString();
 
-        //Agregar multiplicación entre parentesis
+        //Agregar multiplicación entre parentesis--
         operacionACalcular = Operacion.agregarMultiplicaciones(operacionACalcular);
 
         //Resolución de funciones
@@ -586,7 +586,6 @@ public class CalculadoraCientifica extends AppCompatActivity implements ChangeCa
             if(resultadoOp.toString().contains("E")){
                 resultado.setText(formatter.format(new BigDecimal(resultadoOp)));
                 resultado.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});
-
             }else{
                 resultado.setText(formatter.format(Math.round(resultadoOp)));
                 resultado.setFilters(new InputFilter[]{new DecimalDigitsInputFilter(5, 2)});

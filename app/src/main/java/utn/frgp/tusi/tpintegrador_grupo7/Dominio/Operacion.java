@@ -36,6 +36,63 @@ public class Operacion {
         this.operacion = operacion;
     }
 
+    public static String verificarOperador(String[] split, int x){
+        String sumaResta="";
+        String parcial;
+        switch (split[x]){
+            case "x":
+                if(x+1 < split.length) {
+                    parcial = String.valueOf(Float.parseFloat(split[x - 1]) * Float.parseFloat(split[x + 1]));
+                    x++;
+                    int pos = x+1;
+                    while(pos < split.length && (split[pos].equals("/") || split[pos].equals("x"))){
+                        if(split[pos].equals("/")) {
+                            parcial = String.valueOf(Float.parseFloat(parcial) / Float.parseFloat(split[pos + 1]));
+                        }else{
+                            parcial = String.valueOf(Float.parseFloat(parcial) * Float.parseFloat(split[pos + 1]));
+                        }
+                        x+=2;
+                        pos+=2;
+                    }
+                    if(parcial.contains("E")){
+                        String parcialExponencial = new BigDecimal(parcial).toPlainString();
+                        sumaResta = sumaResta.concat(parcialExponencial);
+                    }else{
+                        sumaResta = sumaResta.concat(parcial);
+                    }
+                }
+                break;
+            case "/":
+                if(x+1 < split.length) {
+                    parcial = String.valueOf(Float.parseFloat(split[x - 1]) / Float.parseFloat(split[x + 1]));
+                    x++;
+                    int pos = x+1;
+                    while(pos < split.length && (split[pos].equals("/") || split[pos].equals("x"))){
+                        if(split[pos].equals("/")) {
+                            parcial = String.valueOf(Float.parseFloat(parcial) / Float.parseFloat(split[pos + 1]));
+                        }else{
+                            parcial = String.valueOf(Float.parseFloat(parcial) * Float.parseFloat(split[pos + 1]));
+                        }
+                        x+=2;
+                        pos+=2;
+                    }
+                    if(parcial.contains("E")){
+                        String parcialExponencial = new BigDecimal(parcial).toPlainString();
+                        sumaResta = sumaResta.concat(parcialExponencial);
+                    }else{
+                        sumaResta = sumaResta.concat(parcial);
+                    }
+                }
+                break;
+            default:
+                if(x == split.length-1 || (x+1 < split.length && (!split[x+1].equals("x") && !split[x+1].equals("/")))){
+                    sumaResta = sumaResta.concat(split[x]);
+                }
+                break;
+        }
+        return sumaResta;
+    }
+
     public static Float  calcularOperacionBasica(String operacion){
         String opLocal = operacion.replace("--", "+")
                 .replace("+-", "-")
@@ -55,57 +112,9 @@ public class Operacion {
                 }catch(Exception e){
 
                 }
-                String parcial;
-                switch (split[x]){
-                    case "x":
-                        if(x+1 < split.length) {
-                            parcial = String.valueOf(Float.parseFloat(split[x - 1]) * Float.parseFloat(split[x + 1]));
-                            x++;
-                            int pos = x+1;
-                            while(pos < split.length && (split[pos].equals("/") || split[pos].equals("x"))){
-                                if(split[pos].equals("/")) {
-                                    parcial = String.valueOf(Float.parseFloat(parcial) / Float.parseFloat(split[pos + 1]));
-                                }else{
-                                    parcial = String.valueOf(Float.parseFloat(parcial) * Float.parseFloat(split[pos + 1]));
-                                }
-                                x+=2;
-                                pos+=2;
-                            }
-                            if(parcial.contains("E")){
-                                String parcialExponencial = new BigDecimal(parcial).toPlainString();
-                                sumaResta = sumaResta.concat(parcialExponencial);
-                            }else{
-                                sumaResta = sumaResta.concat(parcial);
-                            }
-                        }
-                        break;
-                    case "/":
-                        if(x+1 < split.length) {
-                            parcial = String.valueOf(Float.parseFloat(split[x - 1]) / Float.parseFloat(split[x + 1]));
-                            x++;
-                            int pos = x+1;
-                            while(pos < split.length && (split[pos].equals("/") || split[pos].equals("x"))){
-                                if(split[pos].equals("/")) {
-                                    parcial = String.valueOf(Float.parseFloat(parcial) / Float.parseFloat(split[pos + 1]));
-                                }else{
-                                    parcial = String.valueOf(Float.parseFloat(parcial) * Float.parseFloat(split[pos + 1]));
-                                }
-                                x+=2;
-                                pos+=2;
-                            }
-                            if(parcial.contains("E")){
-                                String parcialExponencial = new BigDecimal(parcial).toPlainString();
-                                sumaResta = sumaResta.concat(parcialExponencial);
-                            }else{
-                                sumaResta = sumaResta.concat(parcial);
-                            }
-                        }
-                        break;
-                    default:
-                        if(x == split.length-1 || (x+1 < split.length && (!split[x+1].equals("x") && !split[x+1].equals("/")))){
-                            sumaResta = sumaResta.concat(split[x]);
-                        }
-                        break;
+                sumaResta = verificarOperador(split,x);
+                if(sumaResta != ""){
+                    break;
                 }
             }
             //Log.e("sumaResta", sumaResta);
@@ -148,6 +157,8 @@ public class Operacion {
 
         return resultadoParcial;
     }
+
+
 
     //Resolución de funciones trigonométricas, raíces y exponentes
     public static String calcularOperacionCientifica(int cant , String operacion , int formatoActual){
@@ -364,13 +375,14 @@ public class Operacion {
                         opLocal = opLocal.replace("sin(" + split[x + 1] + ")", Double.toString(sin));
                         x++;
                     } else if (split[x].contains("cos(")) {
-                        double cos;
+                        double cos = 0;
+                        double coseno = 0;
                         if(formato == 2){
                             double valorDouble = Double.parseDouble(split[x + 1]);
-                            double coseno  = Math.cos(Math.toRadians(valorDouble));
+                            coseno = Math.cos(Math.toRadians(valorDouble));
                             cos = getValueByDecimal(coseno , cantidad);
                         } else{
-                            cos = Math.cos(Double.parseDouble(split[x + 1]));
+                            coseno = Math.cos(Double.parseDouble(split[x + 1]));
                         }
 //                        opLocal = opLocal.replace("cos(" + split[x + 1] + ")", Double.toString(cos));
                         if (x + 2 >= split.length) {
