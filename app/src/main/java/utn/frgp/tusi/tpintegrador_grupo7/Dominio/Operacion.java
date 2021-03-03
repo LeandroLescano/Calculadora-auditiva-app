@@ -93,7 +93,7 @@ public class Operacion {
         return sumaResta;
     }
 
-    public static Float  calcularOperacionBasica(String operacion){
+    public static Float  calcularOperacionBasica(String operacion , String cuenta){
         String opLocal = operacion.replace("--", "+")
                 .replace("+-", "-")
                 .replace("-+", "-")
@@ -112,8 +112,59 @@ public class Operacion {
                 }catch(Exception e){
 
                 }
-                sumaResta = verificarOperador(split,x);
-                if(sumaResta != ""){
+                String parcial;
+                switch (split[x]) {
+                    case "x":
+                        if (x + 1 < split.length) {
+                            parcial = String.valueOf(Float.parseFloat(split[x - 1]) * Float.parseFloat(split[x + 1]));
+                            x++;
+                            int pos = x + 1;
+                            while (pos < split.length && (split[pos].equals("/") || split[pos].equals("x"))) {
+                                if (split[pos].equals("/")) {
+                                    parcial = String.valueOf(Float.parseFloat(parcial) / Float.parseFloat(split[pos + 1]));
+                                } else {
+                                    parcial = String.valueOf(Float.parseFloat(parcial) * Float.parseFloat(split[pos + 1]));
+                                }
+                                x += 2;
+                                pos += 2;
+                            }
+                            if (parcial.contains("E")) {
+                                String parcialExponencial = new BigDecimal(parcial).toPlainString();
+                                sumaResta = sumaResta.concat(parcialExponencial);
+                            } else {
+                                sumaResta = sumaResta.concat(parcial);
+                            }
+                        }
+                        break;
+                    case "/":
+                        if (x + 1 < split.length) {
+                            parcial = String.valueOf(Float.parseFloat(split[x - 1]) / Float.parseFloat(split[x + 1]));
+                            x++;
+                            int pos = x + 1;
+                            while (pos < split.length && (split[pos].equals("/") || split[pos].equals("x"))) {
+                                if (split[pos].equals("/")) {
+                                    parcial = String.valueOf(Float.parseFloat(parcial) / Float.parseFloat(split[pos + 1]));
+                                } else {
+                                    parcial = String.valueOf(Float.parseFloat(parcial) * Float.parseFloat(split[pos + 1]));
+                                }
+                                x += 2;
+                                pos += 2;
+                            }
+                            if (parcial.contains("E")) {
+                                String parcialExponencial = new BigDecimal(parcial).toPlainString();
+                                sumaResta = sumaResta.concat(parcialExponencial);
+                            } else {
+                                sumaResta = sumaResta.concat(parcial);
+                            }
+                        }
+                        break;
+                    default:
+                        if (x == split.length - 1 || (x + 1 < split.length && (!split[x + 1].equals("x") && !split[x + 1].equals("/")))) {
+                            sumaResta = sumaResta.concat(split[x]);
+                        }
+                        break;
+                }
+                if(sumaResta != "" && poseeParentesis(cuenta)){
                     break;
                 }
             }
@@ -189,7 +240,7 @@ public class Operacion {
                 //Si el anterior contiene "(", el posterior ")" y el número no es un dígito lo calcula
                 if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")") && !splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
                     if(splitP[x-1].contains("cos") || splitP[x-1].contains("tan") || splitP[x-1].contains("sin") || splitP[x-1].contains("l")){
-                        Float parcialNum = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,splitP[x],formato));
+                        Float parcialNum = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,splitP[x],formato),opLocal);
                         if(parcialNum != null && parcialNum.toString().contains("E")){
                             //Si el número contiene E lo convierte en decimal
                             opLocal = opLocal.replace(splitP[x], new BigDecimal(parcialNum).toPlainString());
@@ -197,7 +248,8 @@ public class Operacion {
                             opLocal = opLocal.replace(splitP[x], parcialNum.toString());
                         }
                     }else{
-                    opLocal = opLocal.replace("(" + splitP[x] + ")", String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,splitP[x],formato))));
+                        String cuenta = opLocal;
+                    opLocal = opLocal.replace("(" + splitP[x] + ")", String.valueOf(Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,splitP[x],formato),cuenta)));
                     }
                 }else if(x+1 < splitP.length && splitP[x-1].contains("(") && splitP[x+1].contains(")") && splitP[x].matches("[-+]?[0-9]*\\.?[0-9]+")){
                     if(!splitP[x-1].contains("cos") && !splitP[x-1].contains("tan") && !splitP[x-1].contains("sin") && !splitP[x-1].contains("l")){
@@ -286,7 +338,7 @@ public class Operacion {
                                         }else{
                                             parentesis = substr.substring(substr.indexOf("^")+1, cont+1);
                                         }
-                                        opLocal = opLocal.replace(parentesis, Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica(cantidad,parentesis,formato))).toString());
+                                        opLocal = opLocal.replace(parentesis, Operacion.calcularOperacionBasica(Operacion.sacarParentesis(Operacion.calcularOperacionCientifica(cantidad,parentesis,formato)),opLocal).toString());
                                         parentesisResuelto = true;
                                         break;
                                     }
@@ -376,13 +428,13 @@ public class Operacion {
                         x++;
                     } else if (split[x].contains("cos(")) {
                         double cos = 0;
-                        double coseno = 0;
                         if(formato == 2){
+                            double coseno = 0;
                             double valorDouble = Double.parseDouble(split[x + 1]);
                             coseno = Math.cos(Math.toRadians(valorDouble));
                             cos = getValueByDecimal(coseno , cantidad);
                         } else{
-                            coseno = Math.cos(Double.parseDouble(split[x + 1]));
+                            cos = Math.cos(Double.parseDouble(split[x + 1]));
                         }
 //                        opLocal = opLocal.replace("cos(" + split[x + 1] + ")", Double.toString(cos));
                         if (x + 2 >= split.length) {
@@ -481,6 +533,14 @@ public class Operacion {
         return operacion;
     }
 
+    public static boolean poseeParentesis(String operacionACalcular){
+        if(operacionACalcular.contains("(") && operacionACalcular.contains(")")) {
+            return true;
+        } else{
+            return  false;
+        }
+    }
+
     public static String sacarParentesis(String operacionACalcular) {
         String[] split = new String[]{""};
         while(operacionACalcular.contains("(") && operacionACalcular.contains(")")) {
@@ -489,7 +549,7 @@ public class Operacion {
             for (int x = 1; x < split.length - 1; x++) {
                 if (split[x + 1].contains(")") && split[x - 1].contains("(")) {
                     finded = true;
-                    Float resultadoParcial = Operacion.calcularOperacionBasica(split[x]);
+                    Float resultadoParcial = Operacion.calcularOperacionBasica(split[x],operacionACalcular);
                     if(resultadoParcial != null){
                         operacionACalcular = operacionACalcular.replace("(" + split[x] + ")", resultadoParcial.toString());
                     }else{

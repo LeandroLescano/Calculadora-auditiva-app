@@ -581,7 +581,7 @@ public class CalculadoraCientifica extends AppCompatActivity implements ChangeCa
 
 
         //Calculo de operación.
-        Float resultadoOp = Operacion.calcularOperacionBasica(operacionACalcular);
+        Float resultadoOp = Operacion.calcularOperacionBasica(operacionACalcular,operacion.getText().toString());
         if(resultadoOp != null && resultadoOp%1 == 0){
             if(resultadoOp.toString().contains("E")){
                 resultado.setText(formatter.format(new BigDecimal(resultadoOp)));

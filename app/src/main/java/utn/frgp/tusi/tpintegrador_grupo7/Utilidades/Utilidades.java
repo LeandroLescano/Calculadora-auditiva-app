@@ -88,5 +88,5 @@ public class Utilidades {
 
     public static final String INSERTAR_TABLA_DECIMALES="INSERT INTO " + TABLA_DECIMAL + "(" + CAMPO_CANTIDAD_DECIMAL + ") VALUES (2), (3), (4), (8)";
 
-    public static final String INSERTAR_TABLA_FORMATO="INSERT INTO " + TABLA_FORMATO + "(" + CAMPO_TIPO_FORMATO + ") VALUES ('Radiales'), ('Grados')";
+    public static final String INSERTAR_TABLA_FORMATO="INSERT INTO " + TABLA_FORMATO + "(" + CAMPO_TIPO_FORMATO + ") VALUES ('Radianes'), ('Grados')";
 }

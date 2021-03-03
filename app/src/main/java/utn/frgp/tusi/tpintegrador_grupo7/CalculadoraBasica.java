@@ -351,7 +351,7 @@ public class CalculadoraBasica extends AppCompatActivity implements ChangeCalcul
         operacionACalcular = Operacion.sacarParentesis(operacionACalcular);
 
         //Calculo de operación
-        Float resultadoOperacion = Operacion.calcularOperacionBasica(operacionACalcular);
+        Float resultadoOperacion = Operacion.calcularOperacionBasica(operacionACalcular,operacion.getText().toString());
         if(resultadoOperacion != null && resultadoOperacion%1 == 0){
             if(resultadoOperacion.toString().contains("E")){
                 resultado.setText(formatter.format(new BigDecimal(resultadoOperacion)));

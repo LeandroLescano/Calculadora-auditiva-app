@@ -199,7 +199,7 @@ public class ComandosVoz implements RecognitionListener  {
                         audio.emitirAudio("Ingreso incorrecto");
                     }
             }else{
-                Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,operacion.getText().toString(),formatoActual));
+                Float resultadoOperacion = Operacion.calcularOperacionBasica(Operacion.calcularOperacionCientifica(cantidad,operacion.getText().toString(),formatoActual),"");
                 formatter.setMaximumFractionDigits(cantidad);
                 if(resultadoOperacion != null && Float.isNaN(resultadoOperacion)){
                     resultado.setText("Error matemático");
